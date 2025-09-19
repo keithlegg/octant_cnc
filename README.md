@@ -1,24 +1,13 @@
-# basic_cnc_controller
+# confusion 36d 
 
 
 
-todo:
+a boatload of libraries to do graphics stuff
 
- config files
- internal coordinate system 
+C
+C++
+python
 
-
- internal parameters: 
-     top         height
-     fast travel height 
-     cut         height 
-     bottom      height 
-     fast pulse us 
-     slow pulse us 
-     jog speed  
-
-
-Clone of the micro_cnc_controller - but with more logic and goodies 
 
 
 
