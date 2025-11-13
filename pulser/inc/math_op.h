@@ -51,72 +51,56 @@ struct quaternion {
 };
 
 
-double dtr ( double deg);
-double rtd ( double rad);
+// utility functions 
+double dtr( double);
+double rtd( double);
+double dotProduct( vec2, vec2 );
+double dotProduct( vec3, vec3 );
+double fcalc_distance(int, int);
+double fcalc_distance(double, double);
+double length( vec2 );
+double length( vec3 );
+double calc_theta_vert ( double, double, double, double);
+double angle_between( vec2, vec2 );
 
-double dotProduct ( vec2, vec2);
-double dotProduct ( vec3, vec3);
+// object instance generators
+vec2 newvec2( double, double );
+vec2 newvec2( int, int );
+vec3 newvec3( double, double, double );
+vec3 newvec3( int, int , int );
 
-double fcalc_distance(int pt1[2], int pt2[2]);
-double fcalc_distance(double pt1[2], double pt2[2]);
-double length( vec2);
-double length( vec3);
-
-
-double calc_theta_vert ( double start_x, double start_y, double end_x, double end_y);
-double angle_between( vec2 v_one, vec2 v_two );
-
-
-//object instance generators
-vec2 newvec2( double x, double y );
-vec2 newvec2( int   x, int   y );
-
-vec2 normalize( vec2 input );
-vec2 scale_vec( vec2 input, double amount );
-vec2 mult_vec_scalar( vec2 input, double amount );
-
-vec2 line2vect(int start_x, int start_y, int end_x, int end_y);
-vec2 line2vect(double start_x, double start_y, double end_x, double end_y);
-vec2 vmul_2d ( vec2 v1, vec2 v2 );
-
-vec3 add( vec3 v1, vec3 v2 );
-vec3 add( vec3 v1, vec3 v2 );
-
-vec3 sub (vec3 v1, vec3 v2 );
-
-vec3 mult( vec3 v1, vec3 v2 );
-vec3 mult( m33 m, vec3 v );
-vec3 mult( m44 m, vec3 v );
-vec3 mult( double scalar, vec3 v );
-
-vec3 div (vec3 v2); //BROKEN?
-vec3 div (vec3 v1, double sclr);
-
-vec3 cross(vec3 v1, vec3 v2);
-
-/////////
-
-vec3 newvec3( double x, double y, double z );
-vec3 newvec3( int   x, int   y, int   z );
-
-vec3 normalize( vec3 input );
+// math operators
+vec2 normalize( vec2 );
+vec2 scale_vec( vec2, double );
+vec2 mult_vec_scalar( vec2, double );
+vec2 line2vect(int, int, int, int );
+vec2 line2vect(double, double, double, double);
+vec2 vmul_2d ( vec2, vec2);
+vec3 add( vec3, vec3 );
+vec3 add( vec3, vec3 );
+vec3 sub (vec3, vec3);
+vec3 mult( vec3, vec3 );
+vec3 mult( m33, vec3 );
+vec3 mult( m44, vec3 );
+vec3 mult( double, vec3 );
+vec3 div ( vec3 ); //BROKEN?
+vec3 div ( vec3, double );
+vec3 cross( vec3, vec3 );
+vec3 normalize( vec3 );
 
 //untested - not done 
-vec3 dtr_vec3(vec3 invec);
-vec3 rtd_vec3(vec3 invec);       
+vec3 dtr_vec3( vec3 );
+vec3 rtd_vec3( vec3 );       
+
+void print_vec2( vec2 );
+void print_vec3( vec3 );
+void print_matrix( m33 );
+void print_matrix( m44 );
 
 
-
-
-void print_vec2(vec2 input);
-void print_vec3(vec3 input);
-void print_matrix(m33 input);
-void print_matrix(m44 input);
-
-
-m33 new_m33( double m0 , double m1 , double m2,  
-             double m3 , double m4 , double m5, 
-             double m6 , double m7 , double m8
+m33 new_m33( double, double , double ,  
+             double, double , double , 
+             double, double , double 
     );
 
 m44 new_m44( double m0 , double m1 , double m2 , double m3, 

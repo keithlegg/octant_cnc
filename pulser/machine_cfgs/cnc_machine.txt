@@ -6,33 +6,50 @@
 #MACHINE PROPERTIES 
 ####################################
 
+
+####################################
+##INTERFACE 1 (motion)
 # address of the parallel port 
-LP1_ADDR 0xc010
 
-# pulse timing in micro seconds 
-PULSE_DELEAY_US 10
+PARPORT1_ADDR 0xc010
 
-# number of steps for each stepper to make a full revolution 
-STEPS_PER_UNIT_X 100  
-STEPS_PER_UNIT_Y 100 
-STEPS_PER_UNIT_Z 100 
+PP1_PULSE_DLY_US 10
+
+PP1_STEPS_PER_UNIT_X 100  
+PP1_STEPS_PER_UNIT_Y 100 
+PP1_STEPS_PER_UNIT_Z 100 
+
+####################################
+##INTERFACE 2 (data)
+ 
+PARPORT2_ADDR 0xc010
+PP2_LATENCY_US 10
+PP2_BYTES_PER_FRAME 4
+PP2_MODE_INOUT INOUT 
+
 
 
 ####################################
 # OUTPUTS 
 ####################################
-
 # PIN MAPPING - I.E. wchich pin controls which motor 
-XDIR  DB25_1 
-XSTEP DB25_2 
-YDIR  DB25_3 
-YSTEP DB25_4 
-ZDIR  DB25_5 
-ZSTEP DB25_6 
 
-# INV_XDIR DB25_7 
-# INV_YDIR DB25_8 
-# INV ZDIR DB25_9
+PP1_XDIR  DB25_1 
+PP1_XSTEP DB25_2 
+
+PP1_YDIR  DB25_3 
+PP1_YSTEP DB25_4 
+
+PP1_ZDIR  DB25_5 
+PP1_ZSTEP DB25_6 
+
+#A axis is theta for head!
+PP1_ADIR  DB25_5 
+PP1_ASTEP DB25_6 
+
+# PP1_INV_XDIR DB25_7 
+# PP1_INV_YDIR DB25_8 
+# PP1_INV ZDIR DB25_9
 
 
 ####################################
