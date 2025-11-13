@@ -13,12 +13,9 @@
 
 /*****************************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
+
 #include <cmath>
 #include <vector>
-
-
 
 #include "math_op.h"
 #include "point_op.h"
@@ -30,7 +27,7 @@
 /*****************************/
 
 
-void pointgen::locate_pt_along3d(vector<vec3>* output,
+void pointgen::locate_pt_along3d(std::vector<vec3>* output,
                                  vec3 fpos, 
                                  vec3 spos, 
                                  int num)
@@ -79,8 +76,8 @@ void pointgen::locate_pt_along3d(vector<vec3>* output,
 
 /*****************************/
 
-void pointgen::cubic_bezier(vector<vec3>* output, 
-                            vector<vec3>* colors,
+void pointgen::cubic_bezier(std::vector<vec3>* output, 
+                            std::vector<vec3>* colors,
                             int* numvecs,
                             int draw_steps, 
                             vec3 start, 

@@ -56,7 +56,7 @@ void run_cncplot(double f_x,
         int x=0;
         for(x=0;x<pulsetrain.size();x++)
         {
-            cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
+            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
         } 
     }
 
@@ -73,7 +73,7 @@ void run_cncplot(double f_x,
 void parse_args(int argc, char **argv)
 {
     if (argc < 8){
-        cout << "Usage: pulser X1 Y1 Z1 X2 Y2 Z2 divs \n";
+        std::cout << "Usage: pulser X1 Y1 Z1 X2 Y2 Z2 divs \n";
         abort();
 
     }
@@ -172,7 +172,7 @@ void test_bezier( vec3 start, vec3 ctrl1, vec3 ctrl2, vec3 end)
     // test_bezier(start, ctrl1, ctrl2, end);
     // int a=0;
     // for(a=0;a<scene_drawvec3.size();a++){
-    //     cout<<scene_drawvec3[a].x  <<" "<<scene_drawvec3[a].y  <<" "<<scene_drawvec3[a].z   << "\n";
+    //     std::cout<<scene_drawvec3[a].x  <<" "<<scene_drawvec3[a].y  <<" "<<scene_drawvec3[a].z   << "\n";
     // }
 
     pointgen PG;
@@ -197,7 +197,7 @@ void test_pt_along(void)
     PG.locate_pt_along3d(ptDrawvec, s_p, e_p, 5);
     int a=0;
     for(a=0;a<scene_drawvec3.size();a++){
-        cout<<scene_drawvec3[a].x  <<" "<<scene_drawvec3[a].y  <<" "<<scene_drawvec3[a].z   << "\n";
+        std::cout<<scene_drawvec3[a].x  <<" "<<scene_drawvec3[a].y  <<" "<<scene_drawvec3[a].z   << "\n";
     } 
 
 }
