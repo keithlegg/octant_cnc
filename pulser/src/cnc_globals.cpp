@@ -7,6 +7,7 @@
 */
 
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -15,17 +16,6 @@ using std::vector;
 
 #include <sstream>
 
-
-
-
-
-
-/*
-#include <math.h>
-#include <iomanip>
-#include <algorithm>
-#include <vector>
-*/
 
 #include "math_op.h"
 #include "point_op.h"
@@ -40,7 +30,7 @@ using std::vector;
 // #MACHINE PROPERTIES 
 // ####################################
 
-bool GENERAL_DEBUG          = false;
+bool GLOBAL_DEBUG           = false;
 bool DEBUG_PARAMS           = false;
 
 bool ENABLE_LIMIT_SWITCHES  = false;
@@ -166,18 +156,120 @@ const int MAX_TOKENS_PER_LINE = 20;
 //extern obj_model pt_model_buffer;
 
 
-void clear_scenegeom( void)
-{
 
-    scene_drawvec3.clear();
-    scene_drawvecclr.clear();
-    num_drawvec3 = 0;
+/**********************************/
+void show( void )
+{
+   //std::cout << " 3D object       " << object_path      << "\n";
+  
+};
+
+
+/**********************************/
+
+
+
+void cncglobals::load_file( char* filepath )
+{
+    std::cout << "cncglobals loading file "<< filepath << "\n";
+
+    std::ifstream fin;
+
+    fin.open(filepath); // open a file
+    if (!fin.good()){ 
+        std::cout << "scene file \""<< filepath <<"\" appears to be missing." << std::endl;
+        exit (EXIT_FAILURE); // exit if file not found
+    }
+
+    int n = 0;
+
+    int line_ct = 0;
+    while (!fin.eof())
+    {
+        char buf[MAX_CHARS_PER_LINE];
+        fin.getline(buf, MAX_CHARS_PER_LINE);
+
+            /*
+        const char* token[MAX_TOKENS_PER_LINE];
+        token[0] = strtok(buf, " ");
+         
+        //if line has data on it ...  
+        if (token[0]) 
+        {
+            // walk the space delineated tokens 
+            for (n=1; n < MAX_TOKENS_PER_LINE; n++)
+            {
+                token[n] = strtok(NULL, " \t\n");
+                if (!token[n]) break;  
+            }
+
+
+            //----------------------
+            if (!strcmp(token[0],"obj_path"))
+            {        
+                strcpy( object_path, token[1]);
+            }
+
+            //----------------------
+            if (!strcmp(token[0],"cam_matrix_path"))
+            {            
+                strcpy( cam_matrix_path, token[1]);
+            }
+
+            //----------------------
+            if (!strcmp(token[0],"cam_pos"))
+            {        
+                campos = Vector3( atof(token[1]), atof(token[2]), atof(token[3]) );
+            }
+
+            //----------------------
+            if (!strcmp(token[0],"light_pos"))
+            {            
+                //std::cout << " light position is " <<  atof(token[1]) << " " <<  atof(token[2]) << " " <<  atof(token[3]) << "\n";
+                lightpos = Vector3( atof(token[1]), atof(token[2]), atof(token[3]) );
+
+            }
+
+            //----------------------
+            if (!strcmp(token[0],"light_intensity"))
+            {            
+                lightintensity = atof(token[1]);
+            }
+
+            //----------------------
+            if (!strcmp(token[0],"vtx_color"))
+            {   
+                //std::cout << " vtx_color is " <<  atof(token[1]) << " " <<  atof(token[2]) << " " <<  atof(token[3]) << "\n";
+                vtx_color.r = atoi(token[1]);
+                vtx_color.g = atoi(token[2]);
+                vtx_color.b = atoi(token[3]);                
+            }
+           
+
+            //----------------------
+            if (!strcmp(token[0],"show_lines"))
+            {   
+                if (!strcmp(token[1],"true"))
+                {
+                    show_lines = true;
+                }
+                std::cout << "show lines "<< show_lines << "\n";
+            }  
+
+
+            //////
+            line_ct ++; 
+
+        } 
+            */ 
+
+
+    }
 
 }
 
 
 
-void read_scenefile( char* filepath ){};
 
 
 

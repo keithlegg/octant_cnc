@@ -9,5 +9,23 @@
 //using std::vector; 
 
 
+
+class cncglobals
+{
+
+    public: 
+        cncglobals(){
+        };
+
+        ~cncglobals(){};
+
+        void load_file( char*);
+        void show( void );
+        
+
+};
+
+
+
 #endif
 

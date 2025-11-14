@@ -17,6 +17,7 @@
 //char* obj_filepath;  
 
 
+extern bool GLOBAL_DEBUG;
 
 
 /* 
@@ -39,10 +40,10 @@ void run_cncplot(double f_x,
                  double s_z,
                  int divs)  
 {
+
+
     cnc_plot plot;
-
-    bool DEBUG = false; 
-
+    
     vector<vec3> pulsetrain;
     vector<vec3>* pt_pulsetrain = &pulsetrain; 
 
@@ -51,7 +52,7 @@ void run_cncplot(double f_x,
 
     plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
 
-    if(DEBUG==true)
+    if(GLOBAL_DEBUG==true)
     {
         int x=0;
         for(x=0;x<pulsetrain.size();x++)
@@ -60,7 +61,7 @@ void run_cncplot(double f_x,
         } 
     }
 
-    if(DEBUG==false)
+    if(GLOBAL_DEBUG==false)
     {
        //moved to IO DEBUG   
        // plot.send_pulses(pt_pulsetrain);
