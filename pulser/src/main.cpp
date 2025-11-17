@@ -108,6 +108,9 @@ int main(int argc, char **argv)
 
     cg.load_file(argv[1]);
 
+    
+    cg.show();
+
     //parse_args(argc, argv); 
     
     
