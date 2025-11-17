@@ -9,13 +9,13 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
+
 #include <string>
+#include <cstring>
 
 #include <vector>
 using std::vector;
-
-#include <sstream>
-
 
 #include "math_op.h"
 #include "point_op.h"
@@ -183,19 +183,22 @@ void cncglobals::load_file( char* filepath )
 
     int n = 0;
 
+    std::string line;
+
     int line_ct = 0;
     while (!fin.eof())
     {
         char buf[MAX_CHARS_PER_LINE];
         fin.getline(buf, MAX_CHARS_PER_LINE);
-
-            /*
+          
         const char* token[MAX_TOKENS_PER_LINE];
         token[0] = strtok(buf, " ");
-         
+        
+    
         //if line has data on it ...  
         if (token[0]) 
         {
+
             // walk the space delineated tokens 
             for (n=1; n < MAX_TOKENS_PER_LINE; n++)
             {
@@ -203,13 +206,24 @@ void cncglobals::load_file( char* filepath )
                 if (!token[n]) break;  
             }
 
-
+     
             //----------------------
-            if (!strcmp(token[0],"obj_path"))
+            if (!strcmp(token[0],"PARPORT1_ADDR"))
             {        
-                strcpy( object_path, token[1]);
+                strcpy( parport1_addr, token[1]);
+
+                std::cout << parport1_addr << "\n";
+            }
+            
+            //----------------------
+            if (!strcmp(token[0],"PARPORT2_ADDR"))
+            {        
+                strcpy( parport2_addr, token[1]);
+
+                std::cout << parport2_addr << "\n";
             }
 
+            /*
             //----------------------
             if (!strcmp(token[0],"cam_matrix_path"))
             {            
@@ -255,13 +269,13 @@ void cncglobals::load_file( char* filepath )
                 }
                 std::cout << "show lines "<< show_lines << "\n";
             }  
-
+            */
 
             //////
             line_ct ++; 
 
         } 
-            */ 
+          
 
 
     }

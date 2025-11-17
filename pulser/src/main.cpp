@@ -103,7 +103,12 @@ void parse_args(int argc, char **argv)
 int main(int argc, char **argv) 
 {  
     
-    parse_args(argc, argv); 
+    cncglobals cg;
+    
+
+    cg.load_file(argv[1]);
+
+    //parse_args(argc, argv); 
     
     
     /*
