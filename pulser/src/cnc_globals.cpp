@@ -160,14 +160,47 @@ const int MAX_TOKENS_PER_LINE = 20;
 /**********************************/
 void cncglobals::show( void )
 {
-    std::cout << " CNC GLOBALS " << "\n";
+    std::cout << " #### CNC GLOBALS #### " << "\n";
     std::cout << " parport1_addr : " << (*this).parport1_addr << "\n";
     std::cout << " parport2_addr : " << (*this).parport2_addr << "\n";
-    std::cout << " : " << "\n";
-    std::cout << " : " << "\n";
-    std::cout << " : " << "\n";
-    std::cout << " : " << "\n";
-                        
+    std::cout <<"\n";
+
+    std::cout << " : " << "# machine travel size in 3D  " << "\n";  
+    std::cout << " : " << (*this).x_xtntx<< "\n";
+    std::cout << " : " << (*this).y_xtntx<< "\n";
+    std::cout << " : " << (*this).z_xtntx<< "\n";
+    std::cout <<"\n";
+
+    std::cout << " : " << "#waveform generation parameters " << "\n";  
+    std::cout << " : " << (*this).pp1_pulse_x_dly_us << "\n";
+    std::cout << " : " << (*this).pp1_pulse_y_dly_us << "\n";
+    std::cout << " : " << (*this).pp1_pulse_z_dly_us << "\n";
+    std::cout <<"\n";
+
+    std::cout << " : " << "# 3d pulses per linear unit " << "\n";        
+    std::cout << " : " << (*this).pp1lu_x << "\n";
+    std::cout << " : " << (*this).pp1lu_x << "\n";
+    std::cout << " : " << (*this).pp1lu_x << "\n";
+    std::cout <<"\n";
+
+    std::cout << " : " << "# pin assignments " << "\n";  
+    std::cout << " : " << (*this).parprt1_dir_x  << "\n";
+    std::cout << " : " << (*this).parprt1_step_x << "\n";
+    std::cout << " : " << (*this).parprt1_dir_y  << "\n";
+    std::cout << " : " << (*this).parprt1_step_y << "\n";
+    std::cout << " : " << (*this).parprt1_dir_z  << "\n";
+    std::cout << " : " << (*this).parprt1_step_z << "\n";
+    std::cout << " : " << (*this).parprt1_dir_a  << "\n";
+    std::cout << " : " << (*this).parprt1_step_z << "\n";
+    std::cout <<"\n";
+
+    std::cout << " : " << (*this).x_limit_pin << "\n";
+    std::cout << " : " << (*this).y_limit_pin << "\n";
+    std::cout << " : " << (*this).z_limit_pin << "\n";
+    
+    //std::cout << " : " << (*this). << "\n";
+    //std::cout << " : " << (*this). << "\n";    
+
   
 };
 
@@ -219,13 +252,27 @@ void cncglobals::load_file( char* filepath )
             {        
                 strcpy( parport1_addr, token[1]);
             }
-
             //-------------------------------------------
             if (!strcmp(token[0],"PARPORT2_ADDR"))
             {        
                 strcpy( parport2_addr, token[1]);
             }
 
+            //-------------------------------------------
+            //-- MACHINE PARAMETER SETUP --------------
+
+            if (!strcmp(token[0],"X_XTNX"))
+            {        
+                //strcpy( parport2_addr, token[1]);
+            }
+            if (!strcmp(token[0],"Y_XTNX"))
+            {        
+                //strcpy( parport2_addr, token[1]);
+            }
+            if (!strcmp(token[0],"Z_XTNX"))
+            {        
+                //strcpy( parport2_addr, token[1]);
+            }
 
             //-------------------------------------------
             //-- PULSE TIMING ---------------
@@ -233,8 +280,6 @@ void cncglobals::load_file( char* filepath )
             {        
                 // // strcpy( parport2_addr, token[1]);
             }
-
-            //-------------------------------------------
             if (!strcmp(token[0],"PP1_PULSE_DLY_US"))
             {        
                 // // strcpy( parport2_addr, token[1]);
@@ -246,13 +291,10 @@ void cncglobals::load_file( char* filepath )
             {        
                 // // strcpy( parport2_addr, token[1]);
             }
-            //----------------------
             if (!strcmp(token[0],"PPLU1_Y"))
             {        
                 // // strcpy( parport2_addr, token[1]);
             }
-
-            //----------------------
             if (!strcmp(token[0],"PPLU1_Z"))
             {        
                 // // strcpy( parport2_addr, token[1]);
@@ -280,8 +322,6 @@ void cncglobals::load_file( char* filepath )
 
             //-------------------------------------------
             //-- CONTROLLER OUTPUTS      ----------------
-
-
             if (!strcmp(token[0],"PARPRT1_XDIR"))
             {        
                     //campos = Vector3( atof(token[1]), atof(token[2]), atof(token[3]) );
