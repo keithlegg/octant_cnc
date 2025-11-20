@@ -72,6 +72,8 @@ class cncglobals
 
         /*******************/
         std::vector<std::string> tokenizer( const std::string&, char);
+        int cvt_int( const std::string&);
+
         void load_cfg_file( char*);
         void show( void );
         
