@@ -127,10 +127,22 @@ void cncglobals::show( void )
     std::cout << " parprt1_step_y : " << (*this).parprt1_step_y << " inverted: "<< (*this).parprt1_step_y_inv << "\n";
     std::cout << " parprt1_dir_z  : " << (*this).parprt1_dir_z  << " inverted: "<< (*this).parprt1_dir_z_inv  << "\n";
     std::cout << " parprt1_step_z : " << (*this).parprt1_step_z << " inverted: "<< (*this).parprt1_step_z_inv << "\n";
+    std::cout << " parprt1_dir_a  : " << (*this).parprt1_dir_a  << " inverted: "<< (*this).parprt1_dir_a_inv  << "\n";
+    std::cout << " parprt1_step_a : " << (*this).parprt1_step_a << " inverted: "<< (*this).parprt1_step_a_inv << "\n";
 
-    // std::cout << " parprt1_dir_a  : " << (*this).parprt1_dir_a  << "\n";
-    // std::cout << " parprt1_step_a : " << (*this).parprt1_step_a << "\n";
+    std::cout << "\n"; 
+    /*
+    std::cout << " parprt2_dir_x  : " << (*this).parprt2_dir_x  << " inverted: "<< (*this).parprt2_dir_x_inv  << "\n";
+    std::cout << " parprt2_step_x : " << (*this).parprt2_step_x << " inverted: "<< (*this).parprt2_step_x_inv << "\n";
+    std::cout << " parprt2_dir_y  : " << (*this).parprt2_dir_y  << " inverted: "<< (*this).parprt2_dir_y_inv  << "\n";
+    std::cout << " parprt2_step_y : " << (*this).parprt2_step_y << " inverted: "<< (*this).parprt2_step_y_inv << "\n";
+    std::cout << " parprt2_dir_z  : " << (*this).parprt2_dir_z  << " inverted: "<< (*this).parprt2_dir_z_inv  << "\n";
+    std::cout << " parprt2_step_z : " << (*this).parprt2_step_z << " inverted: "<< (*this).parprt2_step_z_inv << "\n";
+    std::cout << " parprt2_dir_a  : " << (*this).parprt2_dir_a  << " inverted: "<< (*this).parprt2_dir_a_inv  << "\n";
+    std::cout << " parprt2_step_a : " << (*this).parprt2_step_a << " inverted: "<< (*this).parprt2_step_a_inv << "\n";
+    */
 
+    std::cout << "\n"; 
     std::cout << " x_limit_pin    : " << (*this).x_limitsw_pin << " inverted: "<< (*this).x_limitsw_pin_inv << "\n";
     std::cout << " y_limit_pin    : " << (*this).y_limitsw_pin << " inverted: "<< (*this).y_limitsw_pin_inv << "\n";
     std::cout << " z_limit_pin    : " << (*this).z_limitsw_pin << " inverted: "<< (*this).z_limitsw_pin_inv << "\n";
@@ -423,7 +435,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                             y_limitsw_pin_inv = doinvert;                                            
                                         }
                                         
-                                        if (tokenized.at(0)=="X_LIMIT_SW")
+                                        if (tokenized.at(0)=="Z_LIMIT_SW")
                                         {   
                                             z_limitsw_pin = std::stoi( tokepins.at(1));
                                             z_limitsw_pin_inv = doinvert;                                            
@@ -475,7 +487,53 @@ void cncglobals::load_cfg_file( char* filepath )
                                             parprt1_step_a_inv = doinvert;     
                                         }
                                                                                                                         
+                                        //----------------------------------------------
+                                        //-- PARALLEL PORT2 PIN ASSIGNMENTS ------------
+                                        /*
+                                        if (tokenized.at(0).find("PP2_XDIR")!= std::string::npos)
+                                        {        
+                                            parprt2_dir_x = std::stoi( tokepins.at(1));
+                                            parprt2_dir_x_inv = doinvert;                                                
+                                        }
+                                        if (tokenized.at(0).find("PP2_XSTEP")!= std::string::npos)
+                                        {        
+                                            parprt2_step_x = std::stoi( tokepins.at(1));
+                                            parprt2_step_x_inv = doinvert;     
+                                        }
 
+                                        if (tokenized.at(0).find("PP2_YDIR")!= std::string::npos)
+                                        {        
+                                            parprt2_dir_y = std::stoi( tokepins.at(1));
+                                            parprt2_dir_y_inv = doinvert;                                                
+                                        }
+                                        if (tokenized.at(0).find("PP2_YSTEP")!= std::string::npos)
+                                        {        
+                                            parprt2_step_y = std::stoi( tokepins.at(1));
+                                            parprt2_step_y_inv = doinvert;     
+                                        }
+
+                                        if (tokenized.at(0).find("PP2_ZDIR")!= std::string::npos)
+                                        {        
+                                            parprt2_dir_z = std::stoi( tokepins.at(1));
+                                            parprt2_dir_z_inv = doinvert;                                                
+                                        }
+                                        if (tokenized.at(0).find("PP2_ZSTEP")!= std::string::npos)
+                                        {        
+                                            parprt2_step_z = std::stoi( tokepins.at(1));
+                                            parprt2_step_z_inv = doinvert;     
+                                        }
+
+                                        if (tokenized.at(0).find("PP2_ADIR")!= std::string::npos)
+                                        {        
+                                            parprt2_dir_a = std::stoi( tokepins.at(1));
+                                            parprt2_dir_a_inv = doinvert;                                                
+                                        }
+                                        if (tokenized.at(0).find("PP2_ASTEP")!= std::string::npos)
+                                        {        
+                                            parprt2_step_a = std::stoi( tokepins.at(1));
+                                            parprt2_step_a_inv = doinvert;     
+                                        }
+                                        */
                                     }//we can set all the DB25 pins in this loop 
                                     //****************************************/
                                 }
