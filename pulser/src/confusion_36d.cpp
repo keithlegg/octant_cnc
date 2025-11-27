@@ -73,7 +73,7 @@
 */
 /*************************************************************/
 
-
+#include <sstream>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -144,19 +144,20 @@ int TCP_PORT = 0;
 
 extern char* obj_filepath;
 extern int num_loaded_obj;
+extern int num_drawvec3;
+extern int num_drawpoints;
+extern int TCP_PORT;
 
 extern vector<vec3> scene_drawvec3;
 extern vector<vec3> scene_drawvecclr;
-extern int num_drawvec3;
-
 extern vector<vec3> scene_drawpoints;
 extern vector<vec3> scene_drawpointsclr;
 extern vector<vec3>* pt_scene_drawpoints;
 
 
-extern int num_drawpoints;
 
-extern int TCP_PORT;
+
+
 
 
 
@@ -321,8 +322,6 @@ int mouseClickCount = 0;
 int rectPlotted;
 
 
-
-//WE ARE DOING VERY BAD STUFF HERE - MIXING C++ AND C 
 void load_scene(char * scenepath)
 {
     num_loaded_obj = 0;
@@ -373,6 +372,7 @@ void grab_camera_matrix( m44 *pt_mmm)
 }
 
 //DEBUG - GL_MODELVIEW_MATRIX and GL_PROJECTION_MATRIX seem to be the same 
+/*
 void grab_projection_matrix(m44 *pt_mpm )
 {
     GLfloat model[16]; 
@@ -396,6 +396,7 @@ void grab_projection_matrix(m44 *pt_mpm )
     //render_m44(pt_mmm);
     //print_matrix(my_model_matrix);
 }
+*/
 
 
 /*
@@ -526,6 +527,45 @@ void test_bezier( vec3 start, vec3 ctrl1, vec3 ctrl2, vec3 end)
 
 /***************************************/
 
+std::string buffer;
+
+static void key(unsigned char key, int x, int y)
+{
+    buffer.push_back((char) key);
+    std::cout << buffer << "\n";
+    glutPostRedisplay();
+
+}
+/*
+std::string input_txt(void){
+
+    std::string sentence;
+    std::cout << "Enter a sentence please: "; std::cout.flush();
+
+    std::getline(std::cin,sentence);
+    std::istringstream iss(sentence);
+
+    std::vector<std::string> words;
+    std::string word;
+    while(iss >> word) {
+        words.push_back(word);
+    } 
+
+    for(std::vector<std::string>::const_iterator it = words.begin();
+        it != words.end();
+        ++it) {
+        std::cout << *it << ' ';
+    }
+    std::cout << std::endl; return 0;
+    
+    return sentence;
+}
+*/
+
+
+/***************************************/
+/***************************************/
+/***************************************/
 
 int q_i, p_i, f_i = 0;
 
@@ -554,15 +594,28 @@ static void render_loop()
         setOrthographicProjection();
         //glPushMatrix();
         glLoadIdentity();
-        void *font = GLUT_BITMAP_8_BY_13;     
-        sprintf(s, "    %d tris ", pt_model_buffer->num_tris );
-        renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font, s );
+        
+        //-----------------------------
+        //render text in window 
+        //void *font = GLUT_BITMAP_8_BY_13;     
+        void *font = GLUT_BITMAP_TIMES_ROMAN_24; 
 
-        sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
-        renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-20  ,(void *)font, s );
+     
 
-        sprintf(s, "camera position : %f %f %f", cam_posx, cam_posy, cam_posz);
-        renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-10  ,(void *)font, s );
+        glutKeyboardFunc(key);
+        renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font,  buffer.c_str() );
+
+
+        //sprintf(s, "    %d tris ", pt_model_buffer->num_tris );
+        //renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font, s );
+        //---        
+        //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
+        //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-20  ,(void *)font, s );
+        //---
+        //sprintf(s, "camera position : %f %f %f", cam_posx, cam_posy, cam_posz);
+        //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-10  ,(void *)font, s );
+        //-----------------------------
+
         //glPopMatrix();
         resetPerspectiveProjection();
 
@@ -1140,7 +1193,6 @@ void set_view_persp(void)
     glLoadIdentity();    
 
 }
-
 
 
 
@@ -2022,6 +2074,7 @@ static void keyPressed(unsigned char key, int x, int y)
 /**************************************************/
 /**************************************************/
 
+/*
 void init_pycore(void){
     //call python from here!!
 
@@ -2045,6 +2098,7 @@ void init_pycore(void){
     //char* newfilepath = "3d_obj/normals.obj";
     //load_objfile( newfilepath, pt_model_buffer ); 
 }
+*/
 
 
 /**************************************************/

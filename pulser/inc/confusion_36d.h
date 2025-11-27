@@ -6,15 +6,15 @@
 
 
 
-void tweak_matrix( void );
+//void tweak_matrix( void );
 
 void grab_camera_matrix( m44 *pt_mmm );
-void grab_projection_matrix(m44 *pt_mpm );
+//void grab_projection_matrix(m44 *pt_mpm );
 
 void triangulate(void);
 void calc_normals(void);
 
-void init_pycore(void);
+//void init_pycore(void);
 
 
 void set_view_ortho(void);

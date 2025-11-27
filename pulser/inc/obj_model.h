@@ -104,14 +104,14 @@ typedef struct quad{
 class obj_model {
     public:
         obj_model(){
-            num_pts    = 0;
+            num_pts     = 0;
             num_vnrmls  = 0;
             num_fnrmls  = 0;
-            num_uvs    = 0;
-            num_lines  = 0;
-            num_tris   = 0;
-            num_quads  = 0; 
-            num_vtxrgb = 0;            
+            num_uvs     = 0;
+            num_lines   = 0;
+            num_tris    = 0;
+            num_quads   = 0; 
+            num_vtxrgb  = 0;            
         };
 
         ~obj_model(){};
