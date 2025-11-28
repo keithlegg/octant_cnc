@@ -24,6 +24,7 @@ using std::vector;
 #include "math_op.h"
 #include "point_op.h"
 
+#include "obj_model.h"
 #include "cnc_plot.h"
 #include "cnc_io.h"
 #include "cnc_globals.h"
@@ -54,8 +55,6 @@ using std::vector;
 
 
 char strbuffer[100][100];
-std::vector<std::string> obj_filepaths;
-int num_loaded_obj = 0;
 
 std::vector<vec3> scene_drawvec3;
 std::vector<vec3> scene_drawvecclr;
@@ -70,7 +69,9 @@ int num_drawpoints = 0;
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;
 
-//extern obj_model pt_model_buffer;
+extern obj_model pt_model_buffer;
+extern obj_info pt_obinfo;
+
 
 /*
   std::cout
@@ -226,6 +227,8 @@ char* cncglobals::copyString(char s[])
     return (char*)s2;
 }
 
+/******************************/
+
 std::vector<std::string> cncglobals::tokenizer( const std::string& p_pcstStr, char delim )  {
     std::vector<std::string> tokens;
     std::stringstream   mySstream( p_pcstStr );
@@ -235,6 +238,8 @@ std::vector<std::string> cncglobals::tokenizer( const std::string& p_pcstStr, ch
     }
     return tokens;
 } 
+
+/******************************/
 
 
 int cncglobals::cvt_int( const std::string& s)
@@ -271,15 +276,33 @@ int cncglobals::cvt_int( const std::string& s)
 
 /**********************************/
 /**********************************/
+void cncglobals::load_objects(void)
+{
+    if(!(*this).obj_filepaths.empty()) 
+    {
+        char char_array[100];
+        int x = 0 ; 
+        for(x=0;x<(*this).num_loaded_obj;x++)
+        {
+            std::cout << "# loading  " << (*this).obj_filepaths[x] <<"\n";
+            strcpy(char_array, (*this).obj_filepaths[x].c_str()); 
+            
+            //DEBUG - THIS IS SKETCHY 
+            load_objfile(char_array , &pt_model_buffer );
+            //get_obj_info( &pt_model_buffer, &pt_obinfo);
+        };
+    };
+}
+
 
 void cncglobals::load_cfg_file( char* filepath )
 {
     std::cout << "cncglobals loading file "<< filepath << "\n";
 
-    std::ifstream filein;
+    std::ifstream cfg_filein;
 
-    filein.open(filepath); // open a file
-    if (!filein.good()){ 
+    cfg_filein.open(filepath); // open a file
+    if (!cfg_filein.good()){ 
         std::cout << "config file \""<< filepath <<"\" appears to be missing." << std::endl;
         exit (EXIT_FAILURE); // exit if file not found
     }
@@ -287,15 +310,15 @@ void cncglobals::load_cfg_file( char* filepath )
     int n = 0;
 
     int line_ct = 0;
-    while (!filein.eof())
+    while (!cfg_filein.eof())
     {   
         //26 is a sign the pin is unassigned (only 0-24 on the plug) 
         uint parsepin = 26;
 
         std::string line;
-        while (std::getline(filein, line)) 
+        while (std::getline(cfg_filein, line)) 
         {  
-            //std::cout << "FULL LINE " << line << std::endl;
+            // std::cout << "FULL LINE " << line << std::endl;
             std::vector<std::string>  tokenized = (*this).tokenizer(line, *" ");
 
             //if you want to iterate the tokens on the line 
@@ -318,6 +341,7 @@ void cncglobals::load_cfg_file( char* filepath )
                 {
                     if(tokenized.size()>=1)
                     {
+
                         //** MACHINE HARDWARE SETUP ************//
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            
                         {  
@@ -388,6 +412,25 @@ void cncglobals::load_cfg_file( char* filepath )
                         if (tokenized.at(0).find("PP1_STEPS_PER_UNIT_Z") != std::string::npos)
                         {        
                             pp1u_z = std::stoi( tokenized.at(1) );   
+                        }
+
+
+                        //****************************************/
+                        // RUN SCRIPT OPERATORS IN HERE 
+                        //****************************************/                                    
+
+                        // previously named load_scene() 
+                        if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
+                        {   
+                            std::cout << "#LOAD OPERATOR ! - object found " << tokenized.at(1) << "\n";
+
+                            //DEBUG THIS IS UNTESTED - WIP   
+                            obj_filepaths.push_back(tokenized.at(1));
+                            (*this).num_loaded_obj++;
+                            // //pt_model_buffer->calc_normals();
+                            // //strcpy(active_filepath, char_array ); 
+
+
                         }
 
                         //------------------------------------------------
@@ -538,35 +581,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                         }
                                         */
                                     }//we can set all the DB25 pins in this loop 
-                                    
-                                    //****************************************/
-                                    //RUN SCRIPT OPERATORS IN HERE
-                                    //****************************************/                                    
-                                    if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
-                                    {   
-                                        std::cout << "LOAD OPERATOR ! " << "\n";
-
-                                        /*
-                                        strcpy (cmd_str, line);
-                                        //walk the tokens on the line (a copy of it)
-                                        char* tok_line = strtok(NULL, " \t\n");
-                                        int tidx = 0;
-                                        while (tok_line) 
-                                        {
-                                            if(tidx==0)
-                                            {
-                                                //cout << "#object found " << tok_line << "\n";
-                                                if (find(obj_filepaths.begin(), obj_filepaths.end(), tok_line) == obj_filepaths.end())
-                                                {
-                                                    obj_filepaths.push_back(tok_line);
-                                                    num_loaded_obj++;
-                                                }
-                                            }
-                                            tidx++;                                        
-                                            tok_line = strtok(NULL, " \t\n");
-                                        }*/
-
-                                    }
+  
 
                                 }
 
@@ -586,6 +601,12 @@ void cncglobals::load_cfg_file( char* filepath )
         }//line by line of file
 
     }//while data in file
+
+    //test of explicit file closing 
+    // if (cfg_filein.is_open()) 
+    // {
+    //     cfg_filein.close();  
+    // }
 
 }//end load file
 

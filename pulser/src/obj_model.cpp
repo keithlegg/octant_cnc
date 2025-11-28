@@ -20,6 +20,17 @@
 
 #include <iostream>
 
+#include <fstream>
+#include <vector>
+using std::vector;
+
+#include <sstream>
+
+//#include <iomanip>
+
+//#include <string>
+//#include <cstring>
+
 #include "obj_model.h"
 
 
@@ -504,8 +515,6 @@ void reset_objfile(obj_model* loader, obj_info* obinfo)
     loader->num_fnrmls = 0;
     loader->num_vtxrgb = 0;
 
-
-
     obinfo->bb_min_x = 0;
     obinfo->bb_max_x = 0;
     obinfo->bb_min_y = 0;
@@ -515,53 +524,83 @@ void reset_objfile(obj_model* loader, obj_info* obinfo)
 
 }
 
-
 /*******************************************************************/
 
-//DEBUG ADD A FEATURE TO SKIP IF OBJ DOES NOT EXIST 
+
+std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  {
+    std::vector<std::string> tokens;
+    std::stringstream   mySstream( p_pcstStr );
+    std::string         temp;
+    while( getline( mySstream, temp, delim ) ) {
+        tokens.push_back( temp );
+    }
+    return tokens;
+} 
+
+/*******************************************************************/
 void load_objfile( char *filepath, obj_model* loader)
 {
-    FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
 
+
+    std::cout << "load_objfile loading file "<< filepath << "\n";
     int pofst = 0; //pointoffset indices to points if geom exists already 
+    int line_ct = 0;
 
-    fp = fopen(filepath, "r");
+    // std::string s;
+    // std::ifstream in(filepath);
+    // if(!in) {
+    //     std::cerr << "File not opened" << std::endl;
+    //     exit(1);
+    // }
+    // while(in >> s) 
+    // {
+
+    //std::ifstream obj_filein;
+    //obj_filein.open(filepath); // open a file
     
-    if (fp == NULL){
-        printf("Object %s does not exist\n", filepath);
-        //exit(EXIT_FAILURE);
+    std::ifstream obj_filein(filepath, std::ifstream::in);
+
+    if (!obj_filein.good()){ 
+        std::cout << "config file \""<< filepath <<"\" appears to be missing." << std::endl;
+        exit (EXIT_FAILURE); // exit if file not found
     }
-    else
-    {
-        if (loader->num_pts>0){
-            pofst = loader->num_pts;
-        }
 
-        // walk the file line by line
-        while ((read = getline(&line, &len, fp)) != -1) {
+    //while (!obj_filein.eof())
+    while (!obj_filein.eof() && !obj_filein.fail() && !obj_filein.bad())
+    {  
 
-            char nrmls_str[256]; // string that verts get copied to 
+        std::string line;
+        while (std::getline(obj_filein, line)) 
+        {  
+            // std::cout << "FULL LINE " << line << std::endl;
+            std::vector<std::string>  tokenized = tokenizer(line, *" ");
+
+            if (loader->num_pts>0){
+                pofst = loader->num_pts;
+            }
+
+            char nrmls_str[256];  // string that verts get copied to 
             char coords_str[256]; // string that verts get copied to 
             char fidx_str[256];   // string that faces get copied to
 
             // printf("%s",line);
 
-            // walk the line, token by token  
-            char* tok_spacs = strtok(line, " ");
-            while (tok_spacs) 
+            //if line is not blank
+            if(tokenized.size()>0)
             {
-                  
-                /******************************/
+
+                //-----------------------------//
+                //  look for UV coordinates
+                //if ( strcmp( tok_spacs, "vt") == 0)  uv_cnt++;
+
+                //-----------------------------//
                 // look for V / vertices
-                if ( strcmp( tok_spacs, "v") == 0)
+                if ( tokenized.at(0).find("v") != std::string::npos )
                 {
-                    strcpy (coords_str, tok_spacs+2);
-
-                    // printf("%s\n", coords_str); // <- vertex line 
-
+                    
+                    std::cout << tokenized.at(1) << "\n";  // <- vertex line 
+                    
+                    /* 
                     //walk the tokens on the line (a copy of it)
                     char* tok_line = strtok(coords_str, " ");
                     int vidx = 0;
@@ -659,16 +698,17 @@ void load_objfile( char *filepath, obj_model* loader)
                     //    loader->vtxrgb[loader->num_pts] = color;
                     //} 
                      
-                    
+                    */
+
                 }//end vertex loader 
 
 
-                /******************************/
+                //-----------------------------//
 
                 //  look for normals
-                if ( strcmp( tok_spacs, "vn") == 0)
+                if ( tokenized.at(0).find("vn") != std::string::npos )
                 {
-
+                    /*
                     strcpy (nrmls_str, tok_spacs+4);
 
                     //walk the tokens on the line (a copy of it)
@@ -702,15 +742,15 @@ void load_objfile( char *filepath, obj_model* loader)
 
                     }     
 
-
+                    */
                 }//end vertex normal loader 
 
-                /******************************/
+                //-----------------------------//
 
                 //  look for F / faces
-                if ( strcmp( tok_spacs, "f") == 0)
+                if ( tokenized.at(0).find("f") != std::string::npos )
                 {
-
+                    /*
                     strcpy (fidx_str, tok_spacs+2);
                     char* tok_line = strtok(fidx_str, " ");
                     int fidx = 0;
@@ -741,17 +781,13 @@ void load_objfile( char *filepath, obj_model* loader)
                             pt4 = atoi( tok_line);
                             if (pofst>0){ pt4 = pt4+pofst;};                                               
                         }  
-                        /***********/
+                        ////////////////////
 
                         //n = atoi (buffer);
                         tok_line = strtok(NULL, " \t\n");fidx++;
 
                     }
                     // STUPID BUG - IF THERE IS EMPTY SPACE AT END OF FIDS IT COUNTS ONE MORE fidx
-                    
-                    /***********/
-                    //TODO - implement single point visualization !
-                    /***********/
 
                     //-------                  
                     //if two face indices - its a line  
@@ -788,41 +824,28 @@ void load_objfile( char *filepath, obj_model* loader)
                         loader->quads[loader->num_quads].pt4 = pt4;
                         loader->num_quads++;
                     }//end quad loader 
-
+                */
                 }//end face loader
 
-
-
-                /******************************/
-                //  look for UV coordinates
-                if ( strcmp( tok_spacs, "vt") == 0)
-                {
-                   // uv_cnt++;
-                }
-
-
-                /******************************/
-                tok_spacs = strtok(NULL, " \t\n");
-
-            }
-
-        }
-
-        fclose(fp);
-        if (line)
-            free(line);
-
-        // ---------------------------------------------
-        loader->num_uvs = 0;
-
-
-        // printf("\n\n---------------------------\n"  ) ;
-        // printf("%d vertices loaded   \n", loader->num_pts    ) ;
-        // printf("%d uvs loaded        \n", loader->num_uvs    ) ; 
-        // printf("%d lines loaded      \n", loader->num_lines  ) ;
-        // printf("%d triangles loaded  \n", loader->num_tris   ) ;
-        // printf("%d quads loaded      \n", loader->num_quads  ) ;  
+                //-----------------------------//
+                //-----------------------------//
+                line_ct++;
+            }//line not blank
+        }//line by line
     }//obj exists   
+
+    // ---------------------------------------------
+    //loader->num_uvs = 0;
+
+    /* 
+    printf("\n\n---------------------------\n"  ) ;
+    printf("%d vertices loaded   \n", loader->num_pts    ) ;
+    printf("%d uvs loaded        \n", loader->num_uvs    ) ; 
+    printf("%d lines loaded      \n", loader->num_lines  ) ;
+    printf("%d triangles loaded  \n", loader->num_tris   ) ;
+    printf("%d quads loaded      \n", loader->num_quads  ) ;  
+    */
+
 }
 
 /*******************************************************************/

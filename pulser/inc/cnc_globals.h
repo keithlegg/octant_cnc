@@ -25,6 +25,9 @@ class cncglobals
         bool ENABLE_LIMIT_SWITCHES  = false;
         bool ENABLE_MOTOR_DRIVE     = false;
 
+        //----------
+        std::vector<std::string> obj_filepaths;
+        int num_loaded_obj = 0;
 
         //----------
         //controller hardware config 
@@ -151,6 +154,7 @@ class cncglobals
         std::vector<std::string> tokenizer( const std::string&, char);
         int cvt_int( const std::string&);
 
+        void load_objects(void);
         void load_cfg_file( char*);
         void show( void );
 

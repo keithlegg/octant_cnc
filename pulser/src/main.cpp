@@ -184,7 +184,13 @@ void askerdemo(void)
 /******************************************/
 int main(int argc, char **argv) 
 {  
-    
+
+    //cncglobals cg;
+    //cg.load_cfg_file(argv[1]);
+    // cg.show();
+
+
+    /*------------------*/    
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -204,10 +210,7 @@ int main(int argc, char **argv)
     /*------------------*/
     //askerdemo();
 
-    /*------------------*/
-    // cncglobals cg;
-    // cg.load_cfg_file(argv[1]);
-    // cg.show();
+
 
     /*------------------*/
     //parse_args(cg, argc, argv); 

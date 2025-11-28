@@ -143,7 +143,6 @@ int TCP_PORT = 0;
 
 
 extern char* obj_filepath;
-extern int num_loaded_obj;
 extern int num_drawvec3;
 extern int num_drawpoints;
 extern int TCP_PORT;
@@ -318,13 +317,11 @@ GLfloat vertices[100];
 
 
 /***************************************/
-int mouseClickCount = 0;
-int rectPlotted;
 
-
+/*
 void load_scene(char * scenepath)
 {
-    num_loaded_obj = 0;
+
     //read_scenefile( scenepath );
     char char_array[100];
     
@@ -355,7 +352,7 @@ void load_scene(char * scenepath)
     //strcpy(active_filepath, char_array ); 
 
 }
-
+*/
 /***************************************/
 //DEBUG - GL_MODELVIEW_MATRIX and GL_PROJECTION_MATRIX seem to be the same 
 void grab_camera_matrix( m44 *pt_mmm)
@@ -526,9 +523,8 @@ void test_bezier( vec3 start, vec3 ctrl1, vec3 ctrl2, vec3 end)
 
 
 /***************************************/
+
 /*
-
-
 static void parse_cmds(unsigned char key, int x, int y)
 {
     buffer.push_back((char) key);
@@ -536,31 +532,6 @@ static void parse_cmds(unsigned char key, int x, int y)
     glutPostRedisplay();
 
 };
-
-
-std::string input_txt(void){
-
-    std::string sentence;
-    std::cout << "Enter a sentence please: "; std::cout.flush();
-
-    std::getline(std::cin,sentence);
-    std::istringstream iss(sentence);
-
-    std::vector<std::string> words;
-    std::string word;
-    while(iss >> word) {
-        words.push_back(word);
-    } 
-
-    for(std::vector<std::string>::const_iterator it = words.begin();
-        it != words.end();
-        ++it) {
-        std::cout << *it << ' ';
-    }
-    std::cout << std::endl; return 0;
-    
-    return sentence;
-}
 */
 
 std::string cmd_buffer;
@@ -1217,15 +1188,27 @@ void set_view_persp(void)
 /**************************************************/
 
 void start_gui(int *argc, char** argv){
- 
-
 
     glutInit(argc, argv);  
 
     //shader_test();
     set_colors();
 
-    load_scene(obj_filepath);
+    //load CNC cfg and any 3d models needed for setup
+    cncglobals cg;
+    cg.load_cfg_file(argv[1]);
+    
+    //void cncglobals::load_objects(void)
+    cg.load_objects();
+
+    //debug - load a single model?
+    //void load_objfile( char *filepath, obj_model* loader)
+    //cg.load_objfile();
+
+    //cg.show();
+
+
+    //------------
 
     // vec3 start = newvec3(0.0 ,3.0 ,1.0 );
     // vec3 ctrl1 = newvec3(2.5  ,0.0 ,0.0 );
@@ -1239,7 +1222,7 @@ void start_gui(int *argc, char** argv){
     glutInitWindowSize(scr_size_x, scr_size_y);  //window size
     glutInitWindowPosition(0, 0);  
     
-    window_id = glutCreateWindow("Olmec v.b0002.96"); //create an opengl window 
+    window_id = glutCreateWindow("CNC_Pulser v.a0001"); //create an opengl window 
 
     /***********/
     reset_view();
@@ -1405,6 +1388,11 @@ void olmecnav_start (void ) {
 /**************************************************/
 
 /*
+
+int mouseClickCount = 0;
+int rectPlotted;
+
+
 void add_draw_pt(float xx, float yy){
     vertices[num_pts_drw] = GLfloat(xx);
     num_pts_drw++;
@@ -2036,7 +2024,8 @@ static void keyPressed(unsigned char key, int x, int y)
     if (key == 82) //shift r
     { 
         //std::cout << "PATHS " << obj_filepaths.clear() << "\n";
-        num_loaded_obj = 0;
+        
+        //DEBUG...num_loaded_obj = 0;
         clear_scenegeom();
         //reset_objfile uses a stupid design - thats why objinfo is passed/passed twice here 
         reset_objfile(pt_loader      , pt_obinfo); 
@@ -2046,8 +2035,8 @@ static void keyPressed(unsigned char key, int x, int y)
 
     if (key == 114) //r
     { 
-        glColor3f( 1., 1., 1.); 
-        load_scene(obj_filepath);
+        //glColor3f( 1., 1., 1.); 
+        //load_scene(obj_filepath);
     }
 
 
