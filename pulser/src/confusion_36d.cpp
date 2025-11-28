@@ -1194,11 +1194,12 @@ void start_gui(int *argc, char** argv){
     //shader_test();
     set_colors();
 
+    //------------
     //load CNC cfg 
     cncglobals cg;
     cg.load_cfg_file(argv[1]);
     //load any optional 3d models needed for setup
-    //cg.load_objects();
+    // cg.load_objects();
 
     //cg.show();
 
@@ -1239,8 +1240,6 @@ void start_gui(int *argc, char** argv){
 
     glutMouseFunc (olmec_mouse_button);
     glutMotionFunc (olmec_mouse_motion);
-
-
 
 
     //loadImage("textures/generated2.bmp" , imageloaded_bfr);
