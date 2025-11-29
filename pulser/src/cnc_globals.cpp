@@ -291,10 +291,10 @@ void cncglobals::load_objects(void)
             strcpy(char_array, (*this).obj_filepaths[x].c_str()); 
             
             //DEBUG - THIS BLOWS UP 
-            //load_objfile(char_array , &pt_model_buffer );
+            pt_model_buffer.load(char_array);
             
             //DEBUG - THIS IS SKETCHY   
-            get_obj_info( &pt_model_buffer, &pt_obinfo);
+            //get_obj_info( &pt_model_buffer, &pt_obinfo);
         };
     };
 }

@@ -1,7 +1,7 @@
 
 /*************************************************************/
 /*
-   conFUSION_36d.c 
+   CONfusion_36d.c 
 
    Copyright (C) 2018-2026 Keith Legg - keithlegg23@gmail.com
 
@@ -152,7 +152,7 @@ extern vector<vec3> scene_drawpointsclr;
 extern vector<vec3>* pt_scene_drawpoints;
 
 
-char *cam_matrix_filepath = "camera_matrix.olm";
+char *cam_matrix_filepath  = "camera_matrix.olm";
 char *proj_matrix_filepath = "projection_matrix.olm";
 
 
@@ -160,8 +160,8 @@ extern GLuint texture[3];
 
 char active_filepath[300];
 
-obj_model* pt_model_buffer = new(obj_model);
-obj_model* pt_loader       = new(obj_model);
+obj_model* pt_model_buffer  = new(obj_model);
+obj_model* pt_loader        = new(obj_model);
 
 obj_info* pt_obinfo         = new(obj_info);
 obj_info* pt_loadernfo      = new(obj_info);
@@ -1825,13 +1825,15 @@ void key_cb(unsigned int key)
     { 
 
         clear_scenegeom();
-        reset_objfile(pt_model_buffer, pt_obinfo);  
+
+        //NEW WAY - pt_model_buffer->reset_objfile();
+        //OLD WAY - reset_objfile(pt_model_buffer, pt_obinfo);  
 
         //char* file2 = "3d_obj/PYCORE.obj";
         char* pycorepath = "3d_obj/PYCORE.obj";
-        //reset_objfile(pt_model_buffer, pt_obinfo);
+        //NEW WAY - pt_model_buffer->reset_objfile();
 
-        load_objfile(pycorepath, pt_model_buffer );
+        pt_model_buffer->load(pycorepath);
         pt_model_buffer->calc_normals();
         get_obj_info( pt_model_buffer, pt_obinfo);
 
@@ -1945,9 +1947,11 @@ void key_cb(unsigned int key)
         
         //DEBUG...num_loaded_obj = 0;
         clear_scenegeom();
+        
         //reset_objfile uses a stupid design - thats why objinfo is passed/passed twice here 
-        reset_objfile(pt_loader      , pt_obinfo); 
-        reset_objfile(pt_model_buffer, pt_obinfo);  
+        //NEW WAY - pt_model_buffer->reset_objfile();
+        //reset_objfile(pt_loader      , pt_obinfo); 
+        //reset_objfile(pt_model_buffer, pt_obinfo);  
 
     }
 

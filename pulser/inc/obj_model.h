@@ -134,6 +134,11 @@ class obj_model {
         struct triangle tris[num_faces];    // 3 ints   - triangle idx 
         struct quad quads[num_faces];       // 4 ints   - quad     idx 
 
+        void reset(void);
+        void load( char *);
+        void save( char *);
+
+
         //vec3 get_obj_centroid( void );
         void clearall(void);
         void calc_normals(void);
@@ -190,11 +195,6 @@ void show_obj_geom(obj_model* loader);
 
 
 void get_obj_info(obj_model* loader, obj_info* obinfo);
-void reset_objfile(obj_model* loader, obj_info* obinfo);
-
-void load_objfile( char *filepath, obj_model* loader);
-
-void save_objfile( char *filepath, obj_model* loader);
 
 void test_loader_data( obj_model* loader);
 

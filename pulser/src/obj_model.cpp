@@ -489,37 +489,37 @@ void insert_geom(obj_model* from_obj, obj_model* to_obj)
     Clear an object to "reset" it
 */
 
-void reset_objfile(obj_model* loader, obj_info* obinfo)
+void obj_model::reset(void)
 {
 
     // uv_cnt   = 0;  // number UVs loaded 
 
-    memset(loader->uvs,      0, loader->num_pts);
-    memset(loader->points,   0, loader->num_pts);
-    memset(loader->vnormals, 0, loader->num_pts);
-    memset(loader->vtxrgb,   0, loader->num_pts);
-    memset(loader->fnormals, 0, loader->num_pts);
-    memset(loader->tris,     0, loader->num_tris);
-    memset(loader->quads,    0, loader->num_quads);
+    memset((*this).uvs,      0, (*this).num_pts);
+    memset((*this).points,   0, (*this).num_pts);
+    memset((*this).vnormals, 0, (*this).num_pts);
+    memset((*this).vtxrgb,   0, (*this).num_pts);
+    memset((*this).fnormals, 0, (*this).num_pts);
+    memset((*this).tris,     0, (*this).num_tris);
+    memset((*this).quads,    0, (*this).num_quads);
 
     //struct vec3 vtxrgb[num_vtx];        // 3 floats - color per vertex 
     //struct line lines[num_faces];       // 2 ints   - lines    idx
 
-    loader->num_pts = 0;
-    loader->num_uvs = 0;
-    loader->num_lines = 0;
-    loader->num_tris = 0;
-    loader->num_quads = 0;
-    loader->num_vnrmls = 0;
-    loader->num_fnrmls = 0;
-    loader->num_vtxrgb = 0;
+    (*this).num_pts = 0;
+    (*this).num_uvs = 0;
+    (*this).num_lines = 0;
+    (*this).num_tris = 0;
+    (*this).num_quads = 0;
+    (*this).num_vnrmls = 0;
+    (*this).num_fnrmls = 0;
+    (*this).num_vtxrgb = 0;
 
-    obinfo->bb_min_x = 0;
-    obinfo->bb_max_x = 0;
-    obinfo->bb_min_y = 0;
-    obinfo->bb_max_y = 0;
-    obinfo->bb_min_z = 0;
-    obinfo->bb_max_z = 0; 
+    // obinfo->bb_min_x = 0;
+    // obinfo->bb_max_x = 0;
+    // obinfo->bb_min_y = 0;
+    // obinfo->bb_max_y = 0;
+    // obinfo->bb_min_z = 0;
+    // obinfo->bb_max_z = 0; 
 
 }
 
@@ -537,11 +537,11 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 } 
 
 /*******************************************************************/
-void load_objfile( char *filepath, obj_model* loader)
+void obj_model::load(char *filepath)
 {
 
     //DEBUG - NOT FOR ALL CASES initialize the buffers 
-    loader->clearall();
+    (*this).clearall();
 
 
     std::cout << "##### load_objfile loading file "<< filepath << "\n";
@@ -579,9 +579,9 @@ void load_objfile( char *filepath, obj_model* loader)
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
             //point offset indices to points - if geom exists already 
-            if (loader->num_pts>0)
+            if ((*this).num_pts>0)
             {
-                pofst = loader->num_pts;
+                pofst = (*this).num_pts;
             }
 
             std::string coords_str; // string that verts get copied to 
@@ -654,8 +654,8 @@ void load_objfile( char *filepath, obj_model* loader)
                             vec3 vpt = newvec3( xc, yc, zc  );
                             //print_vec3(&vpt); //to view output 
 
-                            loader->points[loader->num_pts] = vpt;
-                            loader->num_pts=loader->num_pts+1;
+                            (*this).points[(*this).num_pts] = vpt;
+                            (*this).num_pts=(*this).num_pts+1;
                                      
                             ////set color to white initially  ?? DEBUG 
                             //vec3 color;
@@ -665,7 +665,8 @@ void load_objfile( char *filepath, obj_model* loader)
                             //loader->vtxrgb[loader->num_vtxrgb] = color;
 
                         }  
-                        std::cout << "NUM PTS LOADED "<< loader->num_pts << "\n";
+
+                        std::cout << "NUM PTS LOADED "<< (*this).num_pts << "\n";
                     }//end vertex loader 
 
 
@@ -817,13 +818,13 @@ void load_objfile( char *filepath, obj_model* loader)
 }
 
 /*******************************************************************/
-void save_objfile( char *filepath, obj_model* loader)
+void obj_model::save( char *filepath)
 {
 
    FILE * fp;
 
    fp = fopen (filepath, "w+");
-   fprintf(fp, "%s %s %s %d", "i", "an", "not working yet", 555);
+   fprintf(fp, "%s %s %s %d", "i", "am", "not working yet", 555);
    
    fclose(fp);
       
