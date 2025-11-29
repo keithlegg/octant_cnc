@@ -4,8 +4,8 @@
 
 #include <string>
 
-
-void parse_cmds(std::string *, unsigned char *);
+void parse_cmd_text(std::string*);
+void parse_cmds(std::string*, unsigned char *);
 
 
 #endif

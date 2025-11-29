@@ -49,7 +49,6 @@
           t    - dump camera matrix file to disk based on view 
     shift t    -        
           f    - reset view/camera  
-    shift f    - ??
           g    - toggle center grid 
     shift g    - toggle centroid axis 
 
@@ -63,7 +62,6 @@
           o    - load PYCORE.obj (output from gnelscript) 
     shift p    - run python render (fixed custom py command) 
 
-    backspace /delete on OSX - run renderer if its installed 
 
     d          - toggle polygon drawing 
  
@@ -154,13 +152,6 @@ extern vector<vec3> scene_drawpointsclr;
 extern vector<vec3>* pt_scene_drawpoints;
 
 
-
-
-
-
-
-
-
 char *cam_matrix_filepath = "camera_matrix.olm";
 char *proj_matrix_filepath = "projection_matrix.olm";
 
@@ -169,8 +160,8 @@ extern GLuint texture[3];
 
 char active_filepath[300];
 
-obj_model * pt_model_buffer = new(obj_model);
-obj_model * pt_loader       = new(obj_model);
+obj_model* pt_model_buffer = new(obj_model);
+obj_model* pt_loader       = new(obj_model);
 
 obj_info* pt_obinfo         = new(obj_info);
 obj_info* pt_loadernfo      = new(obj_info);
@@ -182,11 +173,6 @@ float obj_len_x, obj_len_y, obj_len_z = 0;
 
 /***************************************/
 // data containers 
-
-//extern Image* main_bg_bfr      ; 
-//extern Image* imageloaded_bfr2 ; 
-//extern Image* imageloaded_bfr  ; 
-
 
 RGBType line_color;
 RGBType *pt_linecolor = &line_color;
@@ -200,10 +186,6 @@ RGBType *pt_gridcolor = &grid_color;
 RGBType grid_color2;
 RGBType *pt_gridcolor2 = &grid_color2;
 
-
-/***************************************/
-//float ticker = 0;
-//timer tb;
 
 
 /***************************************/
@@ -227,10 +209,6 @@ float mouseX, mouseY = 0.0;
 float orbit_x;         // 2d click to set 3d view 
 float orbit_y;   
 float orbit_dist = 5.0; // Z zoom 
-
-// float cam_rotx = 0; // camera rotation
-// float cam_roty = 0;
-// float cam_rotz = 0;
 
 float cam_posx = 0; // camera location
 float cam_posy = 0;
@@ -314,45 +292,6 @@ GLfloat vertices[100];
 
 
 
-
-
-/***************************************/
-
-/*
-void load_scene(char * scenepath)
-{
-
-    //read_scenefile( scenepath );
-    char char_array[100];
-    
-    int x = 0;
-    
-    //printf("NUM OBJECTS %i \n", num_loaded_obj );
-
-    if(obj_filepaths.empty()) 
-    {
-        std::cout << "NO FILEPATHS TO LOAD!\n";
-    }
-
-    pt_model_buffer->clearall();
-
-    for(x=0;x<num_loaded_obj;x++)
-    {
-
-        if(!obj_filepaths.empty()) {
-            std::cout << "# loading  " << obj_filepaths[x] <<"\n";
-            // strcpy(char_array, obj_filepaths[x].c_str()); 
-            // load_objfile(char_array , pt_model_buffer );
-            // get_obj_info( pt_model_buffer, pt_obinfo);
-        };
-         
-    }
-
-    //pt_model_buffer->calc_normals();
-    //strcpy(active_filepath, char_array ); 
-
-}
-*/
 /***************************************/
 //DEBUG - GL_MODELVIEW_MATRIX and GL_PROJECTION_MATRIX seem to be the same 
 void grab_camera_matrix( m44 *pt_mmm)
@@ -466,8 +405,10 @@ void toggle_polygon_draw(){
 
 /***************************************/
 
+//DEBUG TRIGGERS THE "OLD SEGFAULT "
 void warnings(void)
-{
+{   
+
     // let us know if there is a discernable problem 
     printf("\n\n\n\n###########################################\n");
 
@@ -524,36 +465,12 @@ void test_bezier( vec3 start, vec3 ctrl1, vec3 ctrl2, vec3 end)
 
 /***************************************/
 
-/*
-static void parse_cmds(unsigned char key, int x, int y)
-{
-    buffer.push_back((char) key);
-    std::cout << buffer << "\n";
-    glutPostRedisplay();
-
-};
-*/
-
 std::string cmd_buffer;
 
 static void parser_cb(unsigned char key, int x, int y)
 {
-    
-    //---
-    //std::string s(1, key);
-    //std::cout << s << std::endl;
-    //--- 
-    //std::string s{key};
-    //std::cout << s << std::endl;
-    //---      
-    //std::string s;
-    //s.push_back(key);
-    //std::cout << s << "\n";
-
     parse_cmds(&cmd_buffer, &key);
-
     glutPostRedisplay();
-
 };
 
 /***************************************/
@@ -1094,6 +1011,7 @@ void animate(){
     //ticker += .01;
     render_loop();
 }
+
 /***************************************/
 
 static void reshape_window(int width, int height)
@@ -1194,6 +1112,12 @@ void set_view_persp(void)
 /**************************************************/
 /**************************************************/
 /**************************************************/
+/*
+
+   // path of text processing 
+   start_gui-> render_loop-> (keypress)parser_cb-> parse_cmds-> parse_cmd_text
+                                                    |---------> key_cb 
+*/
 
 void start_gui(int *argc, char** argv){
 
@@ -1203,15 +1127,15 @@ void start_gui(int *argc, char** argv){
     set_colors();
 
     //------------
-    //load CNC cfg 
+    //load CNC cfg (including paths to .obj files) 
     cncglobals cg;
     cg.load_cfg_file(argv[1]);
     //load any optional 3d models needed for setup
-    // cg.load_objects();
+    cg.load_objects();
 
     //cg.show();
 
-
+   
     //------------
 
     // vec3 start = newvec3(0.0 ,3.0 ,1.0 );
@@ -1219,20 +1143,19 @@ void start_gui(int *argc, char** argv){
     // vec3 ctrl2 = newvec3(0.0 ,1.0  ,0.0 );
     // vec3 end   = newvec3(-1.0 ,0.0 ,-5.0 );
     // test_bezier(start, ctrl1, ctrl2, end);
-
-    warnings();
+    
+    //warnings();
 
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
     glutInitWindowSize(scr_size_x, scr_size_y);  //window size
     glutInitWindowPosition(0, 0);  
     
     window_id = glutCreateWindow("CNC_Pulser v.a0001"); //create an opengl window 
-
-    /***********/
+ 
+    /////////////////////////////////////////////////
     reset_view();
-
-    //register GL callbacks       
-
+    
+    // Register GL callbacks       
     glutDisplayFunc(&render_loop); 
     glutIdleFunc(&animate);
 
@@ -1253,10 +1176,8 @@ void start_gui(int *argc, char** argv){
 
     //loadImage("textures/generated2.bmp" , imageloaded_bfr);
     //loadImage("textures/generated2.bmp" , imageloaded_bfr2);
-
-
-    //copyBuffer24( imageloaded_bfr, loaded_texture ); //convert "RGBType" to "Image"
-
+    
+    ///////////
     // create and apply 2D texture   
     glGenTextures(4, &texture[0]);            //create 3 textures
 
@@ -1293,13 +1214,13 @@ void start_gui(int *argc, char** argv){
     //tb.start(); //test of timer 
 
     glutMainLoop();// Start Event Processing Engine   
-
+    
 
 }
 
 
 
-/**************************************************/
+/*************************************************
 /**************************************************/
 
 

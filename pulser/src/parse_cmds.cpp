@@ -14,28 +14,29 @@
 
    
 
-
-
+/***************************************/
 /***************************************/
 
+//---
+//std::string s(1, key);
+//std::cout << s << std::endl;
+//--- 
+//std::string s{key};
+//std::cout << s << std::endl;
+//---      
+//std::string s;
+//s.push_back(key);
+//std::cout << s << "\n";
 
-int cursor = 0;
-
-void parse_cmds(std::string *buffer, unsigned char *pt_key )
+void parse_cmd_text(std::string *buffer)
 {
-    int i = static_cast<int>(*pt_key);
-    std::cout << " int val " << i << std::endl;
+    std::cout << " hello parser \n" << *buffer <<"\n";
 
-    if(i!=8)
-    {
-        cursor = buffer->size();
-    }
+}
 
-    std::cout << " cursor "<< cursor <<"\n"; 
 
-    std::string parsed;
-    std::string word;
-    
+    //std::cout << " cursor "<< cursor <<"\n"; 
+
     // std::istringstream iss(*buffer);
     // if (getline(iss, parsed, ' '))
     // {
@@ -50,59 +51,16 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     // ss >> word; // word will be "apple"
     // ss >> word; // word will be "banana"
 
-
-
-
+  
+    /*
     if(*pt_key==*"a"||i==97)
     {
         std::cout << "a PRESSED\n";        
-    }
-
-
-    //backspace key
-    if(i==8)
-    {
-        if (buffer->size()>0)
-        {
-            cursor--;
-        }
-        buffer->erase(cursor, buffer->size());
-
-    }
-
-
-    //enter key
-    if(i==13)
-    {
-        //todo - keep a log of commands as txt file 
-        std::cout << "command to parse \n" << *buffer << "\n";
-
-        buffer->clear();
-        //std::cout << "ENTER PRESSED\n";        
-    }    
-
-    //esc key
-    if(i==27)
-    {
-        key_cb(i);      
-    }  
-
-    //---------------
-
-    //output results
-    buffer->push_back(*pt_key);
-
-    //std::cout << *buffer << "\n";
-    //std::cout << *pt_key << "\n";
-
-
-
-};
-
-
-
+    }*/
 
 /*
+
+
     std::stringstream ss(buffer);
     std::string word;
     int number_int;
@@ -147,3 +105,69 @@ std::string input_txt(void){
     return sentence;
 }
 */
+
+
+/***************************************/
+/***************************************/
+
+int cursor = 0;
+
+void parse_cmds(std::string *buffer, unsigned char *pt_key )
+{
+    int i = static_cast<int>(*pt_key);
+    //std::cout << " int val " << i << std::endl;
+
+    //-----
+    if(i!=8)
+    {
+        cursor = buffer->size();
+    }
+
+    //-----
+    //backspace key
+    if(i==8)
+    {
+        if (buffer->size()>0)
+        {
+            cursor--;
+            buffer->erase(cursor, buffer->size());
+        }
+
+
+    }
+
+    //-----
+    //enter key
+    if(i==13)
+    {
+        //todo - keep a log of commands as txt file ??
+        
+        //std::cout << "command to parse \n" << *buffer << "\n";
+
+        parse_cmd_text(buffer);
+
+        buffer->clear();
+        //std::cout << "ENTER PRESSED\n";        
+    }    
+
+    //-----
+    //esc key
+    if(i==27)
+    {
+        key_cb(i);      
+    }  
+
+    //-----
+    //output results
+    buffer->push_back(*pt_key);
+
+    //std::cout << *buffer << "\n";
+    //std::cout << *pt_key << "\n";
+
+
+
+};
+
+
+
+

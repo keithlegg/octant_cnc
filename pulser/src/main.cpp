@@ -130,58 +130,7 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
 
 /******************************************/
 /******************************************/
-bool custom_validation(std::string ans) {
-  if (ans != "helloworld") return false;
-  return true;
-}
-
-void askerdemo(void)
-{
-    char pw[MAXLen] = {0};
-    char *p = pw;
-    FILE *fp = stdin;
-    ssize_t nchar = 0;
-
-    // // confirm prompt demo
-    // std::cout << "demo-1: confirm prompt" << std::endl;
-    // bool exit = asker::confirm("yo! want to exit?");
-    // std::cout << "wants to exit: " << exit << std::endl;
-    // std::cout << std::endl;
-    
-   
-    // list select demo
-    std::cout << "demo-2: select list" << std::endl;
-    std::string selection;
-    std::string options[5] = {"option-1", "op", "option-3", "option-4"};
-    selection = asker::selectList("select options:", options);
-    std::cout << "user selected: " << selection << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "demo-2: select list" << std::endl;
-    std::vector<std::string> checkSelection;
-    checkSelection = asker::checkList("select options:", options);
-    std::cout << "user selected: [";
-    for (int i = 0; i < checkSelection.size(); i++) {
-        std::cout << "{" << checkSelection[i] << "}";
-    };
-
-    std::cout << "]";
-    std::cout << std::endl;
-
-    /*
-    // basic input demo
-    std::cout << "demo-3: basic input prompt" << std::endl;
-    std::string m;  // default value
-    m = asker::input("yo! enter name:");
-    std::cout << "user entered: " << m << std::endl;
-    std::cout << std::endl;
-    */ 
-
-
-}
-
-/******************************************/
-/******************************************/
+ 
 int main(int argc, char **argv) 
 {  
 
@@ -202,13 +151,8 @@ int main(int argc, char **argv)
         }
     }
 
-
     /*------------------*/
     //spinningCubeDemo(&argc, argv);
-
-
-    /*------------------*/
-    //askerdemo();
 
 
 

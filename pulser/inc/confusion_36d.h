@@ -14,32 +14,25 @@ void grab_camera_matrix( m44 *pt_mmm );
 void triangulate(void);
 void calc_normals(void);
 
-//void init_pycore(void);
-
 
 void set_view_ortho(void);
 void setOrthographicProjection();
 void resetPerspectiveProjection();
 void renderBitmapString(float, float, void *, const char *);
 
-static void display_loop();
 static void render_loop();
-
-//static void animateTextures3(Image *loaded_texture);
-
 static void ReSizeGLScene(int, int);
 
 void key_cb(unsigned int key);
+static void parser_cb(unsigned char key, int x, int y);
 
-
-void draw_poly_mousevent(int button, int state, int x, int y);
 void olmec_mouse_button(int button, int state, int x, int y);
 void olmec_mouse_motion(int x, int y);
 
 void start_gui(int *argc, char** argv);
 
 
-static void parser_cb(unsigned char key, int x, int y);
+
 
 
 

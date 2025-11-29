@@ -40,22 +40,22 @@ int uv_cnt   = 0;  // number of UVs loaded
 void obj_model::clearall(void)
 {
 
-    memset(obj_model::uvs,      0, obj_model::num_pts);
-    memset(obj_model::points,   0, obj_model::num_pts);
-    memset(obj_model::vnormals, 0, obj_model::num_pts);
-    memset(obj_model::vtxrgb,   0, obj_model::num_pts);
-    memset(obj_model::fnormals, 0, obj_model::num_pts);
-    memset(obj_model::tris,     0, obj_model::num_tris);
-    memset(obj_model::quads,    0, obj_model::num_quads);
+    //memset(obj_model::uvs,      0, obj_model::num_pts);
+    //memset(obj_model::points,   0, obj_model::num_pts);
+    //memset(obj_model::vnormals, 0, obj_model::num_pts);
+    //memset(obj_model::vtxrgb,   0, obj_model::num_pts);
+    //memset(obj_model::fnormals, 0, obj_model::num_pts);
+    //memset(obj_model::tris,     0, obj_model::num_tris);
+    //memset(obj_model::quads,    0, obj_model::num_quads);
 
-    obj_model::num_pts = 0;
-    obj_model::num_uvs = 0;
-    obj_model::num_lines = 0;
-    obj_model::num_tris = 0;
-    obj_model::num_quads = 0;
-    obj_model::num_vnrmls = 0;
-    obj_model::num_fnrmls = 0;
-    obj_model::num_vtxrgb = 0;
+    (*this).num_pts = 0;
+    (*this).num_uvs = 0;
+    (*this).num_lines = 0;
+    (*this).num_tris = 0;
+    (*this).num_quads = 0;
+    (*this).num_vnrmls = 0;
+    (*this).num_fnrmls = 0;
+    (*this).num_vtxrgb = 0;
 
 }
 
@@ -305,12 +305,12 @@ void get_obj_info( obj_model* loader,  obj_info* obinfo)
 
     }
 
-    // printf("minx %f maxx %f miny %f maxy %f minz %f maxz %f \n", obinfo->bb_min_x
-    //                                                            , obinfo->bb_max_x
-    //                                                            , obinfo->bb_min_y
-    //                                                            , obinfo->bb_max_y
-    //                                                            , obinfo->bb_min_z
-    //                                                            , obinfo->bb_max_z );
+     printf("minx %f maxx %f miny %f maxy %f minz %f maxz %f \n", obinfo->bb_min_x
+                                                                , obinfo->bb_max_x
+                                                                , obinfo->bb_min_y
+                                                                , obinfo->bb_max_y
+                                                                , obinfo->bb_min_z
+                                                                , obinfo->bb_max_z );
 
 }
 
@@ -540,8 +540,11 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 void load_objfile( char *filepath, obj_model* loader)
 {
 
+    //DEBUG - NOT FOR ALL CASES initialize the buffers 
+    loader->clearall();
 
-    std::cout << "load_objfile loading file "<< filepath << "\n";
+
+    std::cout << "##### load_objfile loading file "<< filepath << "\n";
     
     int pofst = 0; //pointoffset indices to points if geom exists already 
     int line_ct = 0;
@@ -561,7 +564,7 @@ void load_objfile( char *filepath, obj_model* loader)
     std::ifstream obj_filein(filepath, std::ifstream::in);
 
     if (!obj_filein.good()){ 
-        std::cout << "config file \""<< filepath <<"\" appears to be missing." << std::endl;
+        std::cout << ".obj file \""<< filepath <<"\" appears to be missing." << std::endl;
         exit (EXIT_FAILURE); // exit if file not found
     }
 
@@ -576,7 +579,8 @@ void load_objfile( char *filepath, obj_model* loader)
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
             //point offset indices to points - if geom exists already 
-            if (loader->num_pts>0){
+            if (loader->num_pts>0)
+            {
                 pofst = loader->num_pts;
             }
 
@@ -648,13 +652,11 @@ void load_objfile( char *filepath, obj_model* loader)
                         if (vidx==3 || vidx==7)
                         {
                             vec3 vpt = newvec3( xc, yc, zc  );
-
                             //print_vec3(&vpt); //to view output 
-                            std::cout << "NUM PTS LOADED "<< loader->num_pts << "\n";
 
                             loader->points[loader->num_pts] = vpt;
-                            loader->num_pts++;
-         
+                            loader->num_pts=loader->num_pts+1;
+                                     
                             ////set color to white initially  ?? DEBUG 
                             //vec3 color;
                             //color.x=1.0;   
@@ -663,7 +665,7 @@ void load_objfile( char *filepath, obj_model* loader)
                             //loader->vtxrgb[loader->num_vtxrgb] = color;
 
                         }  
-
+                        std::cout << "NUM PTS LOADED "<< loader->num_pts << "\n";
                     }//end vertex loader 
 
 

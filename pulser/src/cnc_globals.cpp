@@ -282,14 +282,19 @@ void cncglobals::load_objects(void)
     {
         char char_array[100];
         int x = 0 ; 
-        for(x=0;x<(*this).num_loaded_obj;x++)
+
+        //DEBUG THIS BLOWS UP (OR QUIETLY DIES)
+        //for(x=0;x<(*this).num_loaded_obj;x++)
+        for(x=0;x<(*this).obj_filepaths.size();x++)
         {
-            std::cout << "# loading  " << (*this).obj_filepaths[x] <<"\n";
+            //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
             strcpy(char_array, (*this).obj_filepaths[x].c_str()); 
             
-            //DEBUG - THIS IS SKETCHY 
-            load_objfile(char_array , &pt_model_buffer );
-            //get_obj_info( &pt_model_buffer, &pt_obinfo);
+            //DEBUG - THIS BLOWS UP 
+            //load_objfile(char_array , &pt_model_buffer );
+            
+            //DEBUG - THIS IS SKETCHY   
+            get_obj_info( &pt_model_buffer, &pt_obinfo);
         };
     };
 }
@@ -422,13 +427,16 @@ void cncglobals::load_cfg_file( char* filepath )
                         // previously named load_scene() 
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
                         {   
-                            std::cout << "#LOAD OPERATOR ! - object found " << tokenized.at(1) << "\n";
+                            std::cout << "\n#LOAD OPERATOR ! - object found " << tokenized.at(1) << "\n";
 
-                            //DEBUG THIS IS UNTESTED - WIP   
                             obj_filepaths.push_back(tokenized.at(1));
-                            (*this).num_loaded_obj++;
+
                             // //pt_model_buffer->calc_normals();
                             // //strcpy(active_filepath, char_array ); 
+                            // this blows up - DEBUG  
+                            std::cout <<  (*this).num_loaded_obj;
+                            //std::cout << "#ADDED OBJ " << (*this).num_loaded_obj << " "<< obj_filepaths.at((*this).num_loaded_obj) << "\n";
+                            
 
 
                         }
@@ -463,8 +471,8 @@ void cncglobals::load_cfg_file( char* filepath )
                                         //----------------------------------------------
                                         // std::cout << "DB25_! " << tokenized.at(0) << " "<< tokepins.at(1) << " INVERTED  "<< doinvert << "\n";
                                         // DEBUG - THESE WILL CRASH IF N.A.N. 
-                                        // std::cout << "DEBUG DB25 PIN IS " << tokepins.at(1)             << "\n";
-                                        std::cout << "DEBUG DB25 PIN IS " << std::stoi(tokepins.at(1))  << "\n";
+                                        
+                                        //std::cout << "DEBUG DB25 PIN IS " << std::stoi(tokepins.at(1))  << "\n";
 
                                         //----------------------------------------------
 
