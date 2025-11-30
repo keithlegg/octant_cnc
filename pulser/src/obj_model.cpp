@@ -262,6 +262,7 @@ void obj_model::calc_normals(void)
     Take a pointer to an object and populate another container object with info about it  
 */
 
+/*
 void get_obj_info( obj_model* loader,  obj_info* obinfo)
 {
     // reset the bounding box 
@@ -313,6 +314,7 @@ void get_obj_info( obj_model* loader,  obj_info* obinfo)
                                                                 , obinfo->bb_max_z );
 
 }
+*/
 
 /*******************************************************************/
 /*
@@ -666,50 +668,50 @@ void obj_model::load(char *filepath)
 
                         }  
 
-                        std::cout << "NUM PTS LOADED "<< (*this).num_pts << "\n";
+                        //std::cout << "NUM PTS LOADED "<< (*this).num_pts << "\n";
                     }//end vertex loader 
 
 
+                    //  look for normals
                     //-----------------------------//
 
-                    //  look for normals
                     if ( tokenized.at(0).find("vn") != std::string::npos )
                     {
-                        /*
-                        strcpy (nrmls_str, tok_spacs+4);
-
-                        //walk the tokens on the line (a copy of it)
-                        char* tok_line = strtok(nrmls_str, " ");
+                        int a = 0;
                         int nidx = 0;
-                        
+            
+
                         float xc, yc, zc = 0.0;
 
-                        while (tok_line) 
-                        {
-                            // printf("%s \n", tok_line );   
+                        //walk the space delineated tokens per each line
+                        for (a=0;a<tokenized.size();a++)
+                        {   
+                 
+                            std::cout << " line " << line_ct << " normal " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                             
                             if(nidx==0){
-                                xc = atof(tok_line);
+                                xc = std::stof(tokenized.at(a));
                             }
                             if(nidx==1){
-                                yc = atof(tok_line);                        
+                                yc = std::stof(tokenized.at(a));                        
                             }  
                             if(nidx==2){
-                                zc = atof(tok_line);
+                                zc = std::stof(tokenized.at(a));
                             }                                        
                             
-                            nidx++;tok_line = strtok(NULL, " \t\n");
+                            nidx++;
+                            //tokenized.at(a) = strtok(NULL, " \t\n");
                         }
 
                         if (nidx==3)
                         {
                             vec3 vn = newvec3( xc, yc, zc  );
-                            loader->vnormals[loader->num_vnrmls] = vn;
-                            loader->num_vnrmls++;
+                            (*this).vnormals[(*this).num_vnrmls] = vn;
+                            (*this).num_vnrmls++;
 
                         }     
 
-                        */
+                        
                     }//end vertex normal loader 
 
                     //-----------------------------//
@@ -717,52 +719,46 @@ void obj_model::load(char *filepath)
                     //  look for F / faces
                     if ( tokenized.at(0).find("f") != std::string::npos )
                     {
-                        /*
-                        strcpy (fidx_str, tok_spacs+2);
-                        char* tok_line = strtok(fidx_str, " ");
+                        int a = 0;
                         int fidx = 0;
-                        
                         int pt1,pt2,pt3,pt4 = 0;;
 
-                        // walk the tokens on the line 
-                        // ASSUME TRIANGLES ONLY! (3 coords per vertex)
-                        // STUPID BUG - IF THERE IS EMPTY SPACE AT END OF FIDS IT COUNTS ONE MORE fidx
-                        while (tok_line) 
-                        {
-                            //printf("%d %s\n", fidx, tok_line); // <- face line                  
-
+                        //walk the space delineated tokens per each line
+                        for (a=0;a<tokenized.size();a++)
+                        {   
+                 
+                            std::cout << " line " << line_ct << " normal " << fidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            /*
                             //only supports 2,3,4 sided polygons  
                             if(fidx==0){
-                                pt1 = atoi( tok_line);
+                                pt1 = std::stoi( tokenized.at(a));
                                 if (pofst>0){ pt1 = pt1+pofst;};
                             }
                             if(fidx==1){
-                                pt2 = atoi( tok_line);
+                                pt2 = std::stoi( tokenized.at(a));
                                 if (pofst>0){ pt2 = pt2+pofst;};                                               
                             }  
                             if(fidx==2){
-                                pt3 = atoi( tok_line);
+                                pt3 = std::stoi( tokenized.at(a));
                                 if (pofst>0){ pt3 = pt3+pofst;};                         
                             }   
                             if(fidx==3){
-                                pt4 = atoi( tok_line);
+                                pt4 = std::stoi( tokenized.at(a));
                                 if (pofst>0){ pt4 = pt4+pofst;};                                               
                             }  
-                            ////////////////////
-
-                            //n = atoi (buffer);
-                            tok_line = strtok(NULL, " \t\n");fidx++;
+                            */
+                            //-- -- -- -- 
+                            fidx++;
 
                         }
-                        // STUPID BUG - IF THERE IS EMPTY SPACE AT END OF FIDS IT COUNTS ONE MORE fidx
 
                         //-------                  
                         //if two face indices - its a line  
                         if (fidx==2)
                         {
-                            loader->lines[loader->num_lines].pt1 = pt1;
-                            loader->lines[loader->num_lines].pt2 = pt2;                          
-                            loader->num_lines++;                    
+                            (*this).lines[(*this).num_lines].pt1 = pt1;
+                            (*this).lines[(*this).num_lines].pt2 = pt2;                          
+                            (*this).num_lines++;                    
                         }//end line loader
 
                         //-------
@@ -773,11 +769,11 @@ void obj_model::load(char *filepath)
                             // print_vec3(loader->points[pt1]);
 
                             //or just store the indices
-                            loader->tris[loader->num_tris].pt1 = pt1;
-                            loader->tris[loader->num_tris].pt2 = pt2;                          
-                            loader->tris[loader->num_tris].pt3 = pt3;
+                            (*this).tris[(*this).num_tris].pt1 = pt1;
+                            (*this).tris[(*this).num_tris].pt2 = pt2;                          
+                            (*this).tris[(*this).num_tris].pt3 = pt3;
 
-                            loader->num_tris++;
+                            (*this).num_tris++;
 
                         }//end triangle loader
 
@@ -785,13 +781,16 @@ void obj_model::load(char *filepath)
 
                         if (fidx==4)
                         {
-                            loader->quads[loader->num_quads].pt1 = pt1;
-                            loader->quads[loader->num_quads].pt2 = pt2;                          
-                            loader->quads[loader->num_quads].pt3 = pt3;
-                            loader->quads[loader->num_quads].pt4 = pt4;
-                            loader->num_quads++;
+                            (*this).quads[(*this).num_quads].pt1 = pt1;
+                            (*this).quads[(*this).num_quads].pt2 = pt2;                          
+                            (*this).quads[(*this).num_quads].pt3 = pt3;
+                            (*this).quads[(*this).num_quads].pt4 = pt4;
+                            (*this).num_quads++;
                         }//end quad loader 
-                    */
+                   
+
+                    ///////////////////////////////////////////////////////////////
+
                     }//end face loader
 
                     //-----------------------------//

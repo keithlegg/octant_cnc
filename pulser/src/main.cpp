@@ -154,8 +154,6 @@ int main(int argc, char **argv)
     /*------------------*/
     //spinningCubeDemo(&argc, argv);
 
-
-
     /*------------------*/
     //parse_args(cg, argc, argv); 
     

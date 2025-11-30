@@ -150,6 +150,9 @@ class obj_model {
 
 
 
+
+//DEBUG remove this and merge into the main object?
+//cant recall why the hell I did it like this 
 class obj_info {
     public:
         obj_info(){

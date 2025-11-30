@@ -71,12 +71,14 @@
 */
 /*************************************************************/
 
+#include <iostream>
+#include <format>
 #include <sstream>
 #include <vector>
-#include <iostream>
 #include <string>
 #include <cmath>
 #include <unistd.h>      
+
 
 
 #include "gl_setup.h"
@@ -115,16 +117,12 @@ bool DRAW_POLYS      = TRUE; // is this needed?
 
 bool draw_scene_geom = TRUE;
 
-bool draw_points_vbo = TRUE; // test of VBO 
+bool draw_points_vbo = FALSE; // test of VBO 
 bool draw_points     = TRUE;   
-bool draw_lines      = TRUE;
+bool draw_lines      = FALSE;
 bool draw_normals    = FALSE;
-
-
-
 bool draw_quads      = TRUE;
 bool draw_triangles  = TRUE;
-
 bool draw_grid       = FALSE;
 bool draw_cntrgrid   = TRUE;
 bool draw_bbox       = FALSE;
@@ -479,10 +477,8 @@ static void parser_cb(unsigned char key, int x, int y)
 
 int q_i, p_i, f_i = 0;
 
-
 static void render_loop()
 {
-
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -491,7 +487,8 @@ static void render_loop()
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
-    if (render_text)
+
+     if (render_text)
     {
         
         glBindTexture(GL_TEXTURE_2D, texture[0]); 
@@ -506,23 +503,21 @@ static void render_loop()
         glLoadIdentity();
         
         //-----------------------------
-        //render text in window 
+        // render text in window 
         //void *font = GLUT_BITMAP_8_BY_13;     
         void *font = GLUT_BITMAP_TIMES_ROMAN_24; 
 
-     
+        // command line text 
         glColor3f(0.6f, 1.0f, 0.0f);  //text color 
-        
-        // https://www.opengl.org/resources/libraries/glut/spec3/node49.html
-        // During a keyboard callback, glutGetModifiers may be called to determine the state of modifier keys when the keystroke generating the callback occurred. 
-
         glutKeyboardFunc(parser_cb);
-
         renderBitmapString(  20, scr_size_y-20  ,(void *)font,  cmd_buffer.c_str() );
-
-
-        //sprintf(s, "    %d tris ", pt_model_buffer->num_tris );
-        //renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font, s );
+        //--
+        //DEBUG - ADD AXIS COORDS ON SCREEN 
+        // tri count text
+        //glColor3f(1.0f, 1.0f, 1.0f);  //text color 
+        //std::string nt = std::to_string(3); 
+        ////std::cout << "this is broken " << pt_model_buffer->num_tris << "\n";
+        //renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font, nt.c_str() );
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
         //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-20  ,(void *)font, s );
@@ -536,6 +531,8 @@ static void render_loop()
 
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
+
+
     }
 
     // --------------------------------------------
@@ -607,14 +604,14 @@ static void render_loop()
         break;   
     } 
  
-    
     /******************************************/
     /******************************************/
 
     graticulate(&draw_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
 
     show_bbox(&draw_bbox, pt_obinfo, pt_gridcolor);
- 
+
+
     /******************************************/
 
     //m33 foobar = m33_from_euler(45,45,45);
@@ -624,12 +621,6 @@ static void render_loop()
     // render_m44(&foobar);
 
     /******************************************/
-
-    //num_drawpoints
-
-    //if (draw_points) {    }
-
-
     if (draw_points_vbo)
     {
         // persistant point buffer   
@@ -695,9 +686,6 @@ static void render_loop()
 
     /******************************************/
 
-
-    /******************************************/
-
     // draw 3D line geometry 
     if (draw_lines)
     {
@@ -745,7 +733,8 @@ static void render_loop()
     /******************************************/
     // draw the polygon geometry 
 
-    if(draw_triangles)
+    if(false)
+    //if(draw_triangles)
     {
         //glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
@@ -857,13 +846,13 @@ static void render_loop()
                 glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);  
             }
-        }//draw normals         
-
-    }
+        }//draw normals (triangles)        
+    }//draw triangles
 
     // ----------------------
     // draw scene defined geom 
-    if (draw_scene_geom )
+    if (false)
+    //if (draw_scene_geom )
     {
 
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -894,7 +883,8 @@ static void render_loop()
     //-----------------------
 
     //DEBUG - IF THERE IS A SPACE AT END OF FIDS, IT LOADS TRI AS QUAD
-    if (draw_quads )
+    if (false )
+    //if (draw_quads )
     {
         
         if (toglr_flatshaded){
@@ -960,7 +950,8 @@ static void render_loop()
         glEnd(); 
 
         // display loaded normals as lines 
-        if (draw_normals)
+        if (false)
+        //if (draw_normals)
         {
             glColor3f(.5,.5,0);
             for (p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
@@ -987,10 +978,6 @@ static void render_loop()
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);  
             }
         }//draw normals    
-
-
-
-
     }
 
 
@@ -1001,9 +988,6 @@ static void render_loop()
   
     view_ismoving = FALSE;
 }
-
-
-
 
 
 /***************************************/
@@ -1785,13 +1769,14 @@ void key_cb(unsigned int key)
     if (key == 73) //shift i - show obj info 
     { 
 
-        get_obj_info( pt_model_buffer, pt_obinfo);
-        show_obj_geom(pt_model_buffer);
+        //get_obj_info( pt_model_buffer, pt_obinfo);
+        //show_obj_geom(pt_model_buffer);
     }
 
 
     if (key == 105) //i - draw bbox
-    { 
+    {   
+        /*
         std::cout << "\n\n\n"; 
         get_obj_info( pt_model_buffer, pt_obinfo);        
         if (draw_bbox == TRUE){
@@ -1799,7 +1784,7 @@ void key_cb(unsigned int key)
         }else{
             draw_bbox = TRUE;
             show(pt_model_buffer);            
-        }
+        }*/
     }
 
 
@@ -1835,7 +1820,7 @@ void key_cb(unsigned int key)
 
         pt_model_buffer->load(pycorepath);
         pt_model_buffer->calc_normals();
-        get_obj_info( pt_model_buffer, pt_obinfo);
+        //get_obj_info( pt_model_buffer, pt_obinfo);
 
 
     }
