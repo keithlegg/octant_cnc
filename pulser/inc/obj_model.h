@@ -137,7 +137,8 @@ class obj_model {
         void reset(void);
         void load( char *);
         void save( char *);
-
+        void show(void);
+        
 
         //vec3 get_obj_centroid( void );
         void clearall(void);

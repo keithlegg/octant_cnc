@@ -60,6 +60,20 @@ void obj_model::clearall(void)
 }
 
 
+void obj_model::show(void)
+{
+    std::cout<< "#-----------------------#\n";
+    std::cout<< "#---- objmodel show ----#\n";
+    std::cout<< "# number  points    " << (*this).num_pts     << "\n";
+    std::cout<< "# number  lines     " << (*this).num_lines   << "\n";
+    std::cout<< "# number  triangles " << (*this).num_tris    << "\n";
+    std::cout<< "# number  quads     " << (*this).num_quads   << "\n";
+    std::cout<< "# number  UVs       " << (*this).num_uvs     << "\n";
+    std::cout<< "# number  vtx nrml  " << (*this).num_vnrmls  << "\n";
+    std::cout<< "# number  fac nrml  " << (*this).num_fnrmls  << "\n";
+    std::cout<< "# number  vtxcolr   " << (*this).num_vtxrgb  << "\n"; 
+}
+
 
 void obj_model::add_triangle(vec3 pt1, vec3 pt2, vec3 pt3)
 {
@@ -384,28 +398,6 @@ void show_obj_geom(obj_model* loader)
 
 
 
-void show(obj_model* objmodel)
-{
-    printf("#----------------#\n");
-    printf("# number  points    %d \n", objmodel->num_pts);
-    printf("# number  lines     %d \n", objmodel->num_lines);
-    printf("# number  triangles %d \n", objmodel->num_tris);
-    printf("# number  quads     %d \n", objmodel->num_quads);
-    printf("# number  UVs       %d \n", objmodel->num_uvs);
-    printf("# number  vtx nrml  %d \n", objmodel->num_vnrmls);
-    printf("# number  fac nrml  %d \n", objmodel->num_fnrmls);
-    printf("# number  vtxcolr   %d \n", objmodel->num_vtxrgb);    
-}
-
-
-
-void show(obj_info* obinfo)
-{
-    printf("#----------------#\n");
-
-    //printf("# extents           %d \n", 99);
-    //printf("# centroid          %d \n", 99);
-}
 
 
 /*******************************************************************/
@@ -674,7 +666,6 @@ void obj_model::load(char *filepath)
 
                     //  look for normals
                     //-----------------------------//
-
                     if ( tokenized.at(0).find("vn") != std::string::npos )
                     {
                         int a = 0;

@@ -157,6 +157,7 @@ class cncglobals
         void load_objects(void);
         void load_cfg_file( char*);
         void show( void );
+        void show_obj( void );
 
         // check that all axis are set after running  
         //void verify_axis_set( void );
