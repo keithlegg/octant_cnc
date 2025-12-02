@@ -149,14 +149,12 @@ class cncglobals
 
 
         /*******************/
-        char* copyString(char[]);
-
         std::vector<std::string> tokenizer( const std::string&, char);
         int cvt_int( const std::string&);
 
         void load_objects(void);
         void load_cfg_file( char*);
-        void show( void );
+        void show_params( void );
         void show_obj( void );
 
         // check that all axis are set after running  

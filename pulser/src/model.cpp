@@ -696,7 +696,7 @@ void model::load_obj(char* filename){
     fin.open(filename); // open a file
     if (!fin.good()){ 
         cout << "OBJ file \""<< filename <<"\" appears to be missing or broken." << endl;
-        exit (EXIT_FAILURE); // exit if file not found
+        exit (1); // exit if file not found
     }
 
     vtx_tmp.clear();
@@ -838,7 +838,7 @@ void model::load_matrix(char* filename)
     fin.open(filename); // open a file
     if (!fin.good()){ 
         cout << "matrix file \""<< filename <<"\" appears to be missing or broken." << endl;
-        exit (EXIT_FAILURE); // exit if file not found
+        exit (1); // exit if file not found
     }
 
     int line_ct = 0;

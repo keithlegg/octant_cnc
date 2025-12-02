@@ -9,12 +9,11 @@
 //#include "math_op.h"
 
 
+//#define MAX_NUM_VERTICES 1000
+//#define MAX_NUM_FACES 1000
+
 #define MAX_NUM_VERTICES 10000
 #define MAX_NUM_FACES 10000
-
-//Cautiously moved to the heap  
-const int num_vtx   = 120000;
-const int num_faces = 120000;
 
 
 // index/indices for a line object 
@@ -126,23 +125,34 @@ class obj_model {
         int num_quads;    
 
         // --- 
+        std::vector<double> vtx_tmp;
+        std::vector<int>    fac_tmp;  
+
+        // --- 
         Vector3 points[MAX_NUM_VERTICES];          // vertices of model    
         Vector3 vtxrgb[MAX_NUM_VERTICES];          // vertices of model  
 
-        Vector2 uvs[num_vtx];           // 2 floats - UV coords 
-        Vector3 vnormals[num_vtx];      // 3 floats - face normal 
-        Vector3 fnormals[num_faces];    // 3 floats - face normal 
+        Vector2 uvs[MAX_NUM_VERTICES];           // 2 floats - UV coords 
+        Vector3 vnormals[MAX_NUM_VERTICES];      // 3 floats - face normal 
+        Vector3 fnormals[MAX_NUM_FACES];    // 3 floats - face normal 
 
-        std::vector<int> lines[MAX_NUM_FACES]; // 2 sided faces 
-        std::vector<int> tris[MAX_NUM_FACES];  // 3 sided 
-        std::vector<int> quads[MAX_NUM_FACES]; // 4 sided 
-        std::vector<int> faces[MAX_NUM_FACES]; // >4, N sided faces 
+
+        // std::vector< std::vector<int> > lines; // 2 sided faces 
+        // std::vector< std::vector<int> > tris;  // 3 sided 
+        // std::vector< std::vector<int> > quads; // 4 sided 
+        // std::vector< std::vector<int> > faces; // >4, N sided faces 
+
+        std::vector<int> lines[MAX_NUM_FACES] ={}; // 2 sided faces 
+        std::vector<int> tris[MAX_NUM_FACES]  ={};  // 3 sided 
+        std::vector<int> quads[MAX_NUM_FACES] ={}; // 4 sided 
+        std::vector<int> faces[MAX_NUM_FACES] ={}; // >4, N sided faces 
+
         // ---
         Vector3 bfr_pts[MAX_NUM_VERTICES];          // general point buffer   ( tmp work area )
         std::vector<int> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
 
         // ---
-        Matrix4 m44;
+        //Matrix4 m44;
 
         // float& operator[] (size_t i)
         // {
@@ -159,12 +169,18 @@ class obj_model {
         //Vector3 get_obj_centroid( void );
         Vector3 get_extents(void);
 
+        void insert(std::vector<int>& input);
+
+
         void reset(void);
         void load( char *);
         void save( char *);
         void show(void);
         void calc_normals(void);
+        
         void add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3);
+        void add_triangle(int vid1, int vid2, int vid3);
+
         void triangulate(void);
         void show_geom(void);
 

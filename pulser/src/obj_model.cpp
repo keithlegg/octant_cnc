@@ -69,14 +69,14 @@ void obj_model::show(void)
 {
     std::cout<< "#-----------------------#\n";
     std::cout<< "#---- objmodel show ----#\n";
-    std::cout<< "# number  points    " << obj_model::num_pts     << "\n";
-    std::cout<< "# number  lines     " << obj_model::num_lines   << "\n";
-    std::cout<< "# number  triangles " << obj_model::num_tris    << "\n";
-    std::cout<< "# number  quads     " << obj_model::num_quads   << "\n";
-    std::cout<< "# number  UVs       " << obj_model::num_uvs     << "\n";
-    std::cout<< "# number  vtx nrml  " << obj_model::num_vnrmls  << "\n";
-    std::cout<< "# number  fac nrml  " << obj_model::num_fnrmls  << "\n";
-    std::cout<< "# number  vtxcolr   " << obj_model::num_vtxrgb  << "\n"; 
+    std::cout<< "# number  points    " << num_pts     << "\n";
+    std::cout<< "# number  lines     " << num_lines   << "\n";
+    std::cout<< "# number  triangles " << num_tris    << "\n";
+    std::cout<< "# number  quads     " << num_quads   << "\n";
+    std::cout<< "# number  UVs       " << num_uvs     << "\n";
+    std::cout<< "# number  vtx nrml  " << num_vnrmls  << "\n";
+    std::cout<< "# number  fac nrml  " << num_fnrmls  << "\n";
+    std::cout<< "# number  vtxcolr   " << num_vtxrgb  << "\n"; 
 }
 
 
@@ -89,23 +89,23 @@ void obj_model::show_geom(void)
     //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
     for (i=0;i<num_pts;i++)
     {
-        std::cout << " pt idx "<< i  << " is :";
-        std::cout << points[i].x << " " << points[i].y << " "<< points[i].z << "\n";
-
-
-        
+        //std::cout << " pt idx "<< i  << " is :";
+        //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z << "\n";
     }
 
     // std::cout << "\n# line indices  ------------------- %d \n", (*this).num_lines);
     for (i=0;i<num_lines;i++)
     {
-        //printf(" %d line   %d %d  \n",i ,  (*this).lines[i].pt1 , (*this).lines[i].pt2 );
-        //print_vec3( (*this).lines[i]) ;
+        std::cout << " line idx "<< i  << " is :";
+        std::cout << lines[i][0] << " " << lines[i][1] << "\n";  
     }
 
     //std::cout << "\n# triangle indices ----------------- %d \n", (*this).num_tris);
     for (i=0;i<num_tris;i++)
     {
+        std::cout << " tri idx "<< i  << " is :";
+        //std::cout << tris[i][0] << " " << tris[i][1] << tris[i][2] << "\n";
+        //std::cout << tris[0]  << "\n";        
 
         //triangle tri_buffer = from_obj->tris[i]; //start with original indices
         //printf(" %d triangle   %d %d %d \n", i, (*this).tris[i].pt1 , (*this).tris[i].pt2, (*this).tris[i].pt3);        
@@ -129,39 +129,45 @@ void obj_model::show_geom(void)
 
 
 
+/**********************************************************/
+// UNTESTED add a new triangle using 3 vector3 
 void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 {
-    //vector<int> newtri;
-    int vertex_count = 0;
+    vector<int> newtri;
 
-
-    // int num_pts;
-    // int num_vtxrgb;
-    // int num_vnrmls;    
-    // int num_fnrmls;
-    // int num_uvs;
-    // int num_lines;
-    // int num_tris;
-    // int num_quads; 
-    // pt_model_buffer->num_tris
-    // pt_model_buffer->num_quads
-
-    obj_model::points[obj_model::num_pts] = pt1;
-    //newtri.push_back(pt_model_buffer->num_pts+1);
-    obj_model::num_pts++;
+    points[num_pts] = pt1;
+    newtri.push_back(num_pts+1);
+    num_pts++;
     
-    obj_model::points[obj_model::num_pts] = pt2;
-    //newtri.push_back(pt_model_buffer->num_pts+1);
-    obj_model::num_pts++;
+    points[num_pts] = pt2;
+    newtri.push_back(num_pts+1);
+    num_pts++;
     
-    obj_model::points[ obj_model::num_pts ] = pt3;
-    //newtri.push_back(pt_model_buffer->num_pts+1);
-    obj_model::num_pts++;
+    points[num_pts] = pt3;
+    newtri.push_back(num_pts+1);
+    num_pts++;
 
-    //triangles[ triangle_count ] = newtri;  
-    //triangle_count++;
+    tris[ num_tris ] = newtri;  
+    num_tris++;
 
 }
+
+/**********************************************************/
+// add a new triangle using Face Indices to existing vertices
+void obj_model::add_triangle(int vid1, int vid2, int vid3)
+{
+
+    // debug - use fac_tmp instead? 
+    vector<int> newtri;
+    newtri.push_back(vid1);
+    newtri.push_back(vid2);
+    newtri.push_back(vid3);
+
+    tris[ num_tris ] = newtri;  // 3 sided 
+    num_tris++;
+
+}
+
 
 
 /*
@@ -220,16 +226,16 @@ void obj_model::triangulate(void)
     //debug - clear any loaded normals 
     //pt_model_buffer->num_fnrmls = 0;
 
-    printf("#number of quads %d\n", obj_model::num_quads );
+    printf("#number of quads %d\n", num_quads );
 
     //calc normals for quads 
-    for (p_i=0;p_i<obj_model::num_quads;p_i++)
+    for (p_i=0;p_i<num_quads;p_i++)
     {   
            
         // fetch the pts for a triangle
-        Vector3 p1 = obj_model::points[obj_model::quads[p_i][0]-1];
-        Vector3 p2 = obj_model::points[obj_model::quads[p_i][1]-1];
-        Vector3 p3 = obj_model::points[obj_model::quads[p_i][2]-1];
+        Vector3 p1 = points[quads[p_i][0]-1];
+        Vector3 p2 = points[quads[p_i][1]-1];
+        Vector3 p3 = points[quads[p_i][2]-1];
 
         // // calculate the face normal  
         // Vector3 a = sub(p1,p2);
@@ -251,24 +257,24 @@ void obj_model::calc_normals(void)
     Vector3 tri_cntr;
 
     //debug - clear any loaded normals 
-    obj_model::num_fnrmls = 0;
+    num_fnrmls = 0;
 
     //calc normals for quads 
-    for (p_i=0;p_i<obj_model::num_quads;p_i++)
+    for (p_i=0;p_i<num_quads;p_i++)
     {   
             
         // fetch the pts for a triangle
-        Vector3 p1 = obj_model::points[obj_model::quads[p_i][0]-1];
-        Vector3 p2 = obj_model::points[obj_model::quads[p_i][1]-1];
-        Vector3 p3 = obj_model::points[obj_model::quads[p_i][2]-1];
+        Vector3 p1 = points[quads[p_i][0]-1];
+        Vector3 p2 = points[quads[p_i][1]-1];
+        Vector3 p3 = points[quads[p_i][2]-1];
 
         // calculate the face normal  
         Vector3 a = p1.operator-(p2);
         Vector3 b = p1.operator-(p3);
         Vector3 n = a.cross(b).normalize();
 
-        obj_model::fnormals[obj_model::num_fnrmls]=n;
-        obj_model::num_fnrmls++;
+        fnormals[num_fnrmls]=n;
+        num_fnrmls++;
 
 
     }
@@ -278,17 +284,17 @@ void obj_model::calc_normals(void)
     {   
             
         // fetch the pts for a triangle
-        Vector3 p1 = obj_model::points[obj_model::tris[p_i][0]-1];
-        Vector3 p2 = obj_model::points[obj_model::tris[p_i][1]-1];
-        Vector3 p3 = obj_model::points[obj_model::tris[p_i][2]-1];
+        Vector3 p1 = points[tris[p_i][0]-1];
+        Vector3 p2 = points[tris[p_i][1]-1];
+        Vector3 p3 = points[tris[p_i][2]-1];
 
         // calculate the face normal  
         Vector3 a = p1.operator-(p2);
         Vector3 b = p1.operator-(p3);
         Vector3 n = a.cross(b).normalize();
 
-        obj_model::fnormals[obj_model::num_fnrmls]=n;
-        obj_model::num_fnrmls++;
+        fnormals[obj_model::num_fnrmls]=n;
+        num_fnrmls++;
     }
 
     // broken experiment to put face normals in vertex normals
@@ -299,20 +305,20 @@ void obj_model::calc_normals(void)
         for (p_i=0;p_i<obj_model::num_tris;p_i++)
         {    
             // fetch the pts for a triangle
-            Vector3 p1 = obj_model::points[obj_model::tris[p_i][0]-1];
-            Vector3 p2 = obj_model::points[obj_model::tris[p_i][1]-1];
-            Vector3 p3 = obj_model::points[obj_model::tris[p_i][2]-1];
+            Vector3 p1 = points[tris[p_i][0]-1];
+            Vector3 p2 = points[tris[p_i][1]-1];
+            Vector3 p3 = points[tris[p_i][2]-1];
 
             // calculate the face normal  
             Vector3 a = p1.operator-(p2);
             Vector3 b = p1.operator-(p3);
             Vector3 n = a.cross(b).normalize();
-            obj_model::vnormals[obj_model::tris[p_i][0]-1]= n;
-            obj_model::vnormals[obj_model::tris[p_i][1]-1]= n;
-            obj_model::vnormals[obj_model::tris[p_i][2]-1]= n;      
-            obj_model::num_vnrmls++;
-            obj_model::num_vnrmls++;
-            obj_model::num_vnrmls++;
+            vnormals[tris[p_i][0]-1]= n;
+            vnormals[tris[p_i][1]-1]= n;
+            vnormals[tris[p_i][2]-1]= n;      
+            num_vnrmls++;
+            num_vnrmls++;
+            num_vnrmls++;
     
         }
 
@@ -486,6 +492,16 @@ void insert_geom(obj_model* from_obj, obj_model* to_obj)
 }
 */
 
+void obj_model::insert(std::vector<int>& input)
+{
+
+
+    std::cout << "HEYHEYHEY\n"; 
+    std::cout << input[0] << " "<< input[1]<< " " << input[2] << "\n";
+
+    tris[0] = input;
+
+}
 
 /*******************************************************************/
 
@@ -513,7 +529,7 @@ void obj_model::load(char *filepath)
 
     if (!obj_filein.good()){ 
         std::cout << ".obj file \""<< filepath <<"\" appears to be missing." << std::endl;
-        exit (EXIT_FAILURE); // exit if file not found
+        exit (1); // exit if file not found
     }
 
     while (!obj_filein.eof() && !obj_filein.fail() && !obj_filein.bad())
@@ -525,11 +541,11 @@ void obj_model::load(char *filepath)
             // std::cout << "FULL LINE " << line << std::endl;
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
-            //point offset indices to points - if geom exists already 
-            if (num_pts>0)
-            {
-                pofst = num_pts;
-            }
+            // //point offset indices to points - if geom exists already 
+            // if (num_pts>0)
+            // {
+            //     pofst = num_pts;
+            // }
 
             std::string coords_str; // string that verts get copied to 
             std::string nrmls_str;  // string that verts get copied to 
@@ -585,6 +601,8 @@ void obj_model::load(char *filepath)
                             vidx++; 
                         }
                         
+                        //std::cout << "vidx is "<< vidx <<"\n"; 
+
                         //--------------------------------//
                         //done looping vertex line, now process the data we found 
                         
@@ -596,9 +614,11 @@ void obj_model::load(char *filepath)
                         }
                         
                         //if three points its a proper vertex 
-                        if (vidx==3 || vidx==7)
+                        if (vidx>=2)
                         {
                             Vector3 vpt = Vector3( xc, yc, zc  );
+                            
+                            //std::cout << "v3 "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
 
                             points[num_pts] = vpt;
                             num_pts = num_pts+1;
@@ -614,7 +634,7 @@ void obj_model::load(char *filepath)
 
                         }  
                     }//end vertex loader 
-                    //std::cout << "NUM PTS LOADED "<< (*this).num_pts << "\n";
+                    //std::cout << "NUM PTS LOADED "<< num_pts << "\n";
 
 
                     //  look for normals
@@ -631,7 +651,7 @@ void obj_model::load(char *filepath)
                         for (a=0;a<tokenized.size();a++)
                         {   
                  
-                            std::cout << " line " << line_ct << " normal " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            //std::cout << " line " << line_ct << " normal " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                             
                             if(nidx==0){
                                 xc = std::stof(tokenized.at(a));
@@ -644,22 +664,20 @@ void obj_model::load(char *filepath)
                             }                                        
                             
                             nidx++;
-                            //tokenized.at(a) = strtok(NULL, " \t\n");
                         }
 
                         if (nidx==3)
                         {
                             Vector3 vn = Vector3( xc, yc, zc  );
-                            //vnormals[num_vnrmls] = vn;
-                            //num_vnrmls++;
+                            vnormals[num_vnrmls] = vn;
+                            num_vnrmls++;
 
                         }     
-
-                        
+                    
                     }//end vertex normal loader 
 
                     //-----------------------------//
-
+                     
                     //  look for F / faces
                     if ( tokenized.at(0).find("f") != std::string::npos )
                     {
@@ -676,73 +694,92 @@ void obj_model::load(char *filepath)
 
                             if( tokenized.at(a).size())
                             {
-                                //std::cout << " line " << line_ct << " normal " << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                //std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                
                                 //only supports 2,3,4 sided polygons  
                                 if(fidx==0){
                                     pt1 = std::stoi( tokenized.at(a));
                                     if (pofst>0){ pt1 = pt1+pofst;};
-                                    fidx++;
+                                    
                                 }
                                 if(fidx==1){
                                     pt2 = std::stoi( tokenized.at(a));
                                     if (pofst>0){ pt2 = pt2+pofst;};   
-                                    fidx++;                                                                                
+                                                                                       
                                 }  
                                 if(fidx==2){
                                     pt3 = std::stoi( tokenized.at(a));
                                     if (pofst>0){ pt3 = pt3+pofst;};                        
-                                    fidx++;                                    
+                                  
                                 }   
                                 if(fidx==3){
                                     pt4 = std::stoi( tokenized.at(a));
                                     if (pofst>0){ pt4 = pt4+pofst;};                                               
-                                    fidx++;                                    
                                 }  
-                           
+                            fidx++; 
                             } 
  
 
                         }
-                        /*
+
+                        //std::cout << " num fids " << fidx << "\n";
+
                         //-------                  
                         //if two face indices - its a line  
                         if (fidx==2)
                         {
-                            lines[num_lines][0] = pt1;
-                            lines[num_lines][1] = pt2;                          
+                            //DEBUG THIS IS BLOWING UP                             
+                            // lines[num_lines][0] = pt1;
+                            // lines[num_lines][1] = pt2;                          
                             num_lines++;                    
                         }//end line loader
 
                         //-------
                         if (fidx==3)
                         {
+                            //DEBUG THIS IS BLOWING UP  
+                            // std::cout << " pt1 is " << pt1 << "\n";
+                            // std::cout << " pt2 is " << pt2 << "\n";
+                            // std::cout << " pt3 is " << pt3 << "\n";
+                            
+                            //fac_tmp.clear();
+                            //fac_tmp.push_back( pt1 );
+                            // fac_tmp.push_back( pt2 );
+                            // fac_tmp.push_back( pt3 );
 
-                            // if you want the actual point data from this index
-                            // print_vec3(loader->points[pt1]);
-
-                            //or just store the indices
-                            tris[num_tris][0] = pt1;
-                            tris[num_tris][1] = pt2;                          
-                            tris[num_tris][2] = pt3;
-
+                                                       
+                            vector<int> newtri;
+                            newtri.push_back(pt1);
+                            newtri.push_back(pt2);
+                            newtri.push_back(pt3);
+                            
+                            std::cout << " newtri "<< newtri[0]<<' ' << newtri[1]<< ' '<< newtri[2]<< "\n";
+                            
+                            tris[ num_tris ] = newtri;
                             num_tris++;
+
+                            //add_triangle(pt1,pt2,pt3);
+                            // // this->insert(newtri);
 
                         }//end triangle loader
 
                         //------- 
-
                         if (fidx==4)
                         {
-                            quads[num_quads][0] = pt1;
-                            quads[num_quads][1] = pt2;                          
-                            quads[num_quads][2] = pt3;
-                            quads[num_quads][3] = pt4;
+                            std::cout << " pt1 is " << pt1 << "\n";
+                            std::cout << " pt2 is " << pt2 << "\n";
+                            std::cout << " pt3 is " << pt3 << "\n";
+                            std::cout << " pt4 is " << pt4 << "\n";
+                            
+                            //DEBUG THIS IS BLOWING UP     
+                            // quads[num_quads][0] = pt1;
+                            // quads[num_quads][1] = pt2;                          
+                            // quads[num_quads][2] = pt3;
+                            // quads[num_quads][3] = pt4;
                             num_quads++;
+
+
                         }//end quad loader 
-                        */
-
-                    ///////////////////////////////////////////////////////////////
-
                     }//end face loader
 
                     //-----------------------------//
@@ -755,16 +792,13 @@ void obj_model::load(char *filepath)
     }//obj exists   
 
     // ---------------------------------------------
-    //loader->num_uvs = 0;
-
-    /* 
-    printf("\n\n---------------------------\n"  ) ;
-    printf("%d vertices loaded   \n", loader->num_pts    ) ;
-    printf("%d uvs loaded        \n", loader->num_uvs    ) ; 
-    printf("%d lines loaded      \n", loader->num_lines  ) ;
-    printf("%d triangles loaded  \n", loader->num_tris   ) ;
-    printf("%d quads loaded      \n", loader->num_quads  ) ;  
-    */
+    /*
+    std::cout << "vertices loaded   "<< num_pts    << "\n";
+    std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
+    std::cout << "lines loaded      "<< num_lines  << "\n";
+    std::cout << "triangles loaded  "<< num_tris   << "\n";
+    std::cout << "quads loaded      "<< num_quads  << "\n";  
+    */ 
 
 }
 

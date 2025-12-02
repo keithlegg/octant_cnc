@@ -86,7 +86,7 @@ extern obj_model pt_model_buffer;
 */
 
 /**********************************/
-void cncglobals::show( void )
+void cncglobals::show_params( void )
 {
     std::cout <<"\n\n";
     std::cout << " #### CNC GLOBALS #### " << "\n";
@@ -214,17 +214,6 @@ return 0;
 //parse 3 floats at a time 
 //campos = Vector3( atof(token[1]), atof(token[2]), atof(token[3]) );
 
-/**************/
-
-
-char* cncglobals::copyString(char s[])
-{
-    char* s2;
-    s2 = (char*)malloc(20);
-
-    strcpy(s2, s);
-    return (char*)s2;
-}
 
 /******************************/
 
@@ -295,15 +284,20 @@ void cncglobals::load_objects(void)
             
         std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
         pt_model_buffer.reset();
+        
+        //pt_model_buffer.load( "/home/keith/keith/wip_projects/confusion_36d/pulser/3d_obj/sphere.obj" );
 
-        //DEBUG THIS BLOWS UP (OR QUIETLY DIES)
+        
         //for(x=0;x<(*this).num_loaded_obj;x++)
         for(x=0;x<obj_filepaths.size();x++)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
             strcpy(char_array, obj_filepaths[x].c_str()); 
             pt_model_buffer.load(char_array);
+            //pt_model_buffer->calc_normals();
+
         };
+        
     };
 }
 
@@ -385,9 +379,7 @@ void cncglobals::load_cfg_file( char* filepath )
                             std::string buffer;
                             std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
-                            
-                            //linear_unit = (*this).copyString(tokenized.at(1));
-                            std::cout << "DEBUG parsing LINEAR_UNIT " << linear_unit << "\n";
+                             std::cout << "DEBUG parsing LINEAR_UNIT " << linear_unit << "\n";
                         }
 
 
@@ -462,11 +454,7 @@ void cncglobals::load_cfg_file( char* filepath )
                             std::cout << "\n#LOAD OPERATOR ! - object found " << tokenized.at(1) << "\n";
 
                             obj_filepaths.push_back(tokenized.at(1));
-
-                            // //pt_model_buffer->calc_normals();
-                            // //strcpy(active_filepath, char_array ); 
-                            // this blows up - DEBUG  
-                            std::cout <<  (*this).num_loaded_obj;
+                            //std::cout <<  num_loaded_obj;
                             //std::cout << "#ADDED OBJ " << (*this).num_loaded_obj << " "<< obj_filepaths.at((*this).num_loaded_obj) << "\n";
                             
 

@@ -118,13 +118,13 @@ bool DRAW_POLYS      = TRUE; // is this needed?
 bool draw_scene_geom = TRUE;
 
 bool draw_points_vbo = FALSE; // test of VBO 
-bool draw_points     = TRUE;   
+bool draw_points     = FALSE;   
 bool draw_lines      = FALSE;
 bool draw_normals    = FALSE;
-bool draw_quads      = TRUE;
-bool draw_triangles  = TRUE;
+bool draw_quads      = FALSE;
+bool draw_triangles  = FALSE;
 bool draw_grid       = FALSE;
-bool draw_cntrgrid   = TRUE;
+bool draw_cntrgrid   = FALSE;
 bool draw_bbox       = FALSE;
 
 bool render_text     = TRUE;
@@ -159,7 +159,7 @@ extern GLuint texture[3];
 char active_filepath[300];
 
 obj_model* pt_model_buffer  = new(obj_model);
-obj_model* pt_loader        = new(obj_model);
+//obj_model* pt_loader        = new(obj_model);
 
 
 float xrot, yrot, zrot; 
@@ -385,16 +385,12 @@ void negate_y_axis(Matrix4 *input){
 void toggle_polygon_draw(){
     if (DRAW_POLYS == TRUE){
         DRAW_POLYS = FALSE;
-        
         draw_quads      = FALSE;
         draw_triangles  = FALSE;
-
     }else{
         DRAW_POLYS = TRUE;
-        
         draw_quads      = TRUE;
         draw_triangles  = TRUE;
-
     }
 }
 
@@ -405,7 +401,7 @@ void toggle_polygon_draw(){
 //DEBUG TRIGGERS THE "OLD SEGFAULT "
 void warnings(void)
 {   
-
+    /*
     // let us know if there is a discernable problem 
     printf("\n\n\n\n###########################################\n");
 
@@ -418,7 +414,7 @@ void warnings(void)
     }
 
     if(!draw_quads || !pt_model_buffer->num_quads){ ; }    
-
+    */
 }
 
 /***************************************/
@@ -487,7 +483,7 @@ static void render_loop()
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 
-     if (render_text)
+    if (render_text)
     {
         
         glBindTexture(GL_TEXTURE_2D, texture[0]); 
@@ -622,6 +618,7 @@ static void render_loop()
     /******************************************/
     if (draw_points_vbo)
     {
+      
         // persistant point buffer   
         // Not tested well! - I think it needs OpenGL4 amd up
 
@@ -680,7 +677,7 @@ static void render_loop()
         
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
-
+      
     }
 
     /******************************************/
@@ -731,9 +728,7 @@ static void render_loop()
 
     /******************************************/
     // draw the polygon geometry 
-
-    if(false)
-    //if(draw_triangles)
+    if(draw_triangles)
     {
         //glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
@@ -745,9 +740,13 @@ static void render_loop()
             glColor3f(1.,1.,1.);
         }
         
+        //std::cout << pt_model_buffer->num_tris << "\n";
+
+  
         glBegin(GL_TRIANGLES);  
             for (p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
+              
                 // fetch the triangle indices from vertex list
                 int tri1 = pt_model_buffer->tris[p_i][0];
                 int tri2 = pt_model_buffer->tris[p_i][1];
@@ -758,7 +757,7 @@ static void render_loop()
                 Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
                 Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
 
-                /***********************/                
+                                
                 glColor3f(rgb1.x,rgb1.y,rgb1.z);   
 
                 //vec2 uv = pt_model_buffer->uvs[tri1];
@@ -773,7 +772,7 @@ static void render_loop()
                 //printf( " %d %d %d \n",  nrm1.x, nrm1.y, nrm1.z);
 
 
-                /***********************/ 
+                //////
                 glColor3f(rgb2.x,rgb2.y,rgb2.z); 
 
                 //vec2 uv = pt_model_buffer->uvs[tri2];
@@ -788,7 +787,7 @@ static void render_loop()
                 glNormal3f( nrm2.x, nrm2.y, nrm2.z);
 
 
-                /***********************/
+                //////
                 glColor3f(rgb3.x,rgb3.y,rgb3.z); 
 
                 //vec2 uv = pt_model_buffer->uvs[tri3];
@@ -801,11 +800,12 @@ static void render_loop()
                 // calculated face normals
                 Vector3 nrm3 = pt_model_buffer->vnormals[tri3-1];
                 glNormal3f( nrm3.x, nrm3.y, nrm3.z);
-
+               
 
             }
 
         glEnd(); 
+          
 
         Vector3 tri_cntr;
 
@@ -884,8 +884,7 @@ static void render_loop()
     //-----------------------
 
     //DEBUG - IF THERE IS A SPACE AT END OF FIDS, IT LOADS TRI AS QUAD
-    if (false )
-    //if (draw_quads )
+    if (draw_quads )
     {
         
         if (toglr_flatshaded){
@@ -951,8 +950,7 @@ static void render_loop()
         glEnd(); 
 
         // display loaded normals as lines 
-        if (false)
-        //if (draw_normals)
+        if (draw_normals)
         {
             glColor3f(.5,.5,0);
             for (p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
@@ -1121,8 +1119,7 @@ void start_gui(int *argc, char** argv){
     //load any optional 3d models needed for setup
     cg.load_objects();
     cg.show_obj();
-
-
+    
     //cg.show();
 
    
@@ -1135,7 +1132,8 @@ void start_gui(int *argc, char** argv){
     // test_bezier(start, ctrl1, ctrl2, end);
     
     //warnings();
-
+    
+     
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
     glutInitWindowSize(scr_size_x, scr_size_y);  //window size
     glutInitWindowPosition(0, 0);  
@@ -1204,7 +1202,7 @@ void start_gui(int *argc, char** argv){
     //tb.start(); //test of timer 
 
     glutMainLoop();// Start Event Processing Engine   
-    
+   
 
 }
 

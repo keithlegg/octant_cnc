@@ -30,12 +30,14 @@ LINKER   = g++
 
 #Linux
 ifeq ($(UNAME), Linux)
-	
+
+	#LFLAGS   = -std=c++17  
+
 	#SHOW ME ALL THE WARNINGS 
-	# LFLAGS   = -g -Wall -lglut -lGL -lGLU -lX11  -lm -lz 
+	#LFLAGS = -Wall -lglut -lGL -lGLU 
 
 	#NO WARNINGS 
-	LFLAGS   = -g -w -lglut -lGL -lGLU -lX11  -lm -lz 
+	LFLAGS = -g -w -lglut -lGL -lGLU 
 
 endif
 
