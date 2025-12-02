@@ -19,7 +19,7 @@
 #include <vector>
 
 
-#include "math_op.h"
+//#include "math_op.h"
 //#include "point_op.h"
 
 
@@ -128,7 +128,7 @@ void cnc_io::test_port(cncglobals* cg)
                             
 */
 
-void cnc_io::read_limits(cncglobals* cg, vec3* pt_limit_switch_data)
+void cnc_io::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 {
 
     if(ioperm(cg->parport1_addr+1,1,1))
@@ -194,7 +194,7 @@ void cnc_io::read_limits(cncglobals* cg, vec3* pt_limit_switch_data)
 
 */
 
-void cnc_io::send_pulses(cncglobals* cg, vector<vec3>* pt_pulsetrain)
+void cnc_io::send_pulses(cncglobals* cg, vector<Vector3>* pt_pulsetrain)
 {
     unsigned char send_byte = 0x00;
     int send_it = 1; 
@@ -211,9 +211,9 @@ void cnc_io::send_pulses(cncglobals* cg, vector<vec3>* pt_pulsetrain)
     }
 
     //**************************//
-    vec3 dirpulses = pt_pulsetrain->at(0);
+    Vector3 dirpulses = pt_pulsetrain->at(0);
     
-    vec3 limit_switches;
+    Vector3 limit_switches;
 
 
     if(send_it==0)

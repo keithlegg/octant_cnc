@@ -4,8 +4,13 @@
 #include <string>
 #include <vector>
 
-#include "math_op.h"
+#include "Vectors.h"
+#include "Matrices.h"
+//#include "math_op.h"
 
+
+#define MAX_NUM_VERTICES 10000
+#define MAX_NUM_FACES 10000
 
 //Cautiously moved to the heap  
 const int num_vtx   = 120000;
@@ -34,10 +39,71 @@ typedef struct quad{
 };
 
 
+/*
+// from : https://stackoverflow.com/questions/2750316/this-vs-this-in-c
+
+#include <iostream>
+
+class Foo
+{
+    public:
+        Foo()
+        {
+            this->value = 0;
+        }
+
+        Foo get_copy()
+        {
+            return *this;
+        }
+
+        Foo& get_copy_as_reference()
+        {
+            return *this;
+        }
+
+        Foo* get_pointer()
+        {
+            return this;
+        }
+
+        void increment()
+        {
+            this->value++;
+        }
+
+        void print_value()
+        {
+            std::cout << this->value << std::endl;
+        }
+
+    private:
+        int value;
+};
+
+int main()
+{
+    Foo foo;
+    foo.increment();
+    foo.print_value();
+
+    foo.get_copy().increment();
+    foo.print_value();
+
+    foo.get_copy_as_reference().increment();
+    foo.print_value();
+
+    foo.get_pointer()->increment();
+    foo.print_value();
+
+    return 0;
+}
+*/
 
 class obj_model {
     public:
-        obj_model(){
+        obj_model()
+        {
             num_pts     = 0;
             num_vnrmls  = 0;
             num_fnrmls  = 0;
@@ -58,16 +124,25 @@ class obj_model {
         int num_lines;
         int num_tris;
         int num_quads;    
-      
 
-        vec3 points[num_vtx];        // 3 floats - vertex  
-        vec3 vtxrgb[num_vtx];        // 3 floats - color per vertex 
-        vec2 uvs[num_vtx];           // 2 floats - UV coords 
-        vec3 vnormals[num_vtx];      // 3 floats - face normal 
-        vec3 fnormals[num_faces];    // 3 floats - face normal 
-        line lines[num_faces];       // 2 ints   - lines    idx
-        triangle tris[num_faces];    // 3 ints   - triangle idx 
-        quad quads[num_faces];       // 4 ints   - quad     idx 
+        // --- 
+        Vector3 points[MAX_NUM_VERTICES];          // vertices of model    
+        Vector3 vtxrgb[MAX_NUM_VERTICES];          // vertices of model  
+
+        Vector2 uvs[num_vtx];           // 2 floats - UV coords 
+        Vector3 vnormals[num_vtx];      // 3 floats - face normal 
+        Vector3 fnormals[num_faces];    // 3 floats - face normal 
+
+        std::vector<int> lines[MAX_NUM_FACES]; // 2 sided faces 
+        std::vector<int> tris[MAX_NUM_FACES];  // 3 sided 
+        std::vector<int> quads[MAX_NUM_FACES]; // 4 sided 
+        std::vector<int> faces[MAX_NUM_FACES]; // >4, N sided faces 
+        // ---
+        Vector3 bfr_pts[MAX_NUM_VERTICES];          // general point buffer   ( tmp work area )
+        std::vector<int> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
+
+        // ---
+        Matrix4 m44;
 
         // float& operator[] (size_t i)
         // {
@@ -81,15 +156,15 @@ class obj_model {
         // float operator[] (size_t i) const
         // { return (*const_cast<vector3f*>(this))[i];
 
-        //vec3 get_obj_centroid( void );
-        vec3 get_extents(void);
+        //Vector3 get_obj_centroid( void );
+        Vector3 get_extents(void);
 
         void reset(void);
         void load( char *);
         void save( char *);
         void show(void);
         void calc_normals(void);
-        void add_triangle(vec3 pt1, vec3 pt2, vec3 pt3);
+        void add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3);
         void triangulate(void);
         void show_geom(void);
 

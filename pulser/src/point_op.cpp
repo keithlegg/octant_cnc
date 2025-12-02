@@ -47,7 +47,7 @@ void  polygon_ops::hello(void)
 #include <cmath>
 #include <vector>
 
-#include "math_op.h"
+//#include "math_op.h"
 #include "point_op.h"
 
 #include <iostream>
@@ -57,9 +57,9 @@ void  polygon_ops::hello(void)
 /*****************************/
 
 
-void pointgen::locate_pt_along3d(std::vector<vec3>* output,
-                                 vec3 fpos, 
-                                 vec3 spos, 
+void pointgen::locate_pt_along3d(std::vector<Vector3>* output,
+                                 Vector3 fpos, 
+                                 Vector3 spos, 
                                  int num)
 {
     
@@ -67,7 +67,7 @@ void pointgen::locate_pt_along3d(std::vector<vec3>* output,
 
     for (n=0;n<num;n++)
     {
-        vec3 npos;
+        Vector3 npos;
 
         //X
         if(fpos.x-spos.x!=0)
@@ -106,21 +106,21 @@ void pointgen::locate_pt_along3d(std::vector<vec3>* output,
 
 /*****************************/
 
-void pointgen::cubic_bezier(std::vector<vec3>* output, 
-                            std::vector<vec3>* colors,
+void pointgen::cubic_bezier(std::vector<Vector3>* output, 
+                            std::vector<Vector3>* colors,
                             int* numvecs,
                             int draw_steps, 
-                            vec3 start, 
-                            vec3 ctrl1, 
-                            vec3 ctrl2,
-                            vec3 end
+                            Vector3 start, 
+                            Vector3 ctrl1, 
+                            Vector3 ctrl2,
+                            Vector3 end
                         )
 {
        
         double x,y,z,t,tt,ttt,u,uu,uuu = 0;
         double i;
  
-        vec3 color = newvec3(1.0,0.0,0.0);
+        Vector3 color = Vector3(1.0,0.0,0.0);
 
         for (i=0;i<draw_steps;i++)
         {
@@ -146,7 +146,7 @@ void pointgen::cubic_bezier(std::vector<vec3>* output,
             z = 3.0 * u * tt * ctrl2.z +1.0;
             z = ttt * end.z +1.0;
 
-            vec3 out;
+            Vector3 out;
             out.x = x; 
             out.y = y;
             out.z = z;
@@ -242,8 +242,12 @@ void pointgen::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_ori
 
     for (int i = 0; i <360; i=i+divamt)
     {  
-        out_coords[*num].x = x_orig + (sin(dtr(i-rotation_offset))*dia);
-        out_coords[*num].y = y_orig + (cos(dtr(i-rotation_offset))*dia);
+        //DEBUG DTR was in math_ops
+        //out_coords[*num].x = x_orig + (sin(dtr(i-rotation_offset))*dia);
+        //out_coords[*num].y = y_orig + (cos(dtr(i-rotation_offset))*dia);
+        out_coords[*num].x = x_orig + (sin(i-rotation_offset)*dia);
+        out_coords[*num].y = y_orig + (cos(i-rotation_offset)*dia);
+
         *num = *num+1;
     }
 

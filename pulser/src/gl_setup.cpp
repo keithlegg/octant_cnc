@@ -37,7 +37,13 @@ static GLfloat emis_blue[]   = { 0, 0, 1., 0};
 //////////////////////////////////////////////////////////////
 //void m44_to_glm44( m44* pt_m44, GLfloat m44_glfloat[16] ){}
 
-void glutm44_to_m44( m44* pt_m44, GLfloat m44_glfloat[16] ){
+void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
+
+    /*
+    // void        set(float m00, float m01, float m02, float m03, // 1st column
+    //                 float m04, float m05, float m06, float m07, // 2nd column
+    //                 float m08, float m09, float m10, float m11, // 3rd column
+    //                 float m12, float m13, float m14, float m15);// 4th column
 
     pt_m44->m0  = m44_glfloat[0];
     pt_m44->m1  = m44_glfloat[1];
@@ -58,6 +64,7 @@ void glutm44_to_m44( m44* pt_m44, GLfloat m44_glfloat[16] ){
     pt_m44->m13 = m44_glfloat[13];
     pt_m44->m14 = m44_glfloat[14];
     pt_m44->m15 = m44_glfloat[15];
+    */
 
 } 
 
@@ -277,7 +284,7 @@ void dump_points_GLfloat( GLfloat* verts, obj_model* pt_object, int numpts)
     for (y=0;y<numpts;y++)
     {
         
-        vec3 point = pt_object->points[y];
+        Vector3 point = pt_object->points[y];
         
         verts[num_gl_pts] =  (GLfloat)point.x; num_gl_pts++;
         verts[num_gl_pts] =  (GLfloat)point.y; num_gl_pts++;
@@ -292,7 +299,7 @@ void dump_points_GLfloat( GLfloat* verts, obj_model* pt_object, int numpts)
 
 //void dump_points_GLfloat( GLfloat* verts, vector<vec3>* pt_vecarray, int numpts);
 //overloaded dump points to accept array of points instead of object 
-void dump_points_GLfloat( GLfloat* verts, vector<vec3>* pt_vecarray, int numpts)
+void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int numpts)
 {
     
     int y = 0;

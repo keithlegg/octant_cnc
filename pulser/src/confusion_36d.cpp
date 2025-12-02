@@ -143,11 +143,11 @@ extern int num_drawvec3;
 extern int num_drawpoints;
 extern int TCP_PORT;
 
-extern vector<vec3> scene_drawvec3;
-extern vector<vec3> scene_drawvecclr;
-extern vector<vec3> scene_drawpoints;
-extern vector<vec3> scene_drawpointsclr;
-extern vector<vec3>* pt_scene_drawpoints;
+extern vector<Vector3> scene_drawvec3;
+extern vector<Vector3> scene_drawvecclr;
+extern vector<Vector3> scene_drawpoints;
+extern vector<Vector3> scene_drawpointsclr;
+extern vector<Vector3>* pt_scene_drawpoints;
 
 
 char *cam_matrix_filepath  = "camera_matrix.olm";
@@ -234,11 +234,11 @@ float moveSpeed    = 2.1f;
 /*
 float zoomSpeed    = 1.2f;
 float rotateSpeed  = 4.0f;
-vec3 startpos = newvec3(0.0, 130.0, 60.0);
+Vector3 startpos = newvec3(0.0, 130.0, 60.0);
 
 m33 capsuleObj; //represents a Unity/Maya Transform node 
 quaternion orbt_rot_original;
-vec3 orbt_xform_original;
+Vector3 orbt_xform_original;
 */
 
 
@@ -289,7 +289,7 @@ GLfloat vertices[100];
 
 /***************************************/
 //DEBUG - GL_MODELVIEW_MATRIX and GL_PROJECTION_MATRIX seem to be the same 
-void grab_camera_matrix( m44 *pt_mmm)
+void grab_camera_matrix( Matrix4 *pt_mmm)
 {
     GLfloat model[16]; 
 
@@ -358,10 +358,11 @@ void tweak_matrix( void )
 */
 
 
-void negate_y_axis(m44 *input){
+void negate_y_axis(Matrix4 *input){
    // this is a hack!  (invert Y is option on renderer! debug )
    // for some reason python 3D renderer wants y inverted  
-
+   
+   /*
     float a,b,c;
 
     a = -input->m1;
@@ -371,6 +372,7 @@ void negate_y_axis(m44 *input){
     input->m1 = a;
     input->m5 = b;
     input->m9 = c;
+    */
     
 }
 
@@ -443,13 +445,13 @@ void reset_view(void){
 
 /***************************************/
 
-void test_bezier( vec3 start, vec3 ctrl1, vec3 ctrl2, vec3 end)
+void test_bezier( Vector3 start, Vector3 ctrl1, Vector3 ctrl2, Vector3 end)
 {
 
     pointgen PG;
 
-    vector<vec3> * ptDrawvec = &scene_drawvec3;
-    vector<vec3> * ptDrawClr = &scene_drawvecclr;
+    vector<Vector3> * ptDrawvec = &scene_drawvec3;
+    vector<Vector3> * ptDrawClr = &scene_drawvecclr;
     int * ptnum_drawvec3 = &num_drawvec3;
     
     PG.cubic_bezier(ptDrawvec, ptDrawClr,  ptnum_drawvec3, 10, start, ctrl1, ctrl2, end);
@@ -698,15 +700,15 @@ static void render_loop()
         {   
             glBegin(GL_LINES);
                 // fetch the line indices from vertex list 
-                int lin1 = pt_model_buffer->lines[p_i].pt1;
-                int lin2 = pt_model_buffer->lines[p_i].pt2;
+                int lin1 = pt_model_buffer->lines[p_i][0];
+                int lin2 = pt_model_buffer->lines[p_i][1];
                 
-                vec3 pt1 = pt_model_buffer->points[lin1-1];
-                vec3 pt2 = pt_model_buffer->points[lin2-1];
+                Vector3 pt1 = pt_model_buffer->points[lin1-1];
+                Vector3 pt2 = pt_model_buffer->points[lin2-1];
 
                 //use the same vertex indices to lookup RGB 
-                vec3 c1 = pt_model_buffer->vtxrgb[lin1-1];
-                vec3 c2 = pt_model_buffer->vtxrgb[lin2-1];
+                Vector3 c1 = pt_model_buffer->vtxrgb[lin1-1];
+                Vector3 c2 = pt_model_buffer->vtxrgb[lin2-1];
 
                 if(c1.x==0){c1.x=line_clr_r;c2.x=line_clr_r;}
                 if(c1.y==0){c1.y=line_clr_g;c2.y=line_clr_g;}
@@ -747,14 +749,14 @@ static void render_loop()
             for (p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
                 // fetch the triangle indices from vertex list
-                int tri1 = pt_model_buffer->tris[p_i].pt1;
-                int tri2 = pt_model_buffer->tris[p_i].pt2;
-                int tri3 = pt_model_buffer->tris[p_i].pt3;
+                int tri1 = pt_model_buffer->tris[p_i][0];
+                int tri2 = pt_model_buffer->tris[p_i][1];
+                int tri3 = pt_model_buffer->tris[p_i][2];
                 
                 //use the same vertex indices to lookup RGB 
-                vec3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
-                vec3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
-                vec3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
+                Vector3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
+                Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
+                Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
 
                 /***********************/                
                 glColor3f(rgb1.x,rgb1.y,rgb1.z);   
@@ -762,11 +764,11 @@ static void render_loop()
                 //vec2 uv = pt_model_buffer->uvs[tri1];
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.5, 1.0);                
-                vec3 pt1 = pt_model_buffer->points[tri1-1];
+                Vector3 pt1 = pt_model_buffer->points[tri1-1];
                 glVertex3f(pt1.x, pt1.y, pt1.z);
 
               
-                vec3 nrm1 = pt_model_buffer->vnormals[tri1-1];
+                Vector3 nrm1 = pt_model_buffer->vnormals[tri1-1];
                 glNormal3f( nrm1.x, nrm1.y, nrm1.z);
                 //printf( " %d %d %d \n",  nrm1.x, nrm1.y, nrm1.z);
 
@@ -778,11 +780,11 @@ static void render_loop()
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.0, 1.0); 
 
-                vec3 pt2 = pt_model_buffer->points[tri2-1];
+                Vector3 pt2 = pt_model_buffer->points[tri2-1];
                 glVertex3f(pt2.x, pt2.y, pt2.z);
 
                 // calculated face normals 
-                vec3 nrm2 = pt_model_buffer->vnormals[tri2-1];
+                Vector3 nrm2 = pt_model_buffer->vnormals[tri2-1];
                 glNormal3f( nrm2.x, nrm2.y, nrm2.z);
 
 
@@ -793,11 +795,11 @@ static void render_loop()
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(1.0, 0.0);       
 
-                vec3 pt3 = pt_model_buffer->points[tri3-1];
+                Vector3 pt3 = pt_model_buffer->points[tri3-1];
                 glVertex3f(pt3.x, pt3.y, pt3.z);
 
                 // calculated face normals
-                vec3 nrm3 = pt_model_buffer->vnormals[tri3-1];
+                Vector3 nrm3 = pt_model_buffer->vnormals[tri3-1];
                 glNormal3f( nrm3.x, nrm3.y, nrm3.z);
 
 
@@ -805,7 +807,7 @@ static void render_loop()
 
         glEnd(); 
 
-        vec3 tri_cntr;
+        Vector3 tri_cntr;
 
         // display loaded normals as lines 
         if (draw_normals)
@@ -815,9 +817,9 @@ static void render_loop()
             for (p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             {             
                 // fetch the pts for a triangle
-                vec3 p1 = pt_model_buffer->points[pt_model_buffer->tris[p_i].pt1-1];
-                vec3 p2 = pt_model_buffer->points[pt_model_buffer->tris[p_i].pt2-1];
-                vec3 p3 = pt_model_buffer->points[pt_model_buffer->tris[p_i].pt3-1];
+                Vector3 p1 = pt_model_buffer->points[pt_model_buffer->tris[p_i][0]-1];
+                Vector3 p2 = pt_model_buffer->points[pt_model_buffer->tris[p_i][1]-1];
+                Vector3 p3 = pt_model_buffer->points[pt_model_buffer->tris[p_i][2]-1];
 
                 // calculate the centroid 
                 tri_cntr.x = (p1.x + p2.x + p3.x)/3;
@@ -825,8 +827,9 @@ static void render_loop()
                 tri_cntr.z = (p1.z + p2.z + p3.z)/3; 
                   
                 //display shorter for neatness  
-                vec3 mv =  add(tri_cntr, div(pt_model_buffer->fnormals[p_i], 20 ));
-                //vec3 mv =  add(tri_cntr, pt_model_buffer->fnormals[p_i]);
+                //Vector3 mv =  add(tri_cntr, div(pt_model_buffer->fnormals[p_i], 20 ));
+                Vector3 mv = tri_cntr.operator+(pt_model_buffer->fnormals[p_i].operator/=(20));
+                //Vector3 mv =  tri_cntr.operator+(pt_model_buffer->fnormals[p_i]);
 
                 //print_vec3( mv );
 
@@ -848,8 +851,7 @@ static void render_loop()
 
     // ----------------------
     // draw scene defined geom 
-    if (false)
-    //if (draw_scene_geom )
+    if (draw_scene_geom)
     {
 
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -858,8 +860,9 @@ static void render_loop()
 
         for (p_i=0;p_i<num_drawvec3;p_i++)
         {   
-            vec3 dv  = scene_drawvec3[p_i];
-            vec3 rgb = scene_drawvecclr[p_i];            
+            /*
+            Vector3 dv  = scene_drawvec3[p_i];
+            Vector3 rgb = scene_drawvecclr[p_i];            
             //print_vec3(dv);
 
             glBegin(GL_LINES);
@@ -870,6 +873,7 @@ static void render_loop()
                 glVertex3f(dv.x, dv.y, dv.z);
         
             glEnd();
+            */
         }
         
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
@@ -895,49 +899,49 @@ static void render_loop()
             for (q_i=0;q_i<pt_model_buffer->num_quads;q_i++)
             { 
 
-                int qu1 = pt_model_buffer->quads[q_i].pt1;
-                int qu2 = pt_model_buffer->quads[q_i].pt2;
-                int qu3 = pt_model_buffer->quads[q_i].pt3;
-                int qu4 = pt_model_buffer->quads[q_i].pt4;
+                int qu1 = pt_model_buffer->quads[q_i][0];
+                int qu2 = pt_model_buffer->quads[q_i][1];
+                int qu3 = pt_model_buffer->quads[q_i][2];
+                int qu4 = pt_model_buffer->quads[q_i][3];
 
                 //DEBUG VTX COLORS ARE BROKEN - INDEXING ISSUES 
-                vec3 rgb1 = pt_model_buffer->vtxrgb[qu1-1];
-                vec3 rgb2 = pt_model_buffer->vtxrgb[qu2-1];
-                vec3 rgb3 = pt_model_buffer->vtxrgb[qu3-1];
-                vec3 rgb4 = pt_model_buffer->vtxrgb[qu4-1];
+                Vector3 rgb1 = pt_model_buffer->vtxrgb[qu1-1];
+                Vector3 rgb2 = pt_model_buffer->vtxrgb[qu2-1];
+                Vector3 rgb3 = pt_model_buffer->vtxrgb[qu3-1];
+                Vector3 rgb4 = pt_model_buffer->vtxrgb[qu4-1];
 
                 //DEBUG - not working or tested  
-                vec3 nrm1 = pt_model_buffer->vnormals[qu1-1];
-                vec3 nrm2 = pt_model_buffer->vnormals[qu2-1];
-                vec3 nrm3 = pt_model_buffer->vnormals[qu3-1];
-                vec3 nrm4 = pt_model_buffer->vnormals[qu4-1];
+                Vector3 nrm1 = pt_model_buffer->vnormals[qu1-1];
+                Vector3 nrm2 = pt_model_buffer->vnormals[qu2-1];
+                Vector3 nrm3 = pt_model_buffer->vnormals[qu3-1];
+                Vector3 nrm4 = pt_model_buffer->vnormals[qu4-1];
      
                 /***********************/
                 glColor3f(rgb1.x,rgb1.y,rgb1.z);                 
                 glTexCoord2f(0.5, 1.0);                
                 glNormal3f( nrm1.x, nrm1.y, nrm1.z);
-                vec3 pt1 = pt_model_buffer->points[qu1-1];
+                Vector3 pt1 = pt_model_buffer->points[qu1-1];
                 glVertex3f(pt1.x, pt1.y, pt1.z);
 
                 /***********************/
                 glColor3f(rgb2.x,rgb2.y,rgb2.z); 
                 glTexCoord2f(0.0, 1.0); 
                 glNormal3f( nrm2.x, nrm2.y, nrm2.z);
-                vec3 pt2 = pt_model_buffer->points[qu2-1];
+                Vector3 pt2 = pt_model_buffer->points[qu2-1];
                 glVertex3f(pt2.x, pt2.y, pt2.z);
 
                 /***********************/
                 glColor3f(rgb3.x,rgb3.y,rgb3.z);                 
                 glTexCoord2f(1.0, 0.0);   
                 glNormal3f( nrm3.x, nrm3.y, nrm3.z);                             
-                vec3 pt3 = pt_model_buffer->points[qu3-1];
+                Vector3 pt3 = pt_model_buffer->points[qu3-1];
                 glVertex3f(pt3.x, pt3.y, pt3.z);
 
                 /***********************/
                 glColor3f(rgb4.x,rgb4.y,rgb4.z);                 
                 glTexCoord2f(1.0, 0.0);      
                 glNormal3f( nrm4.x, nrm4.y, nrm4.z);
-                vec3 pt4 = pt_model_buffer->points[qu4-1];
+                Vector3 pt4 = pt_model_buffer->points[qu4-1];
                 glVertex3f(pt4.x, pt4.y, pt4.z);
 
 
@@ -954,16 +958,19 @@ static void render_loop()
             for (p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
             {             
                 // fetch the pts for a triangle
-                vec3 p1 = pt_model_buffer->points[pt_model_buffer->quads[p_i].pt1-1];
-                vec3 p2 = pt_model_buffer->points[pt_model_buffer->quads[p_i].pt2-1];
-                vec3 p3 = pt_model_buffer->points[pt_model_buffer->quads[p_i].pt3-1];
+                Vector3 p1 = pt_model_buffer->points[pt_model_buffer->quads[p_i][0]-1];
+                Vector3 p2 = pt_model_buffer->points[pt_model_buffer->quads[p_i][1]-1];
+                Vector3 p3 = pt_model_buffer->points[pt_model_buffer->quads[p_i][2]-1];
                 // calculate the centroid 
-                vec3 quad_cntr;
+                Vector3 quad_cntr;
                 quad_cntr.x = (p1.x + p2.x + p3.x)/3;
                 quad_cntr.y = (p1.y + p2.y + p3.y)/3;
                 quad_cntr.z = (p1.z + p2.z + p3.z)/3; 
+                
                 //display shorter for neatness  
-                vec3 mv =  add(quad_cntr, div(pt_model_buffer->fnormals[p_i], 20 ));
+                //Vector3 mv =  add(quad_cntr, div(pt_model_buffer->fnormals[p_i], 20 ));
+                Vector3 mv =  quad_cntr.operator+(pt_model_buffer->fnormals[p_i].operator/=(20));
+
                 glBindTexture(GL_TEXTURE_2D, texture[0]);
                 glMaterialfv(GL_FRONT, GL_EMISSION, clr_yellow);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
@@ -1113,7 +1120,6 @@ void start_gui(int *argc, char** argv){
     cg.load_cfg_file(argv[1]);
     //load any optional 3d models needed for setup
     cg.load_objects();
-
     cg.show_obj();
 
 
@@ -1122,10 +1128,10 @@ void start_gui(int *argc, char** argv){
    
     //------------
 
-    // vec3 start = newvec3(0.0 ,3.0 ,1.0 );
-    // vec3 ctrl1 = newvec3(2.5  ,0.0 ,0.0 );
-    // vec3 ctrl2 = newvec3(0.0 ,1.0  ,0.0 );
-    // vec3 end   = newvec3(-1.0 ,0.0 ,-5.0 );
+    // Vector3 start = newvec3(0.0 ,3.0 ,1.0 );
+    // Vector3 ctrl1 = newvec3(2.5  ,0.0 ,0.0 );
+    // Vector3 ctrl2 = newvec3(0.0 ,1.0  ,0.0 );
+    // Vector3 end   = newvec3(-1.0 ,0.0 ,-5.0 );
     // test_bezier(start, ctrl1, ctrl2, end);
     
     //warnings();
@@ -1873,7 +1879,7 @@ void key_cb(unsigned int key)
     { 
 
         //go ahead and dump camera matrix automatically 
-        m44 foo = identity44();
+        Matrix4 foo = Matrix4();
         grab_camera_matrix(&foo);
         negate_y_axis(&foo);
         //save_matrix44(cam_matrix_filepath, &foo );
@@ -1884,7 +1890,7 @@ void key_cb(unsigned int key)
     { 
 
         //go ahead and dump camera matrix automatically 
-        m44 foo = identity44();
+        Matrix4 foo = Matrix4();
         grab_camera_matrix(&foo);
         negate_y_axis(&foo);
         //save_matrix44(cam_matrix_filepath, &foo );
@@ -1896,7 +1902,7 @@ void key_cb(unsigned int key)
 
     if (key == 8 || key == 127) //backspace /delete on OSX )
     { 
-        m44 cam_matrix = identity44();
+        Matrix4 cam_matrix = Matrix4();
         grab_camera_matrix(&cam_matrix);
         //negate_y_axis(&foo); - PIL, CPP and framebuffer use different origins!
 

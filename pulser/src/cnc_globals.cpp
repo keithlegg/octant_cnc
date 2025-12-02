@@ -22,7 +22,7 @@
 #include <vector>
 using std::vector;
 
-#include "math_op.h"
+//#include "math_op.h"
 //#include "point_op.h"
 
 #include "obj_model.h"
@@ -56,13 +56,13 @@ using std::vector;
 
 char strbuffer[100][100];
 
-std::vector<vec3> scene_drawvec3;
-std::vector<vec3> scene_drawvecclr;
+std::vector<Vector3> scene_drawvec3;
+std::vector<Vector3> scene_drawvecclr;
 int num_drawvec3 = 0;
 
-std::vector<vec3> scene_drawpoints;
-std::vector<vec3> scene_drawpointsclr;
-std::vector<vec3>* pt_scene_drawpoints = &scene_drawpoints;
+std::vector<Vector3> scene_drawpoints;
+std::vector<Vector3> scene_drawpointsclr;
+std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
 int num_drawpoints = 0;
 
 
@@ -269,7 +269,6 @@ int cncglobals::cvt_int( const std::string& s)
                   << "; pos: " << pos << '\n';
     } 
     */ 
-    return 0;
 
 }
 
@@ -287,20 +286,22 @@ void cncglobals::show_obj(void)
 
 void cncglobals::load_objects(void)
 {
-    if(!(*this).obj_filepaths.empty()) 
+    //std::cout <<  "load_objects called \n";
+
+    if(!obj_filepaths.empty()) 
     {
         char char_array[100];
         int x = 0 ; 
+            
+        std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
+        pt_model_buffer.reset();
 
         //DEBUG THIS BLOWS UP (OR QUIETLY DIES)
         //for(x=0;x<(*this).num_loaded_obj;x++)
-        for(x=0;x<(*this).obj_filepaths.size();x++)
+        for(x=0;x<obj_filepaths.size();x++)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
-            strcpy(char_array, (*this).obj_filepaths[x].c_str()); 
-
-            std::cout << "##### DEBUG load_objfile resetting file internals \n";
-            pt_model_buffer.reset();
+            strcpy(char_array, obj_filepaths[x].c_str()); 
             pt_model_buffer.load(char_array);
         };
     };
@@ -654,350 +655,4 @@ void cncglobals::load_cfg_file( char* filepath )
 
 
 
-void write_scenefile(char*objpath, char*cammatrixpath, char* scenefilepath ){};
-/*
-{
 
-    //char *object_path ="3d_obj/pycore.obj";
-    //char *camera_matrix_path = " ";
-
-    FILE * fp;
-
-    fp = fopen (scenefilepath, "w+");
-
-
-    fprintf(fp, "## Generated with CNCPulser.  ##\n\n"             );
-
-    fprintf(fp, "obj_path %s \n"            , objpath                                    );
-    fprintf(fp, "cam_matrix_path %s \n"     , cammatrixpath                              );
-    fprintf(fp, "cam_pos %f %f %f \n"       , cam_posx, cam_posy, cam_posz               );
-    fprintf(fp, "op_loadobj %s \n"          , objpath                                    );
-
-    fprintf(fp, "\n# render prefs   \n"                                                  );
-    fprintf(fp, "rendermode %s \n"          , "litshaded"                                ); 
-    fprintf(fp, "showgrid true       \n"                                                   );
-    fprintf(fp, "showgnomon false    \n"                                                   ); 
-    fprintf(fp, "gridsize 2.5        \n"                                                   );
-    fprintf(fp, "gnomonsize 1.0      \n"                                                   ); 
-    fprintf(fp, "drawlines true      \n"                                                   );
-    fprintf(fp, "drawquads true      \n"                                                   ); 
-    fprintf(fp, "drawtriangles true  \n"                                                   );
-    fprintf(fp, "drawpoints true      \n"                                                   ); 
-
-    fprintf(fp, "\n# light setup \n"                                                     );
-    fprintf(fp, "light_pos %f %f %f \n"     , light_posx, light_posy, light_posz         );
-    fprintf(fp, "light_intensity %f \n"     , light_intensity                            );
-
-    fprintf(fp, "\n# colors      \n"                                                     );
-    fprintf(fp, "bg_color %s \n"            , "20 15 15"                                 ); 
-    fprintf(fp, "line_color %s \n"          , "0 0 100"                                  ); 
-    fprintf(fp, "fill_color %d %d %d \n"    , surfce_clr_r, surfce_clr_g, surfce_clr_b   ); 
-    fprintf(fp, "vtx_color %s \n"           , "200 0 0"                                  ); 
-    fprintf(fp, "show_vtx %s \n"            , "false"                                    ); 
-    fprintf(fp, "show_lines %s \n"          , "false"                                    ); 
- 
- 
-    // 
-
-
-    //fprintf(fp, "\n\n## Commands to play with someday ##\n\n"     );
-    //fprintf(fp, "#op_loadobj #\n"                                 );
-   
-
-    fclose(fp);
-
-
-};
-*/
-
-
-
-void load_matrix33(char* filename, m33 * pm33 ){};
-/*
-{
-    ifstream fin;
-
-    fin.open(filename); // open a file
-    if (!fin.good()){ 
-        cout << "matrix text file \""<< filename <<"\" appears to be missing or broken." << endl;
-        exit (EXIT_FAILURE); // exit if file not found
-    }
-
-    int l_idx = 0;
-
-    while (!fin.eof())
-    {
-        char buf[MAX_CHARS_PER_LINE];
-        fin.getline(buf, MAX_CHARS_PER_LINE);
-         
-        vector <std::string> tokens; 
-        stringstream check1(buf); 
-        std::string intermediate; 
-        
-        while(getline(check1, intermediate, ' ')) 
-        { 
-            tokens.push_back(intermediate); 
-        } 
-        
-        int t_idx = 0; 
-        for(int i = 0; i < tokens.size(); i++)
-        { 
-
-            // omit blank spaces 
-            if ( tokens[i].compare(" ") != -1)
-            {   
-                double elem = stod(tokens[i]);
-
-                if (l_idx==0 && t_idx==0 )
-                    pm33->m0 = elem;
-                if (l_idx==0 && t_idx==1 )
-                    pm33->m1 = elem;
-                if (l_idx==0 && t_idx==2 )
-                    pm33->m2 = elem;
-                                                      
-
-                if (l_idx==1 && t_idx==0 )
-                    pm33->m3 = elem;
-                if (l_idx==1 && t_idx==1 )
-                    pm33->m4 = elem;
-                if (l_idx==1 && t_idx==2 )
-                    pm33->m5 = elem;
- 
-
-                if (l_idx==2 && t_idx==0 )
-                    pm33->m6 = elem;
-                if (l_idx==2 && t_idx==1 )
-                    pm33->m7 = elem;
-                if (l_idx==2 && t_idx==2 )
-                    pm33->m8 = elem;
-      
-                t_idx++; // non space token index
-
-            }
-
-        }
-       
-        l_idx++; //line index
-  
-   }
-      
-}
-*/
-
-
-
-void load_matrix44(char* filename, m44 * pm44 ){};
-/*
-{
-    ifstream fin;
-
-    fin.open(filename); // open a file
-    if (!fin.good()){ 
-        cout << "matrix text file \""<< filename <<"\" appears to be missing or broken." << endl;
-        exit (EXIT_FAILURE); // exit if file not found
-    }
-
-    int l_idx = 0;
-
-    while (!fin.eof())
-    {
-        char buf[MAX_CHARS_PER_LINE];
-        fin.getline(buf, MAX_CHARS_PER_LINE);
-         
-        vector <std::string> tokens; 
-        stringstream check1(buf); 
-        std::string intermediate; 
-        
-        while(getline(check1, intermediate, ' ')) 
-        { 
-            tokens.push_back(intermediate); 
-        } 
-        
-        int t_idx = 0; 
-        for(int i = 0; i < tokens.size(); i++)
-        { 
-
-            // omit blank spaces 
-            if ( tokens[i].compare(" ") != -1)
-            {   
-                double elem = stod(tokens[i]);
-
-                if (l_idx==0 && t_idx==0 )
-                    pm44->m0 = elem;
-                if (l_idx==0 && t_idx==1 )
-                    pm44->m1 = elem;
-                if (l_idx==0 && t_idx==2 )
-                    pm44->m2 = elem;
-                if (l_idx==0 && t_idx==3 )
-                    pm44->m3 = elem;                                                        
-
-                if (l_idx==1 && t_idx==0 )
-                    pm44->m4 = elem;
-                if (l_idx==1 && t_idx==1 )
-                    pm44->m5 = elem;
-                if (l_idx==1 && t_idx==2 )
-                    pm44->m6 = elem;
-                if (l_idx==1 && t_idx==3 )
-                    pm44->m7 = elem;  
-
-                if (l_idx==2 && t_idx==0 )
-                    pm44->m8 = elem;
-                if (l_idx==2 && t_idx==1 )
-                    pm44->m9 = elem;
-                if (l_idx==2 && t_idx==2 )
-                    pm44->m10 = elem;
-                if (l_idx==2 && t_idx==3 )
-                    pm44->m11 = elem;  
-
-                if (l_idx==3 && t_idx==0 )
-                    pm44->m12 = elem;
-                if (l_idx==3 && t_idx==1 )
-                    pm44->m13 = elem;
-                if (l_idx==3 && t_idx==2 )
-                    pm44->m14 = elem;
-                if (l_idx==3 && t_idx==3 )
-                    pm44->m15 = elem;                                      
-
-
-                t_idx++; // non space token index
-
-            }
-
-        }
-       
-        l_idx++; //line index
-  
-   }
-      
-}
-*/
-
-
-
-void save_matrix44(char* filepath, m44 *input ){};
-
-/*
-
-   FILE * fp;
-
-   fp = fopen (filepath, "w+");
-   
-   fprintf(fp, "%f %f %f %f\n", input->m0  , input->m1  , input->m2  , input->m3  );
-   fprintf(fp, "%f %f %f %f\n", input->m4  , input->m5  , input->m6  , input->m7  );
-   fprintf(fp, "%f %f %f %f\n", input->m8  , input->m9  , input->m10 , input->m11 );
-   fprintf(fp, "%f %f %f %f\n", input->m12 , input->m13 , input->m14 , input->m15 );      
-   
-   fclose(fp);
-      
-}
-*/
-
-
-void save_matrix33(char* filepath, m33 *input ){};
-/*
-
-   FILE * fp;
-
-   fp = fopen (filepath, "w+");
- 
-   fprintf(fp, "%f %f %f \n", input->m0  , input->m1  , input->m2   );
-   fprintf(fp, "%f %f %f \n", input->m3  , input->m4  , input->m5   );
-   fprintf(fp, "%f %f %f \n", input->m6  , input->m7  , input->m8   );
-      
-   fclose(fp);
-      
-}
-
-
-
-*/
-
-
-
-
-
-/*****************************************************/
-/*
-void write_scenefile(char*objpath, char*cammatrixpath, char* scenefilepath )
-{
-
-    //char *object_path ="3d_obj/pycore.obj";
-    //char *camera_matrix_path = " ";
-
-    FILE * fp;
-
-    fp = fopen (scenefilepath, "w+");
-
-
-    fprintf(fp, "## Generated with CNCPulser.  ##\n\n"             );
-
-    fprintf(fp, "obj_path %s \n"            , objpath                                    );
-    fprintf(fp, "cam_matrix_path %s \n"     , cammatrixpath                              );
-    fprintf(fp, "cam_pos %f %f %f \n"       , cam_posx, cam_posy, cam_posz               );
-    fprintf(fp, "op_loadobj %s \n"          , objpath                                    );
-
-    fprintf(fp, "\n# render prefs   \n"                                                  );
-    fprintf(fp, "rendermode %s \n"          , "litshaded"                                ); 
-    fprintf(fp, "showgrid true       \n"                                                   );
-    fprintf(fp, "showgnomon false    \n"                                                   ); 
-    fprintf(fp, "gridsize 2.5        \n"                                                   );
-    fprintf(fp, "gnomonsize 1.0      \n"                                                   ); 
-    fprintf(fp, "drawlines true      \n"                                                   );
-    fprintf(fp, "drawquads true      \n"                                                   ); 
-    fprintf(fp, "drawtriangles true  \n"                                                   );
-    fprintf(fp, "drawpoints true      \n"                                                   ); 
-
-    fprintf(fp, "\n# light setup \n"                                                     );
-    fprintf(fp, "light_pos %f %f %f \n"     , light_posx, light_posy, light_posz         );
-    fprintf(fp, "light_intensity %f \n"     , light_intensity                            );
-
-    fprintf(fp, "\n# colors      \n"                                                     );
-    fprintf(fp, "bg_color %s \n"            , "20 15 15"                                 ); 
-    fprintf(fp, "line_color %s \n"          , "0 0 100"                                  ); 
-    fprintf(fp, "fill_color %d %d %d \n"    , surfce_clr_r, surfce_clr_g, surfce_clr_b   ); 
-    fprintf(fp, "vtx_color %s \n"           , "200 0 0"                                  ); 
-    fprintf(fp, "show_vtx %s \n"            , "false"                                    ); 
-    fprintf(fp, "show_lines %s \n"          , "false"                                    ); 
-
-
-    fclose(fp);
-
-};
-
-
-//////////////////////////////////////////
-
-
-class interrupt_flag
-    {
-    public:
-    void set();
-        bool is_set() const;
-    };
-    thread_local interrupt_flag this_thread_interrupt_flag;
-    class interruptible_thread
-    {
-        std::thread internal_thread;
-        interrupt_flag* flag;
-    public:
-        template<typename FunctionType>
-        interruptible_thread(FunctionType f)
-        {
-            std::promise<interrupt_flag*> p;
-            internal_thread=std::thread([f,&p]{
-                ￼￼￼￼    p.set_value(&this_thread_interrupt_flag);
-                    f(); 
-                });
-        flag=p.get_future().get();
-    }
-    ￼￼void interrupt()
-    {
-        if(flag) {
-            flag->set();
-        }
-    ￼￼￼￼} 
-};  
-
-
-
-*/

@@ -9,7 +9,7 @@
 #include "Matrices.h"
 
 //OLD C library - need to update 
-#include "math_op.h"
+//#include "math_op.h"
 
 
 //coordinate to a pixel in the scancache 
@@ -27,20 +27,20 @@ class pointgen
 
         ~pointgen(){};
 
-    void locate_pt_along3d(std::vector<vec3>*,
-                           vec3, 
-                           vec3, 
+    void locate_pt_along3d(std::vector<Vector3>*,
+                           Vector3, 
+                           Vector3, 
                            int);
 
 
-    void cubic_bezier(std::vector<vec3>*, 
-                      std::vector<vec3>*,
+    void cubic_bezier(std::vector<Vector3>*, 
+                      std::vector<Vector3>*,
                       int*,
                       int, 
-                      vec3, 
-                      vec3, 
-                      vec3,
-                      vec3
+                      Vector3, 
+                      Vector3, 
+                      Vector3,
+                      Vector3
                      );
 
 

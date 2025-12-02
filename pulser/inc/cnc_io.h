@@ -7,7 +7,7 @@
 #include <vector>
 using std::vector; //point_op did not make me do this!!?? WHY?
 
-#include "math_op.h"
+//#include "math_op.h"
 
 #include "cnc_globals.h"
 
@@ -37,8 +37,8 @@ class cnc_io
     void aux_on(cncglobals*, unsigned int);
     void aux_off(cncglobals*, unsigned int);
 
-    void send_pulses(cncglobals*, vector<vec3>*);
-    void read_limits(cncglobals*, vec3*);
+    void send_pulses(cncglobals*, vector<Vector3>*);
+    void read_limits(cncglobals*, Vector3*);
 
 };
 

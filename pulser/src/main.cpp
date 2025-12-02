@@ -6,7 +6,7 @@
 
 
 
-#include "math_op.h"        // general math operations
+//#include "math_op.h"        // general math operations
 #include "point_op.h"         
 #include "cnc_globals.h"
 
@@ -73,11 +73,11 @@ void run_cncplot(cncglobals* cg,
 
     cnc_plot plot;
     
-    vector<vec3> pulsetrain;
-    vector<vec3>* pt_pulsetrain = &pulsetrain; 
+    vector<Vector3> pulsetrain;
+    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
-    vec3 s_p = newvec3(f_x , f_y ,f_z );
-    vec3 e_p = newvec3(s_x , s_y ,s_z );
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
     plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
 
@@ -136,7 +136,8 @@ int main(int argc, char **argv)
 {  
 
     
-    /*------------------*/    
+    /*------------------*/  
+      
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -147,6 +148,7 @@ int main(int argc, char **argv)
             exit(0);
         }
     }
+    
 
     /*------------------*/
     //spinningCubeDemo(&argc, argv);

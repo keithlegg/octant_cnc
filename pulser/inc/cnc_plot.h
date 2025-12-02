@@ -7,7 +7,8 @@
 #include <vector>
 using std::vector;  
 
-#include "math_op.h"
+//#include "math_op.h"
+#include "Vectors.h"
 
 
 class cnc_plot
@@ -18,11 +19,11 @@ class cnc_plot
 
     void gen_pules(std::vector<int>*, int, int);
 
-    void gen_3d_pules(std::vector<vec3>*, int, int);
+    void gen_3d_pules(std::vector<Vector3>*, int, int);
 
-    void calc_3d_pulses(std::vector<vec3>*,
-                        vec3, 
-                        vec3,
+    void calc_3d_pulses(std::vector<Vector3>*,
+                        Vector3, 
+                        Vector3,
                         int);
 
 

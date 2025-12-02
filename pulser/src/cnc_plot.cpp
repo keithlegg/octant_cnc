@@ -21,8 +21,9 @@
 #include <vector>
 
 #include "cnc_plot.h"
-#include "math_op.h"
+//#include "math_op.h"
 #include "point_op.h"
+#include "Vectors.h"
 
 
 
@@ -100,9 +101,9 @@ void cnc_plot::gen_pules(vector<int>* pt_pulsetrain, int size, int num)
 
 /******************************************/
 
-void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
-                              vec3 fr_pt, 
-                              vec3 to_pt,
+void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
+                              Vector3 fr_pt, 
+                              Vector3 to_pt,
                               int numdivs)
 {
 
@@ -121,22 +122,24 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
 
 
             //make some storage for the data to work in 
-            vector<vec3> x_pts;
-            vector<vec3> y_pts;
-            vector<vec3> z_pts;
-            vector<vec3> samples;
+            vector<Vector3> x_pts;
+            vector<Vector3> y_pts;
+            vector<Vector3> z_pts;
+            vector<Vector3> samples;
 
             //make some pointers to those data.
             //(people who say THOSE data are technically correct, but they are pedantic dillholes) 
-            vector<vec3>* pt_xpts    = &x_pts;
-            vector<vec3>* pt_ypts    = &y_pts;
-            vector<vec3>* pt_zpts    = &z_pts;
-            vector<vec3>* pt_samples = &samples;
+            vector<Vector3>* pt_xpts    = &x_pts;
+            vector<Vector3>* pt_ypts    = &y_pts;
+            vector<Vector3>* pt_zpts    = &z_pts;
+            vector<Vector3>* pt_samples = &samples;
 
 
             //set up variables to do vector-y stuff
-            vec3 between   = sub(fr_pt, to_pt);
-            double mag     = length(between);
+            //Vector3 between   = sub(fr_pt, to_pt);
+            Vector3 between   = fr_pt.operator-(to_pt);
+
+            double mag     = between.length();
             
             //double gran    = 0;  //granularity 
             //double thresh  = 0;  //threshold 
@@ -168,7 +171,8 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
                 zp=0; 
             }
             //first element of pulse train stores the direction 
-            pt_pulsetrain->push_back(newvec3(xp,yp,zp));
+            //pt_pulsetrain->push_back(newvec3(xp,yp,zp));
+            pt_pulsetrain->push_back(Vector3(xp,yp,zp));
 
             //use the amount of change times the spatial divions to get the pulses 
             //DEBUG - we may want to use the mag of the 3d vector in here                  
@@ -210,8 +214,8 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
             int a=0;
             for(a=0;a<most;a++)
             {
-                pt_pulsetrain->push_back(newvec3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
-                pt_pulsetrain->push_back(newvec3(0,0,0));
+                pt_pulsetrain->push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+                pt_pulsetrain->push_back(Vector3(0,0,0));
             }
             
 
@@ -223,9 +227,9 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
 
 /*
 
-void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
-                              vec3 fr_pt, 
-                              vec3 to_pt,
+void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
+                              Vector3 fr_pt, 
+                              Vector3 to_pt,
                               int numdivs)
 {
 
@@ -244,21 +248,21 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
 
 
             //make some storage for the data to work in 
-            vector<vec3> x_pts;
-            vector<vec3> y_pts;
-            vector<vec3> z_pts;
-            vector<vec3> samples;
+            vector<Vector3> x_pts;
+            vector<Vector3> y_pts;
+            vector<Vector3> z_pts;
+            vector<Vector3> samples;
 
             //make some pointers to those data.
             //(people who say THOSE data are technically correct, but they are pedantic dillholes) 
-            vector<vec3>* pt_xpts    = &x_pts;
-            vector<vec3>* pt_ypts    = &y_pts;
-            vector<vec3>* pt_zpts    = &z_pts;
-            vector<vec3>* pt_samples = &samples;
+            vector<Vector3>* pt_xpts    = &x_pts;
+            vector<Vector3>* pt_ypts    = &y_pts;
+            vector<Vector3>* pt_zpts    = &z_pts;
+            vector<Vector3>* pt_samples = &samples;
 
 
             //set up variables to do vector-y stuff
-            vec3 between   = sub(fr_pt, to_pt);
+            Vector3 between   = sub(fr_pt, to_pt);
             double mag     = length(between);
             double gran    = 0;  //granularity 
             double thresh  = 0;  //threshold 
@@ -350,13 +354,13 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
                     yp=0;
                     zp=0;
 
-                    vec3 spt = samples[a]; 
+                    Vector3 spt = samples[a]; 
 
                     //X 
                     for (i=0;i<x_pts.size();i++)
                     {
-                        vec3 xpt = x_pts[i];
-                        vec3 ss = sub(xpt,spt);
+                        Vector3 xpt = x_pts[i];
+                        Vector3 ss = sub(xpt,spt);
                         if( length(ss)<thresh)
                         {
                             xp=1;
@@ -367,8 +371,8 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
                     //Y
                     for (i=0;i<y_pts.size();i++)
                     {
-                        vec3 ypt = y_pts[i];
-                        vec3 ss = sub(ypt,spt);
+                        Vector3 ypt = y_pts[i];
+                        Vector3 ss = sub(ypt,spt);
                         if( length(ss)<thresh)
                         {
                             yp=1;
@@ -380,8 +384,8 @@ void cnc_plot::calc_3d_pulses(vector<vec3>* pt_pulsetrain,
                     //Z
                     for (i=0;i<z_pts.size();i++)
                     {
-                        vec3 zpt = z_pts[i];
-                        vec3 ss = sub(zpt,spt);
+                        Vector3 zpt = z_pts[i];
+                        Vector3 ss = sub(zpt,spt);
                         if( length(ss)<thresh)
                         {
                             zp=1;

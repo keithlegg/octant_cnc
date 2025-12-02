@@ -11,9 +11,7 @@
 #include <vector>
 using std::vector; 
 
-
-
-#include "math_op.h"
+//#include "math_op.h"
 #include "obj_model.h"
 
 
@@ -27,8 +25,8 @@ typedef struct{
 }RGBType;
 
 struct material {
-  vec3 diffuse_color;
-  vec3 specular_color;
+  Vector3 diffuse_color;
+  Vector3 specular_color;
   float shininess;
   float transparency;
 };
@@ -36,9 +34,9 @@ struct material {
 
 struct directional_light
 {
-    vec3 color;
+    Vector3 color;
     float ambient_intensity;
-    vec3 direction;
+    Vector3 direction;
     float diffuse_intensity;
 }; 
 
@@ -65,7 +63,7 @@ struct directional_light
 
 
 
-void glutm44_to_m44( m44* , GLfloat m44_glfloat[16] );
+void glutm44_to_m44( Matrix4* , GLfloat m44_glfloat[16] );
 
 void graticulate( bool *, bool *, RGBType *, RGBType * );
 
@@ -74,31 +72,12 @@ void show_bbox(bool *, RGBType *);
 
 void InitGL(int , int );
 void dump_points_GLfloat( GLfloat* , obj_model* , int );
-void dump_points_GLfloat( GLfloat* , vector<vec3>* , int );
+void dump_points_GLfloat( GLfloat* , vector<Vector3>* , int );
 
 void clear_scenegeom( void);
 
 
 void set_screen_square(int* sx, int* sy);
-//void set_screen_square(void);
-
-
-/*
-void swimbag_tile(void);
-
-void render_m33(m33 *t33);
-void render_m44(m44 *t44);
-
-void drawTriangle (GLfloat x1, GLfloat y1, GLfloat x2, 
-    GLfloat y2, GLfloat x3, GLfloat y3, GLfloat z);
-
-void drawViewVolume (GLfloat x1, GLfloat x2, GLfloat y1, 
-                     GLfloat y2, GLfloat z1, GLfloat z2);
-
-
-*/
-
-
 
 
 
