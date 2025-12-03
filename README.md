@@ -30,26 +30,33 @@ software cannot and do not, take any responsibility
 for such compliance.
   
 ```
-
 <br>
 
-2018:
+A brief history. 
+
+<b>2018:</b>
 
 It started out as a python program to visualize 3D vectors and learn numpy.
+
 Then it turned into an experiment to use OpenGL in C.
+
 Then it was a 3D scanline renderer in C++.
 
-2019:
+<b>2019:</b>
+
 I had a dream of controlling CNC machines. 
+
 It was almost a GCODE parser (and may be one someday)
 
 (I took a long break from 2020-2025 for a major life reset)
 
-2025:
+<b>2025:</b>
+
 It was a parallel port testing tool. 
+
 That turned into a way to control 3 stepper motors in 3D space.
 
-2026 and beyond: 
+<b>2026 and beyond:</b> 
 
 It is all of these things (except the renderer, I ripped that out.)
 
