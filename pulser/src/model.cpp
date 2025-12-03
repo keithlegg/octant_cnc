@@ -62,7 +62,7 @@ const char* line_chr = "l";   // Line identifier in OBJ file
 
 
 
-/******************************/
+/**********************************************/
 
 // FIND A BETTER PLACE FOR THIS 
 // FRAMEBUFFER HAS A COPY AND NEEDS TO BE MOVED 
@@ -78,7 +78,7 @@ double rad_to_deg ( double rad){
    return rad * RAD_TO_DEG;
 }
 
-/******************************/
+/**********************************************/
 
 
 
@@ -96,7 +96,7 @@ int model::getnum_faces(){
 
 
 
-/**********************************************************/
+/**********************************************/
 
 Vector3 model::get_triface_normal(int fid)
 {
@@ -128,7 +128,7 @@ Vector3 model::get_triface_normal(int fid)
  
 
 
-/**********************************************************/
+/**********************************************/
 void model::showinfo(void)
 {
     cout << "\n-----------------------------------------------\n";   
@@ -146,7 +146,7 @@ void model::showinfo(void)
 }
 
 
-/**********************************************************/
+/**********************************************/
 
 
 void model::show(void)
@@ -201,7 +201,7 @@ void model::show(void)
 
 
 
-/**********************************************************/
+/**********************************************/
 
 // obj_pts    // vertices of model    
 // lines      // 2 sided faces 
@@ -223,7 +223,7 @@ void model::reset_buffers(void)
     fac_tmp.clear();
 }
 
-/**********************************************************/
+/**********************************************/
 // add renderable line segment between two vectors  
 void model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2)  
 {
@@ -270,7 +270,7 @@ void model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2, Vector3 color)
 
 }
 
-/**********************************************************/
+/**********************************************/
 /*
     add vector as a line segment, 
     but position it off origin at a position
@@ -315,7 +315,7 @@ void model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos, Vector3 color)
 
 }
 
-/**********************************************************/
+/**********************************************/
 // UNTESTED add vector as a line segment  
 void model::vec3_as_geom(Vector3 pt1)
 {
@@ -336,7 +336,7 @@ void model::vec3_as_geom(Vector3 pt1)
 
 }
 
-/**********************************************************/
+/**********************************************/
 // UNTESTED add vector as a line segment  
 void model::vec3_as_pt_geom(Vector3 pt1, double siz)
 {
@@ -366,14 +366,14 @@ void model::vec3_as_pt_geom(Vector3 pt1, Vector3 color, double siz)
 
 }
 
-/**********************************************************/
+/**********************************************/
 void model::print(Vector3 in)
 {
     cout  <<" "<< in.x << " " << in.y << " " << in.z <<" "; 
 }
 
 
-/**********************************************************/
+/**********************************************/
 // UNTESTED add a new triangle using 3 vector3 
 void model::add_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 {
@@ -396,7 +396,7 @@ void model::add_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 
 }
 
-/**********************************************************/
+/**********************************************/
 // add a new triangle using Face Indices to existing vertices
 void model::add_tri(int vid1, int vid2, int vid3)
 {
@@ -412,7 +412,7 @@ void model::add_tri(int vid1, int vid2, int vid3)
 
 }
 
-/**********************************************************/
+/**********************************************/
 // add a new triangle AND new points 
 void model::append_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3, int vid1, int vid2, int vid3)
 {
@@ -433,7 +433,7 @@ void model::append_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3, int vid1, int vid2
     triangle_count++;
 }
 
-/**********************************************************/
+/**********************************************/
 /*
     turn a single 4 sided polygon into two 3 sided 
     
@@ -473,7 +473,7 @@ void model::op_triangulate(void)
    // cout << "end triangulate \n";
 }
 
-/**********************************************************/
+/**********************************************/
 
 /*
     a "render-constructor". 
@@ -490,7 +490,7 @@ void model::prep_render(void)
 
 }
 
-/**********************************************************/
+/**********************************************/
 
 /*
     Idea to get around having to re-order polygons each time:
@@ -547,7 +547,7 @@ void model::flatten_edits(void)
 }
 
 
-/**********************************************************/
+/**********************************************/
 
 bool sort_by_zdist(const zindex_faces &lzif, const zindex_faces &rzif){ 
     // lambda for sort function 
@@ -608,7 +608,7 @@ void model::op_zsort(Vector3 campos)
 }
 
 
-/**********************************************************/
+/**********************************************/
 
 //save geometry in memory to an OBJ file on disk 
 void model::save_obj( char* filename)
@@ -723,7 +723,7 @@ void model::save_obj( char* filename)
 
 }
 
-/**********************************************************/
+/**********************************************/
 void model::load_obj(char* filename){
     ifstream fin;
     fin.open(filename); // open a file
@@ -859,7 +859,7 @@ void model::load_obj(char* filename){
 }//load object
 
 
-/**********************************************************/
+/**********************************************/
 /*
    load a 4X4 matrix from disk 
    used as a projection matrix for render geometry 
@@ -917,7 +917,7 @@ void model::load_matrix(char* filename)
 }
 
 
-/**********************************************************/
+/**********************************************/
 
 //sample 3d object - may not be the "proper" way to do it 
 void model::make_cube(double scale){
@@ -956,7 +956,7 @@ void model::make_cube(double scale){
     model::vertex_count = 8;
 }
 
-/**********************************************************/
+/**********************************************/
 //sample 3d object - may not be the "proper" way to do it
  void model::make_circle(int divs, double scale)
  {
@@ -1001,7 +1001,7 @@ void model::make_cube(double scale){
     model::vertex_count = vcnt;
  }     
 
-/**********************************************************/
+/**********************************************/
  //sample 3d object - may not be the "proper" way to do it
  void model::make_square(double scale)
  {
@@ -1028,7 +1028,7 @@ void model::make_cube(double scale){
  }    
 
 
-/**********************************************************/
+/**********************************************/
  //sample 3d object - may not be the "proper" way to do it
  void model::make_triangle(double scale)
  {
@@ -1065,7 +1065,7 @@ void model::make_cube(double scale){
 
 
 
-/**********************************************************/
+/**********************************************/
  //sample 3d object - may not be the "proper" way to do it
  void model::make_line(double scale)
  {

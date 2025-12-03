@@ -110,7 +110,7 @@ void obj_model::show_geom(void)
     //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
     for (i=0;i<num_pts;i++)
     {
-        //std::cout << " pt idx "<< i  << " is :";
+        std::cout << " pt idx "<< i  << " is :";
         //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z << "\n";
     }
 
@@ -125,19 +125,16 @@ void obj_model::show_geom(void)
     for (i=0;i<num_tris;i++)
     {
         std::cout << " tri idx "<< i  << " is :";
-        //std::cout << tris[i][0] << " " << tris[i][1] << tris[i][2] << "\n";
-        //std::cout << tris[0]  << "\n";        
+        std::cout << tris[i][0] << " " << tris[i][1] << tris[i][2] << "\n";
 
-        //triangle tri_buffer = from_obj->tris[i]; //start with original indices
-        //printf(" %d triangle   %d %d %d \n", i, (*this).tris[i].pt1 , (*this).tris[i].pt2, (*this).tris[i].pt3);        
     }
 
     //std::cout << "\n# quad indices ------------------   %d \n", (*this).num_quads);
     for (i=0;i<num_quads;i++)
     {
+        std::cout << " quad idx "<< i  << " is :";
+        std::cout << quads[i][0] << " " << quads[i][1] << " "<< quads[i][2] << " "<< quads[i][3] << "\n";
 
-        //quad qbfr = quads[i]; //start with original indices
-        //printf(" %d quad   %d %d %d %d \n", i, qbfr.pt1 , qbfr.pt2, qbfr.pt3, qbfr.pt4 );        
     }
 
     //printf("\n# Normals   --------  \n");
@@ -270,7 +267,7 @@ void obj_model::triangulate(void)
 }
 
 
-/*******************************************************************/
+/**********************************************/
 
 void obj_model::calc_normals(void)
 {
@@ -348,68 +345,7 @@ void obj_model::calc_normals(void)
 }
 
 
-/*******************************************************************/
-
-/*
-    // DEPRECATED!  - get data staight from the object class instead 
-    Take a pointer to an object and populate another container object with info about it  
-*/
-
-/*
-void get_obj_info( obj_model* loader,  obj_info* obinfo)
-{
-    // reset the bounding box 
-    obinfo->bb_min_x = 0;
-    obinfo->bb_max_x = 0;
-    obinfo->bb_min_y = 0;
-    obinfo->bb_max_y = 0;
-    obinfo->bb_min_z = 0;
-    obinfo->bb_max_z = 0; 
-
-    int x = 0;
-    vec3 point;
-
-    for(x=0;x<loader->num_pts;x++)
-    {
-        
-        point = loader->points[x];
-
-        if (point.x < obinfo->bb_min_x){
-            obinfo->bb_min_x = point.x;    
-        }
-        if (point.x > obinfo->bb_max_x){
-            obinfo->bb_max_x = point.x;    
-        }
-
-        if (point.y < obinfo->bb_min_y){
-            obinfo->bb_min_y = point.y;    
-        }
-        if (point.y > obinfo->bb_max_y){
-            obinfo->bb_max_y = point.y;    
-        }
-
-        if (point.z < obinfo->bb_min_z){
-            obinfo->bb_min_z = point.z;    
-        }
-        if (point.z > obinfo->bb_max_z){
-            obinfo->bb_max_z = point.z;    
-        }        
-        
-        // print_vec3(point);
-
-    }
-
-     printf("minx %f maxx %f miny %f maxy %f minz %f maxz %f \n", obinfo->bb_min_x
-                                                                , obinfo->bb_max_x
-                                                                , obinfo->bb_min_y
-                                                                , obinfo->bb_max_y
-                                                                , obinfo->bb_min_z
-                                                                , obinfo->bb_max_z );
-
-}
-*/
-
-/*******************************************************************/
+/**********************************************/
 /*
     DEBUG - NOT DONE -  Print out info from an object info struct
 */
@@ -435,7 +371,7 @@ Vector3 obj_model::get_extents(void)
 
 
 
-/*******************************************************************/
+/**********************************************/
 /*
     NOT WORKING YET 
 
@@ -513,19 +449,14 @@ void insert_geom(obj_model* from_obj, obj_model* to_obj)
 }
 */
 
+//DEBUG - prototype function not used yet 
 void obj_model::insert(std::vector<int>& input)
 {
-
-
-    //std::cout << "HEYHEYHEY\n"; 
-    //std::cout << input[0] << " "<< input[1]<< " " << input[2] << "\n";
-
-    tris[0] = input;
-
+    //EMPTY 
 }
 
-/*******************************************************************/
 
+/**********************************************/
 
 std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  {
     std::vector<std::string> tokens;
@@ -543,7 +474,7 @@ void obj_model::load(char *filepath)
 
     std::cout << "## load_objfile loading file "<< filepath << "\n";
     
-    int pofst = 0; //point offset indices to points if geom exists already 
+    int pofst = 0; //DEBUG point offset indices to points if geom exists already 
     int line_ct = 0;
     
     std::ifstream obj_filein(filepath, std::ifstream::in);
@@ -562,6 +493,7 @@ void obj_model::load(char *filepath)
             // std::cout << "FULL LINE " << line << std::endl;
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
+            //DEBUG   
             // //point offset indices to points - if geom exists already 
             // if (num_pts>0)
             // {
@@ -808,6 +740,7 @@ void obj_model::load(char *filepath)
     }//obj exists   
 
     // ---------------------------------------------
+    //DEBUG INFO - PHASE THIS OUT 
     /*
     std::cout << "vertices loaded   "<< num_pts    << "\n";
     std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
@@ -818,7 +751,7 @@ void obj_model::load(char *filepath)
 
 }
 
-/*******************************************************************/
+/**********************************************/
 void obj_model::save( char *filepath)
 {
 
@@ -832,7 +765,7 @@ void obj_model::save( char *filepath)
 }
 
 
-/*******************************************************************/
+/**********************************************/
 
 void test_loader_data( obj_model* loader){
 

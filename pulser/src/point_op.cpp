@@ -2,6 +2,8 @@
 /* 
     point_op.cpp
 
+      Point Generators, create 2D/3D coordinates in all manner of fun ways. 
+    
     MIT License
 
     Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
@@ -39,44 +41,6 @@ using namespace std;
 #include "point_op.h"
 #include "Vectors.h"
 
-
-
-// NOT USED YET 
-
-
-
-int polygon_ops::getnum_verts(void){
-
-}
-/**********************************************/
-
-
-/**********************************************/
-
-
-//test of inheritance 
-void  polygon_ops::hello(void)
-{
-    cout << "hello from point opszzz !! \n";
-}
-
-
-
-/*****************************************************************************/
-/*  
-    point_op.c
-
-      Point Generators, create 2D/3D coordinates in all manner of fun ways. 
-
-      AUTHOR: Keith Legg (keithlegg23@gmail.com)
- 
-    Copyright (C) 2026 Keith Legg   
-
-*/
-
-/*****************************************************************************/
-
-
 #include <cmath>
 #include <vector>
 
@@ -86,10 +50,21 @@ void  polygon_ops::hello(void)
 #include <iostream>
 
 
+/**********************************************/
+int polygon_ops::getnum_verts(void){
+    // NOT USED YET 
+}
 
-/*****************************/
+/**********************************************/
+
+//test of inheritance 
+void  polygon_ops::hello(void)
+{
+    cout << "hello from point opszzz !! \n";
+}
 
 
+/**********************************************/
 void pointgen::locate_pt_along3d(std::vector<Vector3>* output,
                                  Vector3 fpos, 
                                  Vector3 spos, 
@@ -137,7 +112,7 @@ void pointgen::locate_pt_along3d(std::vector<Vector3>* output,
 
 };
 
-/*****************************/
+/**********************************************/
 
 void pointgen::cubic_bezier(std::vector<Vector3>* output, 
                             std::vector<Vector3>* colors,
@@ -196,7 +171,7 @@ void pointgen::cubic_bezier(std::vector<Vector3>* output,
 
 
 
-/*****************************/
+/**********************************************/
 
 /*
  Returns 1 if the lines intersect, otherwise 0. In addition, if the lines 
@@ -266,7 +241,7 @@ int pointgen::get_line_intersection(float p0_x, float p0_y, float p1_x, float p1
     return 1;
 }
 
-/*****************************/
+/**********************************************/
 //not convinced this totally works due to roundoff error, but its close enough
 void pointgen::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
 {
@@ -286,7 +261,7 @@ void pointgen::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_ori
 
 }
 
-/*****************************/
+/**********************************************/
 
 void pointgen::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 {

@@ -51,98 +51,12 @@
 /***************************************/
 /***************************************/
 
-//---
-//std::string s(1, key);
-//std::cout << s << std::endl;
-//--- 
-//std::string s{key};
-//std::cout << s << std::endl;
-//---      
-//std::string s;
-//s.push_back(key);
-//std::cout << s << "\n";
 
 void parse_cmd_text(std::string *buffer)
 {
     std::cout << " hello parser \n" << *buffer <<"\n";
 
 }
-
-
-    //std::cout << " cursor "<< cursor <<"\n"; 
-
-    // std::istringstream iss(*buffer);
-    // if (getline(iss, parsed, ' '))
-    // {
-    //     // do some processing.
-    //     std::cout << "EEE " << parsed << "\n";
-    // };
-
-    // std::stringstream ss(*buffer);
-    // int number_int;
-    // double number_double;
-    // // Extracting words separated by spaces
-    // ss >> word; // word will be "apple"
-    // ss >> word; // word will be "banana"
-
-  
-    /*
-    if(*pt_key==*"a"||i==97)
-    {
-        std::cout << "a PRESSED\n";        
-    }*/
-
-/*
-
-
-    std::stringstream ss(buffer);
-    std::string word;
-    int number_int;
-    double number_double;
-
-    // Extracting words separated by spaces
-    ss >> word; // word will be "apple"
-    ss >> word; // word will be "banana"
-
-    // Extracting numbers
-    ss >> number_int;    // number_int will be 123
-    ss >> number_double; // number_double will be 4.5
-
-    std::cout << "Word 1: " << word << std::endl;
-    std::cout << "Integer: " << number_int << std::endl;
-    std::cout << "Double: " << number_double << std::endl;
-*/
-
-
-/*
-std::string input_txt(void){
-
-    std::string sentence;
-    std::cout << "Enter a sentence please: "; std::cout.flush();
-
-    std::getline(std::cin,sentence);
-    std::istringstream iss(sentence);
-
-    std::vector<std::string> words;
-    std::string word;
-    while(iss >> word) {
-        words.push_back(word);
-    } 
-
-    for(std::vector<std::string>::const_iterator it = words.begin();
-        it != words.end();
-        ++it) {
-        std::cout << *it << ' ';
-    }
-    std::cout << std::endl; return 0;
-    
-    return sentence;
-}
-*/
-
-
-/***************************************/
-/***************************************/
 
 int cursor = 0;
 
