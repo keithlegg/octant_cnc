@@ -10,7 +10,11 @@
 //                         |  3  7 11 15 |
 //
 // Dependencies: Vector2, Vector3, Vector3
-//
+
+
+// 2019-2026  Keith legg borrowed this and is using it for now.
+
+
 //  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
 // CREATED: 2005-06-24
 // UPDATED: 2017-06-27
@@ -20,6 +24,7 @@
 
 #include <cmath>
 #include <algorithm>
+
 #include "Matrices.h"
 
 const float DEG2RAD = 3.141593f / 180.0f;

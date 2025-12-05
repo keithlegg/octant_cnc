@@ -70,12 +70,11 @@ static GLfloat emis_blue[]   = { 0, 0, 1., 0};
 
 void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
 
-    /*
-    // void        set(float m00, float m01, float m02, float m03, // 1st column
-    //                 float m04, float m05, float m06, float m07, // 2nd column
-    //                 float m08, float m09, float m10, float m11, // 3rd column
-    //                 float m12, float m13, float m14, float m15);// 4th column
+    //Note the Matrix4 class uses column major order.
+    //My old library m44 uses row major order.
 
+    /*
+    //ROW MAJOR for (Keiths old m44 Class)
     pt_m44->m0  = m44_glfloat[0];
     pt_m44->m1  = m44_glfloat[1];
     pt_m44->m2  = m44_glfloat[2];
@@ -96,6 +95,12 @@ void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
     pt_m44->m14 = m44_glfloat[14];
     pt_m44->m15 = m44_glfloat[15];
     */
+
+    //COLUMN MAJOR using "new" (ironically older) Matrix4 class    
+    pt_m44->set( m44_glfloat[0], m44_glfloat[4],  m44_glfloat[8],  m44_glfloat[12], 
+                 m44_glfloat[1], m44_glfloat[5], m44_glfloat[9],  m44_glfloat[13], 
+                 m44_glfloat[2], m44_glfloat[6], m44_glfloat[10], m44_glfloat[14], 
+                 m44_glfloat[3], m44_glfloat[7], m44_glfloat[11], m44_glfloat[15]);
 
 } 
 
@@ -217,7 +222,7 @@ void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, R
  
 void show_bbox(bool *pt_draw_bbox, RGBType *pt_gridcolor)
 {
-   /*
+   
    if (*pt_draw_bbox == 1)
    {
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_half);
@@ -231,7 +236,7 @@ void show_bbox(bool *pt_draw_bbox, RGBType *pt_gridcolor)
             
             glColor3f(pt_gridcolor->r, pt_gridcolor->g, pt_gridcolor->b);  
 
-
+            /*
             glVertex3f(pt_obinfo->bb_min_x, pt_obinfo->bb_min_y,  pt_obinfo->bb_min_z);
             glVertex3f(pt_obinfo->bb_max_x, pt_obinfo->bb_min_y,  pt_obinfo->bb_min_z);
 
@@ -267,13 +272,14 @@ void show_bbox(bool *pt_draw_bbox, RGBType *pt_gridcolor)
 
             glVertex3f(pt_obinfo->bb_max_x, pt_obinfo->bb_min_y,  pt_obinfo->bb_min_z);
             glVertex3f(pt_obinfo->bb_max_x, pt_obinfo->bb_min_y,  pt_obinfo->bb_max_z);
-
+            */
+            
         glEnd();
 
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
     }
-    */
+   
 }
 
 

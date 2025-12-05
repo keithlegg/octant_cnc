@@ -1,5 +1,10 @@
 
 
+#recreate old objinfo - add class methods to model 
+    - bounding box
+    - 2D extents 
+
+
 #model_loader
     - blows up with arbitrary whitespace in obj file 
     - normals untested 
