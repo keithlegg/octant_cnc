@@ -42,7 +42,8 @@
 #include "parse_cmds.h"
 #include "gl_setup.h"
 
-#include "obj_model.h"
+//#include "obj_model.h"
+
 #include "octant.h"
 
 
@@ -51,6 +52,9 @@ int cursor = 0;
 
 /***************************************/
 /***************************************/
+
+std::string a1,a2,a3,a4,a5,a6,a7;
+float v11,v12,v13,v21,v22,v23 = 0;
 
 
 void parse_cmd_text(std::string *buffer)
@@ -67,29 +71,42 @@ void parse_cmd_text(std::string *buffer)
     {
         tokens.push_back(intermediate);
     }
-    
-    std::string first;
-    std::string second;
 
     // Printing the token vector
     for(int i = 0; i < tokens.size(); i++)
     {
-        if(i==0){ 
-            first = tokens[i];
-        }
-
-        if(i==1){ 
-            second = tokens[i];
-        }
-
+        if(i==0){ a1 = tokens[i]; }
+        if(i==1){ a2 = tokens[i]; }
+        if(i==2){ a3 = tokens[i]; }
+        if(i==3){ a4 = tokens[i]; }
+        if(i==4){ a5 = tokens[i]; }
+        if(i==5){ a6 = tokens[i]; }    
+        if(i==6){ a7 = tokens[i]; }         
     }
     //--------------
-    if (first=="tog")
+    if (a1=="tog")
     {
         key_cb(71); 
     }
 
     //--------------
+    if (a1=="dv")
+    {
+        v11 = std::stof(a2);
+        v12 = std::stof(a3);
+        v13 = std::stof(a4);
+
+        v21 = std::stof(a5);
+        v22 = std::stof(a6);
+        v23 = std::stof(a7);   
+
+        std::cout << v11 <<"  "<< v12 <<"  "<< v13 <<"  "
+                  << v21 <<"  "<< v22 <<"  "<< v23 <<'\n';
+
+    }
+
+    //--------------
+    /*
     //parse the second token (you cant use spaces - duh)
     std::stringstream check2(second);
     std::string intermediate2;    
@@ -97,18 +114,15 @@ void parse_cmd_text(std::string *buffer)
     {
         subtokens.push_back(intermediate2);
     }
-
     // Printing the token vector
     for(int i = 0; i < subtokens.size(); i++)
     {
         std::cout << subtokens[i] << "\n";
- 
-
     }
-
+    */
     //--------
-    std::cout << "first:" << first << " second:" << second << '\n';
-
+    std::cout << "first:" << a1 << " second:" << a2 << '\n';
+  
     //std::cout << " hello parser \n" << *buffer <<"\n";
 
 }
