@@ -61,6 +61,8 @@ extern Vector3 quil_pos;
 std::string a1,a2,a3,a4,a5,a6,a7;
 float v11,v12,v13,v21,v22,v23 = 0;
 
+int last_cmd = 0;
+
 
 void parse_cmd_text(std::string *buffer)
 {
@@ -156,6 +158,14 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
     int i = static_cast<int>(*pt_key);
     
+    //need a way to capute stuck keys - DEBUG - stew on it for a while
+    //if(i==last_cmd)
+    //{
+    //    std::cout << "stop holding down the key, moron!! "<< "\n";
+    //}
+
+    last_cmd=i;
+
     std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
     
     //-----

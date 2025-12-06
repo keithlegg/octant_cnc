@@ -65,7 +65,7 @@ static GLfloat emis_blue[]   = { 0, 0, 1., 0};
 
 
 
-/*************************************************************/
+/******************************************/
 //void m44_to_glm44( m44* pt_m44, GLfloat m44_glfloat[16] ){}
 
 void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
@@ -104,7 +104,7 @@ void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
 
 } 
 
-/*******************************************************/
+/******************************************/
 //draw a locator representing a "quill", "extruder", etc 
 //Basically the thing that moves around doing stuff on your machine
 
@@ -129,7 +129,7 @@ void draw_locator( Vector3* pos, float locsize)
 
 }
 
-/*******************************************************/
+/******************************************/
 //draw a 3D grid on the "floor" and an indicator to show XYZ axis  
 void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, RGBType *pt_gridcolor2 )
 {
@@ -242,7 +242,7 @@ void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, R
 }
 
 
-/*******************************************************/
+/******************************************/
  
 void show_bbox(bool *pt_draw_bbox, RGBType *pt_gridcolor)
 {
@@ -310,7 +310,7 @@ void show_bbox(bool *pt_draw_bbox, RGBType *pt_gridcolor)
 }
 
 
-/*******************************************************/
+/******************************************/
 
 // initialize OpenGL  
 void InitGL(int Width, int Height)           
@@ -332,7 +332,7 @@ void InitGL(int Width, int Height)
 }
 
 
-/*******************************************************/
+/******************************************/
 
 
 //    function to convert internal geom into GLfloat array 
@@ -359,7 +359,7 @@ void dump_points_GLfloat( GLfloat* verts, obj_model* pt_object, int numpts)
 
 }
 
-/*******************************************************/
+/******************************************/
 
 //void dump_points_GLfloat( GLfloat* verts, vector<vec3>* pt_vecarray, int numpts);
 //overloaded dump points to accept array of points instead of object 
@@ -402,7 +402,7 @@ void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int nump
 
 
 
-/*******************************************************/
+/******************************************/
 void clear_scenegeom( void)
 {
     scene_drawvec3.clear();
@@ -423,7 +423,7 @@ void drawTriangle (GLfloat x1, GLfloat y1, GLfloat x2,
 }
 
 
-/*******************************************************/
+/******************************************/
 
 void drawViewVolume (GLfloat x1, GLfloat x2, GLfloat y1, 
                      GLfloat y2, GLfloat z1, GLfloat z2)
@@ -457,7 +457,7 @@ void drawViewVolume (GLfloat x1, GLfloat x2, GLfloat y1,
 }
 
 
-/*******************************************************/
+/******************************************/
 
 
 void set_screen_square(int* sx, int* sy){
@@ -474,7 +474,7 @@ void set_screen_square(int* sx, int* sy){
 
 
 
-/*******************************************************/
+/******************************************/
 
 // m33_from_euler
 // m44_from_euler

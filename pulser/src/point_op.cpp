@@ -54,6 +54,7 @@ using namespace std;
 #define DEG_TO_RAD 0.0174532925
 #define RAD_TO_DEG 57.29577951
 
+
 double deg_to_rad ( double deg){
    return deg * DEG_TO_RAD;
 }
@@ -64,7 +65,7 @@ double rad_to_deg ( double rad){
 
 
 
-/*******************************************************************/
+/***************************************/
 /*
    Overridden function in obj_model 
    this is empty
@@ -72,12 +73,12 @@ double rad_to_deg ( double rad){
 void polygon_ops::reset(void){;}
 
 
-/**********************************************/
+/***************************************/
 int polygon_ops::getnum_verts(void){
     // NOT USED YET 
 }
 
-/**********************************************/
+/***************************************/
 
 //test of inheritance 
 void  polygon_ops::hello(void)
@@ -86,7 +87,7 @@ void  polygon_ops::hello(void)
 }
 
 
-/**********************************************/
+/***************************************/
 void point_ops::locate_pt_along3d(std::vector<Vector3>* output,
                                  Vector3 fpos, 
                                  Vector3 spos, 
@@ -134,7 +135,8 @@ void point_ops::locate_pt_along3d(std::vector<Vector3>* output,
 
 };
 
-/**********************************************/
+
+/***************************************/
 
 void point_ops::cubic_bezier(std::vector<Vector3>* output, 
                             std::vector<Vector3>* colors,
@@ -193,7 +195,7 @@ void point_ops::cubic_bezier(std::vector<Vector3>* output,
 
 
 
-/**********************************************/
+/***************************************/
 
 /*
  Returns 1 if the lines intersect, otherwise 0. In addition, if the lines 
@@ -263,7 +265,7 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
     return 1;
 }
 
-/**********************************************/
+/***************************************/
 //not convinced this totally works due to roundoff error, but its close enough
 void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
 {
@@ -283,7 +285,7 @@ void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_or
 
 }
 
-/**********************************************/
+/***************************************/
 
 void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 {
@@ -361,7 +363,7 @@ void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 
 
 
-/**********************************************/
+/***************************************/
 
 // // create a normal vector (vec3) from 3 points that represent a polygon  
 // // take 3 point (positions), convert to vectors 
@@ -380,7 +382,7 @@ void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 // }
 
 
-/**********************************************/
+/***************************************/
 
 
 /*
@@ -402,7 +404,7 @@ void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
         return pt2 - self
 */
 
-/**********************************************/
+/***************************************/
 
 // take 3 vec3 objects and return a face normal 
 Vector3 polygon_ops::three_vec3_to_normal( Vector3 v1, Vector3 v2, Vector3 v3, bool unitlen)
@@ -426,7 +428,7 @@ Vector3 polygon_ops::three_vec3_to_normal( Vector3 v1, Vector3 v2, Vector3 v3, b
 }
 
 
-/**********************************************/
+/***************************************/
 // UNTESTED - vector from a triangle centroid to a point
 Vector3 polygon_ops::triangle_pt_vec3(Vector3 p1, Vector3 p2, Vector3 p3, 
                                                               Vector3 dpt
@@ -441,7 +443,7 @@ Vector3 polygon_ops::triangle_pt_vec3(Vector3 p1, Vector3 p2, Vector3 p3,
     return dpt-tmp;
 }
 
-/**********************************************/
+/***************************************/
 // Z axis only centroid 
 double  polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 {
@@ -452,7 +454,7 @@ double  polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 }
 
 
-/**********************************************/
+/***************************************/
 
 // XYZ centroid of a triangle 
 Vector3 polygon_ops::centroid(Vector3 p1, Vector3 p2, Vector3 p3)

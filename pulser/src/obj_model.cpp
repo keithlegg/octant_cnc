@@ -58,16 +58,12 @@ using std::vector;
 extern obj_model* pt_model_buffer;
 
 
-/*******************************************************************/
+
+/***************************************/
 /*
-    Clear an object to "reset" it
-*/
 
-
-
-/*
     Overridden function - inherited from polygon_ops  
-
+    Clear an object to "reset" it
 */
 
 void obj_model::reset(void)
@@ -97,7 +93,7 @@ void obj_model::reset(void)
 }
 
 
-
+/***************************************/
 
 void obj_model::show(void)
 {
@@ -113,6 +109,7 @@ void obj_model::show(void)
     std::cout<< "# number  vtxcolr   " << num_vtxrgb  << "\n"; 
 }
 
+/***************************************/
 
 
 void obj_model::show_geom(void)

@@ -886,9 +886,8 @@ static void render_loop()
 
 
             }
-        
-
         glEnd(); 
+
 
         // display loaded normals as lines 
         if (draw_normals)

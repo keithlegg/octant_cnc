@@ -13,6 +13,7 @@ using std::vector; //point_op did not make me do this!!?? WHY?
 
 
 
+/***************************************/
 //define the way that pins get assigned in the parports 
 class cnc_bitmasks
 {
@@ -24,7 +25,7 @@ class cnc_bitmasks
 };
 
 
-/**************************/
+/***************************************/
 
 //handle the IO to the parports 
 class cnc_parport

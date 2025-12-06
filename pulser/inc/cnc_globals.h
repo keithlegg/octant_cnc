@@ -5,6 +5,11 @@
 #include <vector>
 
 
+/*
+   container for machine properties  
+   for a CNC /3D printer/Pick and Place, etc
+*/
+
 class cncglobals
 {
 

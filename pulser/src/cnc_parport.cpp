@@ -61,7 +61,7 @@
 
 
 
-/*******************************************************/
+/***************************************/
 void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
 {
     if(ioperm(cg->parport1_addr,1,1))
@@ -80,7 +80,7 @@ void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
 
 
 
-/*******************************************************/
+/***************************************/
 void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 {
     if(ioperm(cg->parport1_addr,1,1))
@@ -98,7 +98,7 @@ void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 
 
 
-/*******************************************************/
+/***************************************/
 
 void cnc_parport::test_port(cncglobals* cg)
 {
@@ -133,7 +133,7 @@ void cnc_parport::test_port(cncglobals* cg)
 
 
 
-/*******************************************************/
+/***************************************/
 /*
        Read the parallel port inputs to make sure we didnt crash the machine 
 
@@ -192,7 +192,7 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 
 }
 
-/*******************************************************/
+/***************************************/
 /*
     take the output of calc_3d_pulses() and send the signals to the parallel port 
     
@@ -370,6 +370,11 @@ void cnc_parport::send_pulses(cncglobals* cg, vector<Vector3>* pt_pulsetrain)
 
 
 }
+
+
+
+
+/***************************************/
 
 
 

@@ -16,9 +16,20 @@ struct pt2d {
 };
 
 
+/***************************************/
+
+
 double deg_to_rad ( double);
 
 
+/***************************************/
+
+/*
+   "point generator"
+   make coordinate pairs with no geometry 
+
+   if you want geometry -use polygon_ops()
+*/
 class point_ops
 {
     public:
@@ -55,6 +66,16 @@ class point_ops
  
 
 
+/***************************************/
+
+
+/*
+   container for polygon objects 
+   store and process 3D geometry 
+
+   if you want a complete network of polygons -use obj_model()
+
+*/
 
 class polygon_ops : public point_ops 
 { 
