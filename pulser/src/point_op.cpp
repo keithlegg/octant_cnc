@@ -64,6 +64,15 @@ double rad_to_deg ( double rad){
 }
 
 
+/***************************************/
+
+//test of inheritance 
+void  polygon_ops::hello(void)
+{
+    cout << "hello from point opszzz !! \n";
+}
+
+
 
 /***************************************/
 /*
@@ -74,17 +83,10 @@ void polygon_ops::reset(void){;}
 
 
 /***************************************/
-int polygon_ops::getnum_verts(void){
+int polygon_ops::numpts(void){
     // NOT USED YET 
 }
 
-/***************************************/
-
-//test of inheritance 
-void  polygon_ops::hello(void)
-{
-    cout << "hello from point opszzz !! \n";
-}
 
 
 /***************************************/
@@ -445,7 +447,7 @@ Vector3 polygon_ops::triangle_pt_vec3(Vector3 p1, Vector3 p2, Vector3 p3,
 
 /***************************************/
 // Z axis only centroid 
-double  polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
+double polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 {
     double z1 = p1.z;
     double z2 = p2.z;
@@ -455,6 +457,12 @@ double  polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 
 
 /***************************************/
+
+// XYZ centroid of all loaded geom 
+Vector3 polygon_ops::centroid(void)
+{
+
+}
 
 // XYZ centroid of a triangle 
 Vector3 polygon_ops::centroid(Vector3 p1, Vector3 p2, Vector3 p3)

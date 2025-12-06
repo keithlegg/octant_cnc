@@ -79,7 +79,6 @@ void parse_cmd_text(std::string *buffer)
         tokens.push_back(intermediate);
     }
 
-    // Printing the token vector
     for(int i = 0; i < tokens.size(); i++)
     {
         if(i==0){ a1 = tokens[i]; }
@@ -91,8 +90,6 @@ void parse_cmd_text(std::string *buffer)
         if(i==6){ a7 = tokens[i]; }         
     }
 
-
-
     //--------------
     if (a1=="tog")
     {
@@ -100,6 +97,7 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
+    //offset transform (from another xyz to an xyy)    
     if (a1=="ot")
     {
         v11 = std::stof(a2);
@@ -116,12 +114,12 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
+    //relative transform (from current xyz)
     if (a1=="rt")
     {
         v11 = std::stof(a2);
         v12 = std::stof(a3);
         v13 = std::stof(a4);
-        //std::cout << v11 <<"  "<< v12 <<"  "<< v13  <<'\n';
 
         quil_pos.x = v11;
         quil_pos.y = v12;
@@ -145,9 +143,8 @@ void parse_cmd_text(std::string *buffer)
     }
     */
     //--------
-    std::cout << "first:" << a1 << " second:" << a2 << '\n';
-  
-    //std::cout << " hello parser \n" << *buffer <<"\n";
+    
+    //std::cout << "first:" << a1 << " second:" << a2 << '\n';
 
 }
 

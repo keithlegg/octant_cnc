@@ -126,13 +126,13 @@ class polygon_ops : public point_ops
     
     void hello(void); //test of inheritance 
 
+    int numpts(void);
 
-    int getnum_verts(void);
 
-
-    //Vector3 centroid_pts( array_of_vector3 );
     //bool pt_is_near( pt1, pt2, dist );
     
+    //Vector3 centroid_pts( array_of_vector3 );
+    Vector3 centroid(void);
     Vector3 centroid(Vector3, Vector3, Vector3);
     void centroid(Vector3*, Vector3, Vector3, Vector3);
 
