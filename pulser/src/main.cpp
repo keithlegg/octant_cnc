@@ -41,20 +41,7 @@ GLuint texture[3]; // storage for one texture
 
 
 
-/*******************************************************/
 
-// data for animated "pong" texture 
-//democube uses it - probably get rid of that 
-unsigned int upos = 100;
-unsigned int vpos = 320;  
-unsigned int dir_u = 0;
-unsigned int dir_v = 0;
-unsigned int pong_speed = 5;
-unsigned int pong_size  = 60;
-unsigned int img_usize  = 512;
-unsigned int img_vsize  = 512;
-
-unsigned int use_tex = 0;
 
 
 /******************************************/
