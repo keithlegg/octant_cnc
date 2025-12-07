@@ -54,7 +54,7 @@
 int cursor = 0;
 
 //position of extruder/quill/etc
-extern Vector3 quil_pos;
+extern Vector3 qpos;
 
 
 
@@ -132,9 +132,9 @@ void parse_cmd_text(std::string *buffer)
         v12 = std::stof(a3);
         v13 = std::stof(a4);
 
-        quil_pos.x = v11;
-        quil_pos.y = v12;
-        quil_pos.z = v13;   
+        qpos.x = v11;
+        qpos.y = v12;
+        qpos.z = v13;   
 
     }
 
@@ -200,7 +200,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 
     last_cmd=i;
 
-    std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
+    //std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
     
     //-----
     //backspace key
@@ -228,8 +228,9 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     }    
 
     //-----
-    //esc  
-    if(i==27)
+    //esc, +, -  
+    //this is buggy - zooms while typing
+    if(i==27 || i==45 || i==61)
     {
         key_cb(i); 
     }  

@@ -403,12 +403,20 @@ void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int nump
 
 
 /******************************************/
-void clear_scenegeom( void)
+void clear_scn_geom( void)
 {
     scene_drawvec3.clear();
     scene_drawvecclr.clear();
     num_drawvec3 = 0;
 }
+
+void add_tri_scn_geom( Vector3* insert)
+{
+    scene_drawvec3.clear();
+    scene_drawvecclr.clear();
+    num_drawvec3 = 0;
+}
+
 
 
 

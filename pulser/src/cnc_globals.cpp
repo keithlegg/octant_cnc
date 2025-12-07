@@ -223,7 +223,7 @@ void cncglobals::load_objects(void)
         char char_array[100];
         int x = 0 ; 
             
-        std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
+        //std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
         pt_model_buffer->reset();
         
         //pt_model_buffer.load( "/home/keith/keith/wip_projects/confusion_36d/pulser/3d_obj/sphere.obj" );
@@ -392,30 +392,25 @@ void cncglobals::load_cfg_file( char* filepath )
                         // LOAD 3D OBJECT (CLASSIC DISPLAY)
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
                         {   
-                            std::cout << "\n#LOAD OPERATOR ! - 3d obj found " << tokenized.at(1) << "\n";
+                            //std::cout << "\n#LOAD OPERATOR ! - 3d obj found " << tokenized.at(1) << "\n";
                             obj_filepaths.push_back(tokenized.at(1));
                             //num_loaded_obj++;
 
                             //std::cout <<  num_loaded_obj << "\n";
                             //std::cout << "#ADDED OBJ " << (*this).num_loaded_obj << " "<< obj_filepaths.at((*this).num_loaded_obj) << "\n";
-                            
-
-
                         }
 
+                        //DEBUG - this may be a stupid idea - rethink  
                         // LOAD 3D OBJECT (VECTOR LINE DISPLAY)
                         // load a 3d or 2d object to display as vector lines
                         if (tokenized.at(0).find("op_vec3d")!= std::string::npos)
                         {   
-                            std::cout << "\n#LOAD OPERATOR ! - vecobj found " << tokenized.at(1) << "\n";
+                            //std::cout << "\n#LOAD OPERATOR ! - vecobj found " << tokenized.at(1) << "\n";
                             obj_vecpaths.push_back(tokenized.at(1));
                             //num_loaded_vecobj++;
 
                             std::cout <<  num_loaded_vecobj << "\n";
-                            std::cout << "#ADDED VEC OBJ " << (*this).num_loaded_vecobj << " "<< obj_vecpaths.at((*this).num_loaded_vecobj) << "\n";
-                            
-
-
+                            //std::cout << "#ADDED VEC OBJ " << (*this).num_loaded_vecobj << " "<< obj_vecpaths.at((*this).num_loaded_vecobj) << "\n";
                         }
 
 

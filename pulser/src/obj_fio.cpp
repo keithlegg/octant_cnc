@@ -137,7 +137,7 @@ void obj_model::load(char *filepath)
                         for (a=0;a<tokenized.size();a++)
                         {   
                  
-                            std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            //std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                           
                             if(vidx==1){
                                 xc = std::stof(tokenized.at(a));
@@ -180,7 +180,7 @@ void obj_model::load(char *filepath)
                         {
                             Vector3 vpt = Vector3( xc, yc, zc  );
                             
-                            std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
+                            //std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
 
                             points[num_pts] = vpt;
                             num_pts = num_pts+1;
@@ -213,7 +213,7 @@ void obj_model::load(char *filepath)
                         for (a=0;a<tokenized.size();a++)
                         {   
                  
-                            std::cout << " line " << line_ct << " nrmlpass " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            //std::cout << " line " << line_ct << " nrmlpass " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                             
                             if(nidx==0){
                                 xc = std::stof(tokenized.at(a));

@@ -76,7 +76,9 @@ void InitGL(int , int );
 void dump_points_GLfloat( GLfloat* , obj_model* , int );
 void dump_points_GLfloat( GLfloat* , vector<Vector3>* , int );
 
-void clear_scenegeom( void);
+
+void clear_scn_geom( void);
+void add_tri_scn_geom( void);
 
 
 void set_screen_square(int* sx, int* sy);

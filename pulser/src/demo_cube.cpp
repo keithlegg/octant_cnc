@@ -16,7 +16,7 @@
 #include "gl_setup.h"
 
 
-extern float xrot, yrot, zrot; 
+float xrot, yrot, zrot; 
 
 extern int window_id;
 
@@ -72,7 +72,7 @@ void spinningCubeDemo(int *argc, char** argv){
        screenSize = atoi(argv[1]);
     }
 
-    printf("\n\nstarting up semraster in %i resolution.\n", screenSize);
+    printf("\n\nstarting up cubedemo in %i resolution.\n", screenSize);
 
     // you can find documentation at http://reality.sgi.com/mjk/spec3/spec3.html   
     glutInit(argc, argv);  

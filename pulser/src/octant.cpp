@@ -58,22 +58,24 @@ extern int scr_size_x;
 extern int scr_size_y;
 extern bool scr_full_toglr;
 
-extern vector<std::string>  obj_filepaths;
+// toggle - view prefs - state vars dont change  
+bool DRAW_POLYS       = TRUE; // state for toggle command
+bool DRAW_GEOM        = TRUE; // state for toggle command
+bool draw_cntrgrid    = TRUE;
+bool draw_grid        = TRUE;
+bool toglr_flatshaded = FALSE;
 
 
-// view prefs 
-bool DRAW_POLYS  = TRUE; // state for toggle command
-bool DRAW_GEOM   = TRUE; // state for toggle command
-
-bool draw_points_vbo = TRUE; // test of VBO 
+// single view prefs - use for debugging 
+bool draw_points_vbo = FALSE; // test of VBO  
 bool draw_points     = TRUE;   
 bool draw_lines      = TRUE;
 bool draw_normals    = TRUE;
 bool draw_quads      = TRUE;
 bool draw_triangles  = TRUE;
-bool draw_grid       = TRUE;
-bool draw_cntrgrid   = TRUE;
-bool draw_bbox       = TRUE;
+
+
+//bool draw_bbox       = TRUE;
 
 
 //DEBUG - hilarious effect - if you turn all these off the view floats away quickly
@@ -88,6 +90,8 @@ int TCP_PORT = 0;
 // object related 
 
 
+extern vector<std::string>  obj_filepaths;
+
 extern char* obj_filepath;
 extern int num_drawvec3;
 extern int num_drawpoints;
@@ -95,14 +99,11 @@ extern int TCP_PORT;
 
 extern vector<Vector3> scene_drawvec3;
 extern vector<Vector3> scene_drawvecclr;
+
 extern vector<Vector3> scene_drawpoints;
 extern vector<Vector3> scene_drawpointsclr;
+
 extern vector<Vector3>* pt_scene_drawpoints;
-
-
-char *cam_matrix_filepath  = "camera_matrix.olm";
-char *proj_matrix_filepath = "projection_matrix.olm";
-
 
 extern obj_model* pt_model_buffer;
 extern GLuint texture[3];
@@ -110,26 +111,19 @@ extern GLuint texture[3];
 char active_filepath[300];
 
 
-
-
-
-
-
-float xrot, yrot, zrot; 
-
-float obj_len_x, obj_len_y, obj_len_z = 0;
+//I think this was from a test of the VBO 
+int num_pts_drw = 0;
+GLfloat vertices[100];
 
 /***************************************/
 // data containers 
 
 
 
-Vector3 quil_pos = Vector3(1,1,1);
+Vector3 qpos = Vector3(.1,.2,.3);
 
 
-//I think this was from a test of the VBO 
-int num_pts_drw = 0;
-GLfloat vertices[100];
+
 
 
 /***************************************/
@@ -142,12 +136,24 @@ GLfloat vertices[100];
 
 int VIEW_MODE = -1; 
 
+//----- 
 
-bool toglr_flatshaded = FALSE;
-bool view_ismoving = FALSE;
-bool mouseLeftDown = FALSE;
+bool view_ismoving  = FALSE;
+bool mouseLeftDown  = FALSE;
 bool mouseRightDown = FALSE;
+
 float mouseX, mouseY = 0.0;
+float moveSpeed    = 2.1f;
+
+/*
+float zoomSpeed    = 1.2f;
+float rotateSpeed  = 4.0f;
+Vector3 startpos = newvec3(0.0, 130.0, 60.0);
+
+m33 capsuleObj; //represents a Unity/Maya Transform node 
+quaternion orbt_rot_original;
+Vector3 orbt_xform_original;
+*/
 
 
 float orbit_x;         // 2d click to set 3d view 
@@ -158,6 +164,9 @@ float cam_posx = 0; // camera location
 float cam_posy = 0;
 float cam_posz = 0;
 
+//----- 
+
+double light_intensity;
 
 float gridsquares = 10;
 float gridsize = 5;
@@ -166,7 +175,6 @@ float gnomonsize = 1;
 float light_posx = 0; 
 float light_posy = 3.14;
 float light_posz = 0;
-
 
 int surfce_clr_r; //read from setup.olm 
 int surfce_clr_g; 
@@ -177,18 +185,7 @@ int line_clr_g;
 int line_clr_b; 
 
 
-double light_intensity;
 
-float moveSpeed    = 2.1f;
-/*
-float zoomSpeed    = 1.2f;
-float rotateSpeed  = 4.0f;
-Vector3 startpos = newvec3(0.0, 130.0, 60.0);
-
-m33 capsuleObj; //represents a Unity/Maya Transform node 
-quaternion orbt_rot_original;
-Vector3 orbt_xform_original;
-*/
 
 
 /***************************************/
@@ -249,7 +246,8 @@ void set_colors(void){
 /***************************************/
 
 
-void toggle_polygon_draw(){
+void toggle_polygon_draw()
+{
     if (DRAW_POLYS == TRUE){
         DRAW_POLYS = FALSE;
         draw_quads      = FALSE;
@@ -333,14 +331,6 @@ void tweak_matrix( void )
 
 }
 */
-
-
-
-/***************************************/
-/***************************************/
-
-
-
 
 
 
@@ -446,8 +436,8 @@ static void render_loop()
         
         //-----------------------------
         // render text in window 
-        //void *font = GLUT_BITMAP_8_BY_13;     
-        void *font = GLUT_BITMAP_TIMES_ROMAN_24; 
+        void *fontsm = GLUT_BITMAP_8_BY_13;     
+        void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
 
         // command line text 
         glColor3f(0.6f, 1.0f, 0.0f);  //text color 
@@ -455,11 +445,11 @@ static void render_loop()
         renderBitmapString(  20, scr_size_y-20  ,(void *)font,  cmd_buffer.c_str() );
         //--
         //DEBUG - ADD AXIS COORDS ON SCREEN 
-        // tri count text
-        //glColor3f(1.0f, 1.0f, 1.0f);  //text color 
-        //std::string nt = std::to_string(3); 
-        ////std::cout << "this is broken " << pt_model_buffer->num_tris << "\n";
-        //renderBitmapString( ((int)scr_size_x/2) , scr_size_y-20  ,(void *)font, nt.c_str() );
+        char cs[100];
+        sprintf(cs, "head position - X:%d Y:%d Z:%d", qpos.x, qpos.y, qpos.z );
+        glColor3f(1.0f, 1.0f, 1.0f);  //text color 
+        renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-50  ,(void *)fontsm, cs );
+
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
         //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-20  ,(void *)font, s );
@@ -549,15 +539,12 @@ static void render_loop()
     /******************************************/
     /******************************************/
 
-    draw_locator(&quil_pos, .5);
+    draw_locator(&qpos, .5);
 
     /******************************************/
     graticulate(&draw_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
 
-    show_bbox(&draw_bbox, pt_gridcolor);
-
-
-    /******************************************/
+    //show_bbox(&draw_bbox, pt_gridcolor);
 
     //m33 foobar = m33_from_euler(45,45,45);
     //render_m33(&foobar);
@@ -1527,14 +1514,12 @@ void setlight0(void){
 void key_cb(unsigned int key) 
 {
 
-
-    //------
+    /*
     if (key == 83) //shift s key - open socket  
     { 
         printf("opening socket on port %i \n", TCP_PORT); 
         //sockettest3();
-
-    }
+    }*/
 
     //ESCAPE KEY
     if (key == 27) 
@@ -1581,7 +1566,6 @@ void key_cb(unsigned int key)
         set_view_ortho();    
     }
 
-
     if (key == 51) //3 - orthographic front 
     { 
         reset_view();
@@ -1596,24 +1580,6 @@ void key_cb(unsigned int key)
         set_view_ortho();        
     }
 
-
-    if (key == 36) //Shift 4 - display as points 
-    { 
-        // to draw points  
-        //glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
-        //glPointSize(4);
-    
-        if (draw_points == TRUE){
-            glPolygonMode (GL_FRONT_AND_BACK,  GL_POINT);
-            draw_points = FALSE;
-        }else{
-            glPolygonMode (GL_FRONT_AND_BACK,  GL_LINE);
-            draw_points = TRUE;
-        }
-
-
-    }
-
     if (key == 52) //4 - display as wire 
     { 
         glDisable(GL_TEXTURE_2D);        
@@ -1621,23 +1587,6 @@ void key_cb(unsigned int key)
         glPolygonMode (GL_FRONT_AND_BACK,  GL_LINE);
 
     }
-
-    
-    if (key == 37) //shift 5 , ignore lights  
-    { 
-        //trying to get the flat, no shaded ambient look 
-        if (toglr_flatshaded == TRUE){
-            glDisable(GL_TEXTURE_2D);        
-            glDisable(GL_LIGHTING);
-            toglr_flatshaded = FALSE;
-        }else{
-            glEnable(GL_TEXTURE_2D);
-            glEnable(GL_LIGHTING);
-            toglr_flatshaded = TRUE;
-        }
-
-    } 
-
 
     if (key == 53) //5 - display as solid, no texture  
     { 
@@ -1660,30 +1609,18 @@ void key_cb(unsigned int key)
         //------------------------
                         
         glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+        setlight0();        
     }
     
     if (key == 54) //6 - display as solid, with texture 
     { 
         glEnable(GL_TEXTURE_2D);
-
         setlight0();
-
-        //glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    if (key == 94) //shift 6 - toggle texture 
-    { 
-        if (draw_points_vbo == TRUE)
-        {
-            draw_points_vbo = FALSE;
-        }else{
-            draw_points_vbo = TRUE;
-        }
-    }
 
     if (key == 55) // 7
     { 
-
         glEnable(GL_LIGHTING);
         glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
     }
@@ -1700,22 +1637,6 @@ void key_cb(unsigned int key)
         orbit_dist+=.1;  
     }
 
-     //------
-
-    if (key == 32) // space
-    { 
-
-        if (scr_full_toglr == TRUE){
-            glutFullScreen();
-            scr_full_toglr = FALSE;
-        }else{
-            glutReshapeWindow(800, 800);
-            glutPositionWindow(0,0);  
-            scr_full_toglr = TRUE;
-        }
-
-    }
-    
 
     //------
     if (key == 73) //shift i - show obj info 
@@ -1739,72 +1660,6 @@ void key_cb(unsigned int key)
         }*/
     }
 
-
-    // if (key == 110) // shift n
-    // { 
-    //    // TODO generate normals here 
-    // }
-
-    if (key == 110) // n
-    { 
-
-        if (draw_normals == TRUE){
-            draw_normals = FALSE;
-        }else{
-            draw_normals = TRUE;
-            pt_model_buffer->calc_normals();
-
-        }
-        //std::cout << "draw normals " << draw_normals << "\n"; 
-    }
-
-    if (key == 111) // o
-    { 
-
-        clear_scenegeom();
-
-        //NEW WAY - pt_model_buffer->reset_objfile();
-        //OLD WAY - reset_objfile(pt_model_buffer, pt_obinfo);  
-
-        //char* file2 = "3d_obj/PYCORE.obj";
-        char* pycorepath = "3d_obj/PYCORE.obj";
-        //NEW WAY - pt_model_buffer->reset_objfile();
-
-        pt_model_buffer->load(pycorepath);
-        pt_model_buffer->calc_normals();
-        //get_obj_info( pt_model_buffer, pt_obinfo);
-
-
-    }
-
-
-    
-    //------
-    if (key == 70) //shift f
-    { 
-        if (DRAW_GEOM == TRUE){
-            DRAW_GEOM = FALSE;
-
-        }else{
-            DRAW_GEOM = TRUE;
-        }
-    }
-
-    //------
-    if (key == 82) //shift r
-    { 
-        //std::cout << "PATHS " << obj_filepaths.clear() << "\n";
-        
-        //DEBUG...num_loaded_obj = 0;
-        clear_scenegeom();
-        
-        //reset_objfile uses a stupid design - thats why objinfo is passed/passed twice here 
-        //NEW WAY - pt_model_buffer->reset_objfile();
-        //reset_objfile(pt_loader      , pt_obinfo); 
-        //reset_objfile(pt_model_buffer, pt_obinfo);  
-
-    }
-
     if (key == 114) //r
     { 
         //glColor3f( 1., 1., 1.); 
@@ -1819,6 +1674,48 @@ void key_cb(unsigned int key)
         //reset_view();
     }
 
+
+    //----
+    if (key == 32) // space
+    { 
+
+        if (scr_full_toglr == TRUE){
+            glutFullScreen();
+            scr_full_toglr = FALSE;
+        }else{
+            glutReshapeWindow(800, 800);
+            glutPositionWindow(0,0);  
+            scr_full_toglr = TRUE;
+        }
+
+    }
+
+    //----
+    if (key == 110) // n
+    { 
+
+        if (draw_normals == TRUE){
+            draw_normals = FALSE;
+        }else{
+            draw_normals = TRUE;
+            pt_model_buffer->calc_normals();
+
+        }
+        //std::cout << "draw normals " << draw_normals << "\n"; 
+    }
+
+    //----
+    if (key == 70) //shift f
+    { 
+        if (DRAW_GEOM == TRUE){
+            DRAW_GEOM = FALSE;
+
+        }else{
+            DRAW_GEOM = TRUE;
+        }
+    }
+
+    //----
     if (key == 71) //shift g
     { 
         if (draw_cntrgrid == TRUE){
@@ -1829,6 +1726,7 @@ void key_cb(unsigned int key)
 
     }
 
+    //----
     if (key == 103) //g
     { 
         if (draw_grid == TRUE){
@@ -1837,6 +1735,41 @@ void key_cb(unsigned int key)
             draw_grid = TRUE;
         }
     }
+
+
+    //----
+    if (key == 36) //Shift 4 - display as points 
+    { 
+        // to draw points  
+        //glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
+        //glPointSize(4);
+    
+        if (draw_points == TRUE){
+            draw_points_vbo = FALSE;
+            glPolygonMode (GL_FRONT_AND_BACK,  GL_POINT);
+            draw_points = FALSE;
+        }else{
+            draw_points_vbo = TRUE;
+            glPolygonMode (GL_FRONT_AND_BACK,  GL_LINE);
+            draw_points = TRUE;
+        }
+    }
+
+    //----
+    if (key == 37) //shift 5 , ignore lights  
+    { 
+        //trying to get the flat, no shaded ambient look 
+        if (toglr_flatshaded == TRUE){
+            glDisable(GL_TEXTURE_2D);        
+            glDisable(GL_LIGHTING);
+            toglr_flatshaded = FALSE;
+        }else{
+            glEnable(GL_TEXTURE_2D);
+            glEnable(GL_LIGHTING);
+            toglr_flatshaded = TRUE;
+        }
+
+    } 
 
 }
 

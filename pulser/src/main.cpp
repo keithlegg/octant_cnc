@@ -13,10 +13,11 @@
 #include "cnc_plot.h" 
 #include "gl_setup.h" 
 
-//#include "demo_cube.h" 
-
 #include "octant.h" 
 
+
+
+//#include "demo_cube.h" 
 
 
 
@@ -131,8 +132,10 @@ int main(int argc, char **argv)
     //cg.show();
     */
 
+    /*------------------*/
+    //spinningCubeDemo(&argc, argv);
+
     /*------------------*/  
-      
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -144,11 +147,6 @@ int main(int argc, char **argv)
         }
     }
     
-
-
-    /*------------------*/
-    //spinningCubeDemo(&argc, argv);
-
     /*------------------*/
     // parse_args(cg, argc, argv); 
     // if(sizeof(argv[1]) == sizeof(char *))
