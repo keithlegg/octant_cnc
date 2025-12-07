@@ -410,13 +410,14 @@ void clear_scn_geom( void)
     num_drawvec3 = 0;
 }
 
-void add_tri_scn_geom( Vector3* insert)
+ 
+void add_vec_scndrw( Vector3* insert, Vector3* rgb)
 {
-    scene_drawvec3.clear();
-    scene_drawvecclr.clear();
-    num_drawvec3 = 0;
+    scene_drawvec3.push_back(*insert);
+    scene_drawvecclr.push_back(*rgb);
+    num_drawvec3++;
 }
-
+ 
 
 
 

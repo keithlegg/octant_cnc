@@ -136,6 +136,12 @@ void parse_cmd_text(std::string *buffer)
         qpos.y = v12;
         qpos.z = v13;   
 
+        Vector3 rgb = Vector3(1.0,0,0);
+        add_vec_scndrw(&qpos, &rgb);
+
+        // add_vec_scndrw( Vector3* insert, Vector3* rgb)
+
+
     }
 
     //--------------

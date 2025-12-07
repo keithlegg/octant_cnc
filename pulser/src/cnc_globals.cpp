@@ -68,11 +68,12 @@ std::vector<Vector3> scene_drawvec3;
 std::vector<Vector3> scene_drawvecclr;
 int num_drawvec3 = 0;
 
+
 std::vector<Vector3> scene_drawpoints;
 std::vector<Vector3> scene_drawpointsclr;
 std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
-int num_drawpoints = 0;
 
+int num_drawpoints = 0;
 
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;

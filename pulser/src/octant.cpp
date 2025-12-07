@@ -443,12 +443,13 @@ static void render_loop()
         glColor3f(0.6f, 1.0f, 0.0f);  //text color 
         glutKeyboardFunc(parser_cb);
         renderBitmapString(  20, scr_size_y-20  ,(void *)font,  cmd_buffer.c_str() );
+      
         //--
-        //DEBUG - ADD AXIS COORDS ON SCREEN 
+        //X Y Z - QUILL/HEAD POSITION  
         char cs[100];
-        sprintf(cs, "head position - X:%d Y:%d Z:%d", qpos.x, qpos.y, qpos.z );
+        sprintf(cs, "head position  X:%.2f Y:%.2f Z:%.2f", qpos.x, qpos.y, qpos.z );
         glColor3f(1.0f, 1.0f, 1.0f);  //text color 
-        renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-50  ,(void *)fontsm, cs );
+        renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-50  ,(void *)font, cs );
 
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
