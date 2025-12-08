@@ -109,8 +109,10 @@ void parse_cmd_text(std::string *buffer)
 
     //--------------
     //relative transform (from current xyz)
-    if (a1=="clear")
+    if (a1=="clear" || a1=="clr")
     {
+        //return head to origin 
+        qpos.x = 0;qpos.y = 0;qpos.z = 0; 
         clear_scn_geom();
     }
 

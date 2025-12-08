@@ -38,6 +38,7 @@
 #include "cnc_globals.h"
 #include "parse_cmds.h"
 
+#include "timer.h"
 #include "gl_gui.h"
 #include "octant.h"
 
@@ -50,6 +51,9 @@
 
 #define LEN(arr) ( (int) (sizeof (arr) / sizeof (arr)[0]) ) 
 
+
+
+extern GLfloat emis_red;
 
 /***********/
 // mouse related
@@ -107,12 +111,16 @@ bool draw_triangles  = true;
 //render_text seems to anchor it 
 bool render_text     = true;
 
-
 int TCP_PORT = 0;
 
+/***************************************/
+
+//test of a timer system 
+timer mtime = timer();
 
 /***************************************/
 // object related 
+
 
 
 extern vector<std::string>  obj_filepaths;
@@ -174,17 +182,22 @@ RGBType *pt_gridcolor = &grid_color;
 RGBType grid_color2;
 RGBType *pt_gridcolor2 = &grid_color2;
 
-GLfloat clr_linez[]   = { 0, 1., 0, 0};
-GLfloat emis_full[]   = { 1, 1, 1, 0};
-GLfloat emis_text[]   = { .8, .8, .9, 0};
-GLfloat emis_points[] = { 0, .6, .2, 0};
-GLfloat emis_off[]    = { 0, 0, 0, 0};
-GLfloat emis_lines[]  = { .5, 0, .5, 0};
-GLfloat clr_yellow[]  = { 1., 1., 0, 0};
-GLfloat clr_green[]   = { 0, 1., 0, 0};
-GLfloat clr_blue[]    = { 0, 0, 1., 0};
-
-
+ 
+extern GLfloat clr_linez[];
+extern GLfloat emis_full[];
+extern GLfloat emis_half[];
+extern GLfloat emis_text[];
+extern GLfloat emis_points[];
+extern GLfloat emis_off[];
+extern GLfloat emis_teal[];
+//extern GLfloat emis_red[]; //DEBUG WTF - confilct? where?
+extern GLfloat emis_green[];
+extern GLfloat emis_blue[];
+extern GLfloat emis_lines[];
+extern GLfloat clr_yellow[];
+extern GLfloat clr_green[];
+extern GLfloat clr_blue[];
+ 
 
 void set_colors(void){
     //peripheral grid color  
@@ -377,7 +390,12 @@ static void parser_cb(unsigned char key, int x, int y)
 /***************************************/
 /***************************************/
 
+
+
 int q_i, p_i, f_i = 0;
+
+
+
 
 static void render_loop()
 {
@@ -388,6 +406,15 @@ static void render_loop()
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
+    
+    //------------ 
+    // first attempt at animation
+    //glTranslatef( sin(mtime.getElapsedTime()), 0, 0);
+    //std::cout << mtime.getElapsedTime() << "\n";
+
+    qpos.x = sin(mtime.getElapsedTime());
+
+    //------------ 
 
     if (render_text)
     {
@@ -766,6 +793,11 @@ static void render_loop()
 
     // ----------------------
     // draw scene defined geom 
+
+    Vector3 sv  = Vector3();
+    Vector3 ev  = Vector3();
+    Vector3 rgb = Vector3();  
+
     if (DRAW_GEOM)
     {
 
@@ -773,18 +805,27 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_full);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
-        for (p_i=1;p_i<num_drawvec3;p_i++)
+        //DEBUG vertex color is off until I fix it
+        for (p_i=0;p_i<num_drawvec3;p_i++)
         {   
-             
-            Vector3 sv  = scene_drawvec3[p_i-1];
-            Vector3 ev  = scene_drawvec3[p_i];
-            Vector3 rgb = scene_drawvecclr[p_i];            
-
+            if(p_i==0)
+            {
+                sv  = scene_drawvec3[p_i];
+                ev  = scene_drawvec3[p_i+1];
+                //rgb = scene_drawvecclr[p_i+1];  
+            }
+            if(p_i>0){ 
+                sv  = scene_drawvec3[p_i-1];
+                ev  = scene_drawvec3[p_i];
+                //rgb = scene_drawvecclr[p_i];            
+            }
             glBegin(GL_LINES);
-                glColor3f(rgb.x,rgb.y,rgb.z);
-              glVertex3f(sv.x, sv.y, sv.z);
-
-                glColor3f(rgb.x,rgb.y,rgb.z);
+                glColor3f(1.,0,0); //hack for now
+                //glColor3f(rgb.x,rgb.y,rgb.z);
+                glVertex3f(sv.x, sv.y, sv.z);
+                
+                glColor3f(1.,0,0); //hack for now
+                //glColor3f(rgb.x,rgb.y,rgb.z);
                 glVertex3f(ev.x, ev.y, ev.z);
         
             glEnd();
@@ -1025,6 +1066,8 @@ void start_gui(int *argc, char** argv){
 
     //shader_test();
     set_colors();
+
+    mtime.start();
 
     //------------
     //load CNC cfg (including paths to .obj files) 
