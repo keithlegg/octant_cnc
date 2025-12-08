@@ -43,7 +43,7 @@ int main() {
 void timer::start()
 {
     stopped = 0; // reset stop flag
-
+    running = 1;
     gettimeofday(&startCount, NULL);
 
 }
@@ -54,7 +54,7 @@ void timer::start()
 void timer::stop()
 {
     stopped = 1; // set timer stopped flag
-
+    running = 0;
 
     gettimeofday(&endCount, NULL);
 

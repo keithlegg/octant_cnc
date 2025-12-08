@@ -42,6 +42,8 @@
 #include <cmath>
 #include <unistd.h>  
 
+#include "timer.h"
+
 #include "parse_cmds.h"
 #include "gl_setup.h"
 
@@ -56,6 +58,7 @@ int cursor = 0;
 //position of extruder/quill/etc
 extern Vector3 qpos;
 
+extern timer mtime;
 
 
 /***************************************/
@@ -196,6 +199,12 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="solid")   {key_cb(53);}                 
 
     }
+    //--------------
+    if (a1=="run"||a1=="start")
+    {
+        mtime.start();
+        std::cout << "E STOP DISABLED.\n";
+    }
 
     //--------------
     /*
@@ -244,8 +253,17 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 
     last_cmd=i;
 
+    //debug info 
     //std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
-    
+    //std::cout << " key val " << i  << std::endl;
+
+    //emergency soft stop is ` key 
+    if(i==96)
+    {
+        mtime.stop();
+        std::cout << "E STOP ACTIVATED.\n";
+    }
+
     //-----
     //backspace key
     if(i==8)
@@ -280,8 +298,8 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     }  
 
     //-----
-    //ignore backspace and enter
-    if(i!=8 && i!=13)
+    //ignore backspace, enter, ` ,
+    if(i!=8 && i!=13 && i!=96)
     {   
         cursor = buffer->size(); 
         buffer->push_back(*pt_key);

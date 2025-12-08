@@ -47,6 +47,8 @@ class timer
         double getElapsedTimeInMilliSec();          // get elapsed time in milli-second
         double getElapsedTimeInMicroSec();          // get elapsed time in micro-second
 
+        int    running; // stop flag 
+
     protected:
 
     private:

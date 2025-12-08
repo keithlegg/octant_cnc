@@ -38,11 +38,13 @@
 #include "cnc_globals.h"
 #include "parse_cmds.h"
 
+
 #include "timer.h"
+
 #include "gl_gui.h"
 #include "octant.h"
 
-//#include "timer.h"
+
 //#include "socket.h"
 
 
@@ -397,7 +399,7 @@ int q_i, p_i, f_i = 0;
 
 char cs[100];
 char s[100];
-        
+
 
 static void render_loop()
 {
@@ -460,10 +462,24 @@ static void render_loop()
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
         //renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-20  ,(void *)font, s );
+        
+        //DEBUG USING THE TIMER AS INDICATOR OF MACHINE RUNNING 
+        //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
+        if(!mtime.running)
+        {
+            glColor3d(1.0, 0, 0);
+            renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
+        }
+        else
+        {
+            glColor3d(0.0, 1.0, 0);
+            renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
+        }
+
         //---
-        glColor3d(1.0, 1.0, 1.0);
-        sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
-        renderBitmapString( ((int)(scr_size_x/2)-250), 20  ,(void *)fontsm, s );
+        // glColor3d(1.0, 1.0, 1.0);
+        // sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
+        // renderBitmapString( ((int)(scr_size_x/2)-250), 20  ,(void *)fontsm, s );
         //-----------------------------
         //set color back
         glColor3d(1.0, 1.0, 1.0);
