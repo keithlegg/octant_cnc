@@ -61,6 +61,14 @@ extern Vector3 qpos;
 extern timer mtime;
 
 
+
+void stop_machine(void)
+{
+        mtime.stop();
+        //std::cout << "ESTOP ACTIVATED.\n";
+}
+
+
 /***************************************/
 /***************************************/
 
@@ -96,6 +104,16 @@ void parse_cmd_text(std::string *buffer)
         if(i==5){ a6 = tokens[i]; }    
         if(i==6){ a7 = tokens[i]; }         
     }
+    
+    //--------------
+    //toggle grid
+    if (a1=="stop")
+    {
+        stop_machine(); 
+    }
+
+
+
 
     //--------------
     //toggle grid
@@ -203,7 +221,7 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="run"||a1=="start")
     {
         mtime.start();
-        std::cout << "E STOP DISABLED.\n";
+        //std::cout << "ESTOP DISABLED.\n";
     }
 
     //--------------
@@ -241,6 +259,8 @@ void parse_cmd_text(std::string *buffer)
 
 */
 
+
+
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
     int i = static_cast<int>(*pt_key);
@@ -260,8 +280,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //emergency soft stop is ` key 
     if(i==96)
     {
-        mtime.stop();
-        std::cout << "E STOP ACTIVATED.\n";
+        stop_machine();
     }
 
     //-----
