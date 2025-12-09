@@ -32,9 +32,12 @@ class timer
             startCount.tv_sec = startCount.tv_usec = 0;
             endCount.tv_sec = endCount.tv_usec = 0;
 
-            stopped = 0;
             startTimeInMicroSec = 0;
             endTimeInMicroSec = 0;
+
+            running = false;
+            stopped = 0;//yes this is a contradiction to running = false, roill with it 
+
         }
 
         ~timer(){};
@@ -47,8 +50,8 @@ class timer
         double getElapsedTimeInMilliSec();          // get elapsed time in milli-second
         double getElapsedTimeInMicroSec();          // get elapsed time in micro-second
 
-        int    running; // stop flag 
-
+        bool    running; // public property 
+        
     protected:
 
     private:

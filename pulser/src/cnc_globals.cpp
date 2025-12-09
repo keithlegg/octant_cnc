@@ -59,6 +59,7 @@ using std::vector;
 #include "cnc_parport.h"
 
 #include "cnc_globals.h"
+#include "gl_setup.h"
 
 
 
@@ -387,7 +388,7 @@ void cncglobals::load_cfg_file( char* filepath )
                         // RUN SCRIPT OPERATORS IN HERE 
                         //****************************************/                                    
 
-                        // LOAD 3D OBJECT (CLASSIC DISPLAY)
+                        // LOAD 3D OBJECT - Alias .OBJ file (CLASSIC DISPLAY)
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
                         {   
                             //std::cout << "\n#LOAD OPERATOR ! - 3d obj found " << tokenized.at(1) << "\n";
@@ -398,18 +399,34 @@ void cncglobals::load_cfg_file( char* filepath )
                             //std::cout << "#ADDED OBJ " << (*this).num_loaded_obj << " "<< obj_filepaths.at((*this).num_loaded_obj) << "\n";
                         }
 
-                        //DEBUG - this may be a stupid idea - rethink  
-                        // LOAD 3D OBJECT (VECTOR LINE DISPLAY)
-                        // load a 3d or 2d object to display as vector lines
-                        if (tokenized.at(0).find("op_vec3d")!= std::string::npos)
-                        {   
-                            //std::cout << "\n#LOAD OPERATOR ! - vecobj found " << tokenized.at(1) << "\n";
-                            obj_vecpaths.push_back(tokenized.at(1));
-                            //num_loaded_vecobj++;
 
-                            std::cout <<  num_loaded_vecobj << "\n";
-                            //std::cout << "#ADDED VEC OBJ " << (*this).num_loaded_vecobj << " "<< obj_vecpaths.at((*this).num_loaded_vecobj) << "\n";
+                        // LOAD 3D VECTOR (3 floats for a vector display)
+                        // load a 3d or 2d object to display as vector lines
+                        if (tokenized.at(0).find("op_scenevec")!= std::string::npos)
+                        {   
+                             Vector3 v = Vector3(1,1,1); 
+                             add_vec_scndrw(&v);
+                             
+                             Vector3 vv = Vector3(.5,-1,0); 
+                             add_vec_scndrw(&vv);
+                             
+                             Vector3 vvv = Vector3(-.7,0,-2); 
+                             add_vec_scndrw(&vvv);
+
                         }
+
+                        //------
+
+                        /* 
+                        // load a 3d or 2d object to display as vector lines
+                        if (tokenized.at(0).find("op_scenevec")!= std::string::npos)
+                        {   
+                            std::cout << "\n#LOAD OPERATOR ! - vecobj found " << tokenized.at(1) << "\n";
+                            obj_vecpaths.push_back(tokenized.at(1));
+                            num_loaded_vecobj++;
+                            std::cout <<  num_loaded_vecobj << "\n";
+                            std::cout << "#ADDED VEC OBJ " << (*this).num_loaded_vecobj << " "<< obj_vecpaths.at((*this).num_loaded_vecobj) << "\n";
+                        }*/
 
 
                         //------------------------------------------------

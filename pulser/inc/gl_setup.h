@@ -72,10 +72,11 @@ void InitGL(int , int );
 void dump_points_GLfloat( GLfloat* , obj_model* , int );
 void dump_points_GLfloat( GLfloat* , vector<Vector3>* , int );
 
-
+ 
 void clear_scn_geom( void );
-void add_vec_scndrw( Vector3* insert, Vector3* rgb);
 
+void add_vec_scndrw( Vector3* insert);
+void add_vecrgb_scndrw( Vector3* insert, Vector3* rgb);
 
 void set_screen_square(int* sx, int* sy);
 

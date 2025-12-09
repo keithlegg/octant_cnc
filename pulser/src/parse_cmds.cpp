@@ -150,7 +150,7 @@ void parse_cmd_text(std::string *buffer)
         qpos.z = v13;   
 
         Vector3 rgb = Vector3(0,1.0,1.0);
-        add_vec_scndrw(&qpos, &rgb);
+        add_vecrgb_scndrw(&qpos, &rgb);
     }
 
     //--------------
@@ -173,7 +173,7 @@ void parse_cmd_text(std::string *buffer)
         qpos.z = v12;
 
         //store the difference between them
-        add_vec_scndrw(&qpos, &rgb);
+        add_vecrgb_scndrw(&qpos, &rgb);
     }
 
     //--------------
@@ -197,9 +197,9 @@ void parse_cmd_text(std::string *buffer)
         
         //Vector3 newvec = qpos.operator-(old);
         //store the difference between them
-        //add_vec_scndrw(&newvec, &rgb);
+        //add_vecrgb_scndrw(&newvec, &rgb);
         
-        add_vec_scndrw(&qpos, &rgb);
+        add_vecrgb_scndrw(&qpos, &rgb);
 
     }
 

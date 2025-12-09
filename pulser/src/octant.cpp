@@ -120,6 +120,7 @@ int TCP_PORT = 0;
 //test of a timer system 
 timer mtime = timer();
 
+
 /***************************************/
 // object related 
 
@@ -225,8 +226,21 @@ void set_colors(void){
 
 
 /***************************************/
+void timer_reset(void)
+{
+    mtime.stop();
+
+}
 
 
+/***************************************/
+void update_clk(void)
+{
+    mtime.stop();
+
+}
+
+/***************************************/
 void toggle_polygon_draw()
 {
     if (DRAW_POLYS == true){
@@ -415,8 +429,11 @@ static void render_loop()
     // first attempt at animation
     //glTranslatef( sin(mtime.getElapsedTime()), 0, 0);
     //std::cout << mtime.getElapsedTime() << "\n";
-
-    qpos.x = sin(mtime.getElapsedTime());
+    if(mtime.running==true)
+    {
+        qpos.x = sin(mtime.getElapsedTime());
+        qpos.y = cos(mtime.getElapsedTime());
+    }
 
     //------------ 
 
@@ -1088,7 +1105,9 @@ void start_gui(int *argc, char** argv){
     //shader_test();
     set_colors();
 
-    mtime.start();
+
+    timer_reset();
+    //mtime.start();
 
     //------------
     //load CNC cfg (including paths to .obj files) 
