@@ -1,4 +1,6 @@
 
+do we need to dynamically draw each poly in render_loop??
+
 
 #recreate old objinfo - add class methods to model 
     - bounding box

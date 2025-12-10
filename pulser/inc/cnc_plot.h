@@ -14,17 +14,24 @@ class cnc_plot
         cnc_plot(){};
         ~cnc_plot(){};
 
+
+
+    void calc_precache(vector<Vector3>* pt_disppathcache, 
+                                  Vector3 fr_pt, 
+                                  Vector3 to_pt,
+                                  int numdivs);
+
+
     void gen_pules(std::vector<int>*, int, int);
-
-    void gen_3d_pules(std::vector<Vector3>*, int, int);
-
+    
     void calc_3d_pulses(std::vector<Vector3>*,
                         Vector3, 
                         Vector3,
                         int);
 
 
-    //void load_config_file(char*);
+    //void gen_3d_pules(std::vector<Vector3>*, int, int);
+ 
 
 };
 

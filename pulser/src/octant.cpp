@@ -70,7 +70,7 @@ extern int clk_y_coord;
 float mouse_orbit_speed      = 2.1f;
 
 
-
+/***************************************/
 
 // toggle - view prefs - state vars dont change  
 bool DRAW_POLYS       = true; // state for toggle command
@@ -81,6 +81,7 @@ bool draw_grid        = true;
 bool toglr_flatshaded = false;
 
 
+/***************************************/
 // single view prefs - use for debugging 
 bool draw_points_vbo = false; // test of VBO  
 bool draw_points     = true;   
@@ -120,39 +121,43 @@ extern double num_vecs   ;
 extern double trav_speed ; //linear unit per sec 
 
 /***************************************/
-// 3D object related 
-
-extern char* obj_filepath;
-
-extern int num_drawvec3;
-extern int num_drawpoints;
+// data to pulse out to IO hardware
+//vector<Vector3> pulsetrain;
+//vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
 
 /***************************************/
 //3d objects to load 
+extern char* obj_filepath;
 extern vector<std::string>  obj_filepaths;
 
+/***************************************/
 //display 3D lines and color
 extern vector<Vector3> scene_drawvec3;
 extern vector<Vector3> scene_drawvecclr;
+extern int num_drawvec3;
 
+
+/***************************************/
+//display cache of 3D path vectors 
+extern vector<Vector3> disp_pathcache;
+extern vector<Vector3>* pt_pathcache;
+
+cnc_plot plot;
+
+/***************************************/
 //display 3D points and color 
 extern vector<Vector3> scene_drawpoints;
 extern vector<Vector3> scene_drawpointsclr;
 extern vector<Vector3>* pt_scene_drawpoints;
-
-/***************************************/
-//data to pulse out to IO hardware
-//vector<Vector3> pulsetrain;
-//vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
+ extern int num_drawpoints;
 
 extern obj_model* pt_model_buffer;
 extern GLuint texture[3];
 
 char active_filepath[300];
 
-
+/***************************************/
 //I think this was from a test of the VBO 
 int num_pts_drw = 0;
 GLfloat vertices[100];
@@ -208,6 +213,9 @@ extern GLfloat clr_yellow[];
 extern GLfloat clr_green[];
 extern GLfloat clr_blue[];
  
+
+
+
 
 void set_colors(void){
     //peripheral grid color  
@@ -428,9 +436,6 @@ void run_send_pulses(cncglobals* cg,
                  double s_z,
                  int divs)  
 {
-    cnc_plot plot;
-    
-
 
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
@@ -552,7 +557,10 @@ static void render_loop()
 
 
         //DEBUG
-        //we need to pre calculate all the pulses, then use the pointer to progress to update position
+        //pre calculated cache
+        std::cout << "num pts in cache is "<< disp_pathcache.size() << "\n";
+
+
         //we need to know the total count of the pulses, use progress to step through and stop timer running when done 
         //we need to know the speed of the travel and divide by the distance of the path 
       
@@ -1260,14 +1268,26 @@ void start_gui(int *argc, char** argv){
     //cncglobals new cg;
 
     cncglobals cg;
+    //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
-    //load any optional 3d models needed for setup
+    //load the 3d models 
     cg.load_objects();
     //cg.show_obj();
     
     //cg.show();
 
-   
+
+    // -----------
+    //precache path vectors here 
+    //DEBUG move to reset_cache() or whatever its called
+    for (p_i=1;p_i<num_drawvec3;p_i++)
+    {   
+        Vector3 sv  = scene_drawvec3[p_i];
+        Vector3 ev  = scene_drawvec3[p_i+1];
+        plot.calc_precache(pt_pathcache, sv, ev, num_drawvec3);
+    }
+
+
     //------------
 
     // Vector3 start = newvec3(0.0 ,3.0 ,1.0 );
