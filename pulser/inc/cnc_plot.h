@@ -14,12 +14,13 @@ class cnc_plot
     public:
         cnc_plot()
         {
-            running = false;
+            running  = false;
+            finished = true;
         };
         
         ~cnc_plot(){};
 
-
+    void pause(void);
     void stop(void);
     void run(void);
 
@@ -41,6 +42,7 @@ class cnc_plot
     //-----
     
     bool running;
+    bool finished;
 
     vector<Vector3> rapidmove_vecs;    
     vector<Vector3> program_vecs; 

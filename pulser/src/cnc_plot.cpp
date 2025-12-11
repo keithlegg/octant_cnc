@@ -83,13 +83,28 @@ extern timer mtime;
 
 /******************************************/
 
-void cnc_plot::stop(void)
+void cnc_plot::pause(void)
 {
-    running=false;
-    mtime.stop();
-
+    if(running)
+    {
+        running=false;
+        mtime.stop();
+    }
 }
 
+
+void cnc_plot::stop(void)
+{
+    if(running)
+    {
+        running=false;
+        mtime.stop();
+        mtime.reset_sim();        
+    }
+}
+
+
+/******************************************/
 void cnc_plot::run(void)
 {
     //swap path buffers and set "running" semaphore 
@@ -97,34 +112,44 @@ void cnc_plot::run(void)
     bool has_rapid   = false;
     bool has_prg     = false;
 
-    if (rapidmove_vecs.size())
-    { 
-        std::cout << "yes we have rapidmove_vecs \n";
-        has_rapid=true;
-    }
 
-    if (program_vecs.size())
-    { 
-        pathcache_vecs.clear();
-        
-        for (int v=0;v<program_vecs.size();v++)
-        {
-            pathcache_vecs.push_back( program_vecs.at(v) );
+    std::cout << "running  "<< running  <<"\n";
+    std::cout << "finished "<< finished <<"\n";
+
+    if(finished==true && running==false)
+    {
+
+        if (rapidmove_vecs.size())
+        { 
+            std::cout << "yes we have rapidmove_vecs \n";
+            has_rapid=true;
         }
 
-        // https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
-        //AB.reserve( A.size() + B.size() ); // preallocate memory
-        //AB.insert( AB.end(), A.begin(), A.end() );
-        //AB.insert( AB.end(), B.begin(), B.end() );
-        
-        std::cout << "yes we have program_vecs \n";
-        has_prg=true;
-    }    
+        if (program_vecs.size())
+        { 
+            pathcache_vecs.clear();
+
+            std::cout << "DEBUG - ADDING prog vecs \n";            
+            for (int v=0;v<program_vecs.size();v++)
+            {
+                pathcache_vecs.push_back( program_vecs.at(v) );
+            }
+
+            // https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
+            //AB.reserve( A.size() + B.size() ); // preallocate memory
+            //AB.insert( AB.end(), A.begin(), A.end() );
+            //AB.insert( AB.end(), B.begin(), B.end() );
+            
+
+            has_prg=true;
+        }    
+    }
 
     if(running==false)
     {
         mtime.start();
         running = true;
+        finished = false;
     }
 
 }

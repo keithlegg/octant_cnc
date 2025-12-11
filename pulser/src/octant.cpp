@@ -593,17 +593,24 @@ static void render_loop()
         if (localsimtime>=1.0)
         {
 
+            //iterate the statck of vectors to process
             if (pathidx<motionplot.pathcache_vecs.size())
             {
                 pathidx++;                    
                 mtime.reset_sim();
             }
+
+            //program finished here
             if (pathidx>=motionplot.pathcache_vecs.size())
             {
 
-                mtime.stop();
-                mtime.reset_sim();
+
                 run_pulses=false;
+                
+                motionplot.stop();
+
+                motionplot.finished = true;
+
                 pathidx = 1;
             }
         }
