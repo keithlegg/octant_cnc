@@ -92,7 +92,24 @@ int polygon_ops::numpts(void){
 
 
 /***************************************/
- 
+
+/*
+    3d lerp function ?? 
+    
+    https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/
+
+    https://stackoverflow.com/questions/18755251/linear-interpolation-of-three-3d-points-in-3d-space
+
+    // You can express P4 coordinates in the P1P2P3 vector basis.
+
+    x4 = x1 + A * (x2 - x1) + B * (x3 - x1)
+    y4 = y1 + A * (y2 - y1) + B * (y3 - y1)
+
+    // This is easy-to-solve linear equation system. You have to find A and B coefficients, then use them to calculate z-coordinate
+    z4 = z1 + A * (z2 - z1) + B * (z3 - z1)
+*/
+
+
 void point_ops::lerp_along( Vector3* output,
                             Vector3 fpos, 
                             Vector3 spos, 

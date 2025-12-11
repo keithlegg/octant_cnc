@@ -83,16 +83,17 @@ bool toglr_flatshaded = false;
 
 /***************************************/
 // single view prefs - use for debugging 
-bool draw_points_vbo = false; // test of VBO  
-bool draw_points     = true;   
 bool draw_lines      = true;
 bool draw_normals    = true;
-bool draw_quads      = true;
+bool draw_quads      = false;
 bool draw_triangles  = true;
-//bool draw_bbox       = true;
-//DEBUG - hilarious effect - if you turn all these off the view floats away quickly
-//render_text seems to anchor it 
 bool render_text     = true;
+
+
+//DEBUG - figure this crap out 
+bool draw_points     = true;  
+bool draw_points_vbo = false; // test of VBO  - DEBUG it explodes 
+//bool draw_bbox       = true;
 
 
 /***************************************/
@@ -441,7 +442,7 @@ void run_send_pulses(cncglobals* cg,
 
     if(cg->GLOBAL_DEBUG==true)
     {
-        for(unsigned int x=0;x<pulsetrain.size();x++)
+        for(int x=0;x<pulsetrain.size();x++)
         {
             std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
         } 
@@ -502,31 +503,13 @@ void run_cncplot(cncglobals* cg,
 
 */
 
-/***************************************/
-
-/*
-    3d lerp function ?? 
-    
-    https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/
-
-    https://stackoverflow.com/questions/18755251/linear-interpolation-of-three-3d-points-in-3d-space
-
-    // You can express P4 coordinates in the P1P2P3 vector basis.
-
-    x4 = x1 + A * (x2 - x1) + B * (x3 - x1)
-    y4 = y1 + A * (y2 - y1) + B * (y3 - y1)
-
-    // This is easy-to-solve linear equation system. You have to find A and B coefficients, then use them to calculate z-coordinate
-    z4 = z1 + A * (z2 - z1) + B * (z3 - z1)
-
-*/
 
 
 
 /***************************************/
 /***************************************/
 
-unsigned int q_i, p_i, f_i = 0;
+int q_i, p_i, f_i = 0;
 char cs[100];
 char s[100];
 
@@ -541,6 +524,9 @@ static void render_loop()
 
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+
+
+    glutKeyboardFunc(parser_cb);
 
     //------------ 
 
@@ -559,9 +545,12 @@ static void render_loop()
                 draw_locator( &headpos, .3);
             }
         }*/
-
-        PG.lerp_along(&qpos, plot.pathcache_vecs[1], plot.pathcache_vecs[0], mtime.getElapsedTime());
-        //draw_locator( &headpos, .3);
+        
+        if (mtime.getElapsedTime()>0&&mtime.getElapsedTime()<1)
+        {
+            PG.lerp_along(&qpos, plot.pathcache_vecs[1], plot.pathcache_vecs[0], mtime.getElapsedTime());
+            //draw_locator( &headpos, .3);
+        }
 
 
         //we need to know the total count of the pulses, use progress to step through and stop timer running when done 
@@ -584,6 +573,12 @@ static void render_loop()
     }
     //------------ 
 
+    //I clearly dont get the whoe view matrix thing - moved out of text render
+    //this is directly related and need to do homework
+    setOrthographicProjection();
+    glLoadIdentity();
+    //glPushMatrix();
+
     if (render_text)
     {
         if(on_click)
@@ -598,20 +593,14 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
         glColor3d(1.0, 1.0, 1.0);
-        setOrthographicProjection();
-        //glPushMatrix();
-        glLoadIdentity();
+
         
         //-----------------------------
         // render text in window 
 
         //void *fontsm = GLUT_BITMAP_8_BY_13;     
         void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
-
-        glutKeyboardFunc(parser_cb);
         
-
-
         // command line text 
         glColor3f(0.6f, 1.0f, 0.0f);  //text color 
         renderBitmapString(  20, scr_size_y-20  ,(void *)font,  cmd_buffer.c_str() );
@@ -651,17 +640,17 @@ static void render_loop()
         // sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
         // renderBitmapString( ((int)(scr_size_x/2)-250), 20  ,(void *)fontsm, s );
         //-----------------------------
-        //set color back
-        glColor3d(1.0, 1.0, 1.0);
-
-        //glPopMatrix();
-        resetPerspectiveProjection();
-
-        glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
-
 
     }
+    //I clearly dont get the whoe view matrix thing - moved out of text render
+    //this is directly related to text render and I need to do homework
+    //glPopMatrix();
+    resetPerspectiveProjection();
+    //set color back
+    glColor3d(1.0, 1.0, 1.0);
+    glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
+
 
     // --------------------------------------------
 

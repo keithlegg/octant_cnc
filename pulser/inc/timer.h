@@ -50,10 +50,17 @@ class timer
         double getElapsedTimeInMilliSec();          // get elapsed time in milli-second
         double getElapsedTimeInMicroSec();          // get elapsed time in micro-second
 
+        //keith added these
         void reset_sim(void);
 
         bool    running; // public property 
+        double sim_time_us = 0; //us == microsecond 
+        double time_offset = 0;
+
+
         
+
+
     protected:
 
     private:

@@ -18,10 +18,10 @@ UNAME := $(shell uname)
 # compiling flags  
 
 #all the warnings (for final compiling)
-CFLAGS   = -I$(INCDIR) -Wall 
+#CFLAGS   = -I$(INCDIR) -Wall 
 
 #for just making this damn thing run 
-#CFLAGS   = -I$(INCDIR) -w -fcompare-debug-second    
+CFLAGS   = -I$(INCDIR) -w -fcompare-debug-second    
 
 
 LINKER   = g++
@@ -37,10 +37,10 @@ ifeq ($(UNAME), Linux)
 	#LFLAGS = -Wall -lglut -lGL -lGLU 
 
     #PRODUCTION VERSION 
-	#LFLAGS = -lglut -lGL -lGLU 
+	LFLAGS = -lglut -lGL -lGLU 
 
 	#NO WARNINGS 
-	LFLAGS = -w -lglut -lGL -lGLU 
+	#LFLAGS = -w -lglut -lGL -lGLU 
 	
 	#BUILD GDB DEBUGGING SYMBOLS  
 	#LFLAGS = -g -w -lglut -lGL -lGLU 

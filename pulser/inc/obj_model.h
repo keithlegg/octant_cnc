@@ -81,14 +81,14 @@ class obj_model: public polygon_ops {
 
         //INHERITED PROPERTIES 
         //polygon level stuff moved to pointgen class
-        unsigned int num_pts;
-        unsigned int num_vtxrgb;
-        unsigned int num_vnrmls;    
-        unsigned int num_fnrmls;
-        unsigned int num_uvs;
-        unsigned int num_lines;
-        unsigned int num_tris;
-        unsigned int num_quads;    
+        int num_pts;
+        int num_vtxrgb;
+        int num_vnrmls;    
+        int num_fnrmls;
+        int num_uvs;
+        int num_lines;
+        int num_tris;
+        int num_quads;    
 
         // extents of model (you can derive centroid from these)
         float bb_min_x;

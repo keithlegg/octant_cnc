@@ -59,6 +59,7 @@ int cursor = 0;
 extern Vector3 qpos;
 
 extern timer mtime;
+extern obj_model* pt_model_buffer;
 
 
 
@@ -112,6 +113,17 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="stop")
     {
         stop_machine(); 
+    }
+
+
+    //toggle grid
+    if (a1=="show")
+    { 
+        std::cout << "showw\n"; 
+        
+        pt_model_buffer->show();
+
+        pt_model_buffer->show_geom();
     }
 
     //--------------
