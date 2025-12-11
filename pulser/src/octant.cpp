@@ -19,7 +19,37 @@
    -------------------------------------------------------------------------------------
  
 
+
+    //--------------------------------------------------------------------
+        
+    MIT License
+
+    Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+
 */
+         
+
+/*****************************************************************************/
+
 /*************************************************************/
 
 #include <iostream>
@@ -1445,11 +1475,44 @@ void key_cb(unsigned int key)
 {
 
     /*
+
+    // PYLINK TO IMPLEMENT 
+
     if (key == 83) //shift s key - open socket  
     { 
         printf("opening socket on port %i \n", TCP_PORT); 
         //sockettest3();
-    }*/
+    }
+
+    if (key == 112) //p
+    { 
+
+        //go ahead and dump camera matrix automatically 
+        m44 foo = identity44();
+        grab_camera_matrix(&foo);
+        negate_y_axis(&foo);
+        save_matrix44(cam_matrix_filepath, &foo );
+
+        //launch python3 
+        init_pycore(); 
+    }
+    if (key == 111) // o
+    { 
+
+        clear_scenegeom();
+        reset_objfile(pt_model_buffer, pt_obinfo);  
+
+        //char* file2 = "3d_obj/PYCORE.obj";
+        char* pycorepath = "3d_obj/PYCORE.obj";
+        //reset_objfile(pt_model_buffer, pt_obinfo);
+
+        load_objfile(pycorepath, pt_model_buffer );
+        pt_model_buffer->calc_normals();
+        get_obj_info( pt_model_buffer, pt_obinfo);
+
+
+    }
+    */
 
     //ESCAPE KEY
     if (key == 27) 
