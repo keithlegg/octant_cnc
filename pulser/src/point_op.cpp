@@ -118,30 +118,34 @@ void point_ops::lerp_along( Vector3* output,
  
     Vector3 npos = Vector3(0,0,0);
 
+    //DEBUG  &&dist<1.0  is an attempt to stop the "popping bug"
     //X
-    if(fpos.x-spos.x!=0)
+    if(fpos.x-spos.x!=0 &&dist<1.0 )
     {
         npos.x =  spos.x+(((fpos.x-spos.x))*(-dist+1));
-
-    }else{
+    }else if(dist<1.0)
+    {
         //npos.x=0;
         npos.x =  spos.x+(((fpos.x-spos.x))*(dist+1));        
     }
 
     //Y
-    if (fpos.y-spos.y!=0)
+    if (fpos.y-spos.y!=0&&dist<1.0)
     { 
         npos.y =  spos.y+(((fpos.y-spos.y))*(-dist+1));         
-    }else{
+    }else if(dist<1.0)
+    {
         //npos.y=0;
         npos.y =  spos.y+(((fpos.y-spos.y))*(dist+1));        
     }
 
     //Z
-    if (fpos.z-spos.z!=0)
+    if (fpos.z-spos.z!=0&&dist<1.0)
     { 
         npos.z =  spos.z+(((fpos.z-spos.z))*(-dist+1));        
-    }else{
+    }else if(dist<1.0)
+    {
+        //npos.z=0;        
         npos.z =  spos.z+(((fpos.z-spos.z))*(dist+1));                     
     }
 

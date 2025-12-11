@@ -538,7 +538,6 @@ static void render_loop()
         double localsimtime = mtime.get_elapsed_simtime();
         if (localsimtime>=1.0)
         {
-            std::cout << "WE B OVER" << "\n";
 
             if (vecidx<plot.pathcache_vecs.size())
             {
@@ -547,17 +546,22 @@ static void render_loop()
             }
             if (vecidx>=plot.pathcache_vecs.size())
             {
+
                 mtime.stop();
+                mtime.reset_sim();
                 qpos = Vector3(0,0,0);
                 run_pulses=false;
+                vecidx = 1;
             }
 
         }
         //std::cout << localsimtime << "\n";
         
-        if (vecidx<=plot.pathcache_vecs.size())
+        if (vecidx<=plot.pathcache_vecs.size()&&run_pulses)
         {
             PG.lerp_along(&qpos, plot.pathcache_vecs[vecidx-1], plot.pathcache_vecs[vecidx], localsimtime);
+            glColor3d(.7, .7, .7);
+            draw_locator(&qpos, .5);
         }
     }
 
@@ -582,7 +586,7 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_text);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
-        glColor3d(1.0, 1.0, 1.0);
+
 
         
         //-----------------------------
@@ -714,7 +718,7 @@ static void render_loop()
     /******************************************/
     /******************************************/
 
-    draw_locator(&qpos, .5);
+
 
     /******************************************/
     graticulate(&draw_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
@@ -976,6 +980,7 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
         //DEBUG vertex color is off until I fix it
+        //DEBUG - size() does not catch new vectors added with the GUI?
         for (p_i=0;p_i<scene_drawvec3.size();p_i++)
         {   
             if(p_i==0)

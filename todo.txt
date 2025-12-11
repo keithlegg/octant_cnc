@@ -1,5 +1,10 @@
 
+
 do we need to dynamically draw each poly in render_loop??
+
+
+we need to control the pulses/speed based on distance in space 
+fis the "longer lines move faster" issue 
 
 
 #recreate old objinfo - add class methods to model 
