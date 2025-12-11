@@ -16,6 +16,7 @@ class cnc_plot
         {
             running  = false;
             finished = true;
+            quill_pos = Vector3(0,0,0);
         };
         
         ~cnc_plot(){};
@@ -40,18 +41,26 @@ class cnc_plot
                         int);
     
     //-----
-    
+
     bool running;
     bool finished;
+
+    //motion buffers
+    double trav_dist  ;
+    double num_vecs   ;
+    double trav_speed ; //linear unit per sec 
+
+    Vector3 quill_pos;
+    double retract_height;
+    double work_height;
+
 
     vector<Vector3> rapidmove_vecs;    
     vector<Vector3> program_vecs; 
 
     vector<Vector3> pathcache_vecs;
 
-    double trav_dist  ;
-    double num_vecs   ;
-    double trav_speed ; //linear unit per sec 
+
 
 
     //void gen_3d_pules(std::vector<Vector3>*, int, int);

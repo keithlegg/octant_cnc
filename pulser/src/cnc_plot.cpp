@@ -67,10 +67,6 @@
 point_ops PG;
 
 
-// extern float retract_height;
-// extern float work_height;
-// extern Vector3 qpos;
-
 
 extern timer mtime;
 
@@ -105,6 +101,14 @@ void cnc_plot::stop(void)
 
 
 /******************************************/
+/*
+// DEBUG - look into proper way to combine vectors 
+// https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
+AB.reserve( A.size() + B.size() ); // preallocate memory
+AB.insert( AB.end(), A.begin(), A.end() );
+AB.insert( AB.end(), B.begin(), B.end() );
+*/
+
 void cnc_plot::run(void)
 {
     //swap path buffers and set "running" semaphore 
@@ -121,8 +125,12 @@ void cnc_plot::run(void)
 
         if (rapidmove_vecs.size())
         { 
-            std::cout << "yes we have rapidmove_vecs \n";
-            has_rapid=true;
+
+            std::cout << "DEBUG - ADDING rapid vecs \n";            
+            for (int v=0;v<program_vecs.size();v++)
+            {
+                pathcache_vecs.push_back( rapidmove_vecs.at(v) );
+            }
         }
 
         if (program_vecs.size())
@@ -134,14 +142,7 @@ void cnc_plot::run(void)
             {
                 pathcache_vecs.push_back( program_vecs.at(v) );
             }
-
-            // https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
-            //AB.reserve( A.size() + B.size() ); // preallocate memory
-            //AB.insert( AB.end(), A.begin(), A.end() );
-            //AB.insert( AB.end(), B.begin(), B.end() );
-            
-
-            has_prg=true;
+        
         }    
     }
 

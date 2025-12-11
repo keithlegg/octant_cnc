@@ -95,13 +95,12 @@ cnc_plot* pt_motionplot = &motionplot;
 
 extern point_ops PG;
 
-//position of head 
-Vector3 qpos = Vector3(0, 0, 0);
 
 
 //loaded parametrs from cfg 
-extern float retract_height;
-extern float work_height;
+// extern float retract_height;
+// extern float work_height;
+
     
 
 
@@ -584,7 +583,9 @@ static void render_loop()
     glutKeyboardFunc(parser_cb);
 
     //------------ 
-
+    //DEBUG - THE MAIN LOGIC OF MOTION SHOULD NOT BE IN THE RENDER LOOP!
+    //THIS NEEDS TO BE INDEPENDANT - AND UPDATE OPENGL, NOT THE OTHER WAY AROUND 
+    //MOVE AS MUCH AS POSSIBLE INTO CNC_PLOT 
     if(run_pulses)
     {
         //std::cout << mtime.getElapsedTime() << "\n";
@@ -603,14 +604,9 @@ static void render_loop()
             //program finished here
             if (pathidx>=motionplot.pathcache_vecs.size())
             {
-
-
                 run_pulses=false;
-                
                 motionplot.stop();
-
                 motionplot.finished = true;
-
                 pathidx = 1;
             }
         }
@@ -622,16 +618,19 @@ static void render_loop()
             //DEBUG - get the length of the vector/spatial divs to calc proper speed 
             //vectormag   motionplot.pathcache_vecs[pathidx]
 
-            PG.lerp_along(&qpos, motionplot.pathcache_vecs[pathidx-1], motionplot.pathcache_vecs[pathidx], localsimtime);
+            PG.lerp_along(&motionplot.quill_pos, 
+                           motionplot.pathcache_vecs[pathidx-1], 
+                           motionplot.pathcache_vecs[pathidx], 
+                           localsimtime);
             glColor3d(1, .4, 1);
-            draw_locator(&qpos, .5);
+            draw_locator(&motionplot.quill_pos, .5);
         }
 
     }
     if(!run_pulses)
     {
         glColor3d(.7, .7, .7);
-        draw_locator(&qpos, .5);        
+        draw_locator(&motionplot.quill_pos, .5);        
     }
 
     //------------ 
@@ -672,7 +671,7 @@ static void render_loop()
         //X Y Z - QUILL/HEAD POSITION  
 
         glColor3d(0, 1.0, 1.0);        
-        sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", qpos.x, qpos.y, qpos.z );
+        sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", motionplot.quill_pos.x, motionplot.quill_pos.y, motionplot.quill_pos.z );
         //glColor3f(1.0f, 1.0f, 1.0f);  //text color 
         renderBitmapString( ((int)(scr_size_x/2)-100), 50  ,(void *)font, cs );
 

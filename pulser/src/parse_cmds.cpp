@@ -57,8 +57,6 @@ int cursor = 0;
 
 //position of extruder/quill/etc
 
-extern Vector3 qpos;
-
 extern cnc_plot* pt_motionplot;
 
 extern cncglobals cg;
@@ -159,7 +157,9 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="clear" || a1=="clr")
     {
         //return head to origin 
-        qpos.x = 0;qpos.y = 0;qpos.z = 0; 
+        pt_motionplot->quill_pos.x = 0;
+        pt_motionplot->quill_pos.y = 0;
+        pt_motionplot->quill_pos.z = 0; 
         clear_scn_geom();
     }
 
@@ -182,12 +182,12 @@ void parse_cmd_text(std::string *buffer)
         v12 = std::stof(a3);
         v13 = std::stof(a4);
 
-        qpos.x = v11;
-        qpos.y = v12;
-        qpos.z = v13;   
+        pt_motionplot->quill_pos.x = v11;
+        pt_motionplot->quill_pos.y = v12;
+        pt_motionplot->quill_pos.z = v13;   
 
         Vector3 rgb = Vector3(0,1.0,1.0);
-        add_vecrgb_scndrw(&qpos, &rgb);
+        add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
     }
 
     //--------------
@@ -207,12 +207,12 @@ void parse_cmd_text(std::string *buffer)
 
                 //I AM SHIFTING THE AXIS TO Z UP HERE
                 //set new qpos
-                qpos.x = v11;
-                qpos.y = 0;  
-                qpos.z = v12;
+                pt_motionplot->quill_pos.x = v11;
+                pt_motionplot->quill_pos.y = 0;  
+                pt_motionplot->quill_pos.z = v12;
 
             //store the difference between them
-            add_vecrgb_scndrw(&qpos, &rgb);
+            add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
 
         } catch (const std::invalid_argument& e) {  
             //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
@@ -236,9 +236,9 @@ void parse_cmd_text(std::string *buffer)
         v13 = std::stof(a4);
         
         //set new qpos
-        qpos.x = v11;
-        qpos.y = v12;
-        qpos.z = v13;  
+        pt_motionplot->quill_pos.x = v11;
+        pt_motionplot->quill_pos.y = v12;
+        pt_motionplot->quill_pos.z = v13;  
 
 
         //sample the qpos 
@@ -248,7 +248,7 @@ void parse_cmd_text(std::string *buffer)
         //store the difference between them
         //add_vecrgb_scndrw(&newvec, &rgb);
         
-        add_vecrgb_scndrw(&qpos, &rgb);
+        add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
 
     }
 
