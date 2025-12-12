@@ -150,14 +150,14 @@ float mouse_orbit_speed      = 2.1f;
 // toggle - view prefs - state vars dont change  
 bool DRAW_POLYS       = true; // state for toggle command
 bool DRAW_GEOM        = true; // state for toggle command
-
 bool draw_cntrgrid    = true;
-bool draw_grid        = true;
-bool toglr_flatshaded = false;
+bool draw_grid        = true; 
 
+bool toglr_flatshaded = true; //DEBUG 
 
 /***************************************/
 // single view prefs - use for debugging 
+
 bool draw_lines      = true;
 bool draw_normals    = true;
 bool draw_quads      = false;
@@ -1019,20 +1019,19 @@ static void render_loop()
                 tri_cntr.x = (p1.x + p2.x + p3.x)/3;
                 tri_cntr.y = (p1.y + p2.y + p3.y)/3;
                 tri_cntr.z = (p1.z + p2.z + p3.z)/3; 
-                  
+
                 //display shorter for neatness  
-                //Vector3 mv =  add(tri_cntr, div(pt_model_buffer->fnormals[p_i], 20 ));
-                Vector3 mv = tri_cntr.operator+(pt_model_buffer->fnormals[p_i].operator/=(20));
+                Vector3 mv = tri_cntr.operator+(pt_model_buffer->fnormals[p_i].operator/(10));
                 //Vector3 mv =  tri_cntr.operator+(pt_model_buffer->fnormals[p_i]);
-
-                //print_vec3( mv );
-
-                glBindTexture(GL_TEXTURE_2D, texture[0]);
+    
+                glBindTexture(GL_TEXTURE_2D, texture[1]);
                 glMaterialfv(GL_FRONT, GL_EMISSION, clr_yellow);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
                 glBegin(GL_LINES);
+                    glColor3f(1.,1.,0); //hack for now
                     glVertex3f(tri_cntr.x, tri_cntr.y, tri_cntr.z);
+                    glColor3f(1.,1.,0); //hack for now
                     glVertex3f(mv.x, mv.y, mv.z);
                 glEnd();
 
@@ -1049,11 +1048,10 @@ static void render_loop()
     Vector3 sv  = Vector3();
     Vector3 ev  = Vector3();
     // Vector3 rgb = Vector3();  
-
     if (DRAW_GEOM)
     {
 
-        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[1]);
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_full);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
@@ -1326,7 +1324,6 @@ void start_gui(int *argc, char** argv){
     //shader_test();
     set_colors();
 
-
     timer_init();
     //mtime.start();
 
@@ -1443,20 +1440,24 @@ void start_gui(int *argc, char** argv){
 /**************************************************/
 
 
-
 /*
-    // a - frame all objects 
-    // q - select tool         
-    // w - move 
-    // e - rotate 
-    // r - scale 
-    // f - frame selected 
-    // t - show manipulator 
-    // p - parent 
-    // shft p - unparent 
-*/
+  GLfloat light0_diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    // Plane wave coming from +z infinity. 
+    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
+*/    
 
-void setlight0(void){
+
+void setlight0(void)
+{
     // FROM - https://www.khronos.org/opengl/wiki/How_lighting_works#glMaterial_and_glLight 
     // FROM - https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
     // FROM - https://www.cse.msu.edu/~cse872/tutorial3.html
@@ -1467,8 +1468,9 @@ void setlight0(void){
         GL_SPOT_EXPONENT, GL_CONSTANT_ATTENUATION, GL_LINEAR_ATTENUATION,  GL_QUADRATIC_ATTENUATION 
     */
 
-    // //GLfloat lightpos[] = {1, light_posx, light_posy, light_posz}; // homogeneous coordinates
-    // GLfloat lightpos[] = {0, 1, 0, 0}; // homogeneous coordinates
+     
+    //GLfloat lightpos[] = {1, light_posx, light_posy, light_posz}; // homogeneous coordinates
+    GLfloat lightpos[] = {0, 1, 0, 0}; // homogeneous coordinates
     // glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 
@@ -1509,11 +1511,28 @@ void setlight0(void){
     // Set the glMaterial Emission colour to 0,0,0,1
     // Set the glColor to whatever colour you want each polygon to basically appear to be. 
     // That sets the Ambient and Diffuse to the same value - which is what you generally want.
+    
+    glEnable(GL_NORMALIZE);
 
 
     //  // GLfloat matdiff[] = {1.f, 1.f, 1.f, 1.f};
     //  // glMaterialfv(GL_FRONT, GL_DIFFUSE, matdiff);
+     
 
+    /*
+    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
+    GLfloat light0_diffuse[] = {0.0, 1.0, 1.0, 0.0};
+
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
+    */
 
 }
 
@@ -1637,7 +1656,7 @@ void key_cb(unsigned int key)
         setlight0();
 
         // glShadeModel(GL_SMOOTH);              
-        glDisable(GL_TEXTURE_2D);
+        // glDisable(GL_TEXTURE_2D);
 
         //------------------------
 
@@ -1679,16 +1698,6 @@ void key_cb(unsigned int key)
     { 
         orbit_dist+=.1;  
     }
-
-
-    //------
-    if (key == 73) //shift i - show obj info 
-    { 
-
-        //get_obj_info( pt_model_buffer, pt_obinfo);
-        //show_obj_geom(pt_model_buffer);
-    }
-
 
     if (key == 105) //i - draw bbox
     {   

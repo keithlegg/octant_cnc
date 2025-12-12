@@ -31,15 +31,15 @@ def run_pulser(ptlist):
             f = ptlist[i-1]
             s = ptlist[i]
             
-            #time.sleep(.01)
+            print('op_scenevec', f[0], f[1], f[2])
 
-            runcmd = '../pulser/pulser %s %s %s %s %s %s %s'%(f[0],f[1],f[2], s[0],s[1],s[2], 50)
-            subprocess.call(runcmd , shell=True)
-
-
+            #runcmd = '../pulser/pulser %s %s %s %s %s %s %s'%(f[0],f[1],f[2], s[0],s[1],s[2], 50)
+            #subprocess.call(runcmd , shell=True)
 
 
-pts = pop3.calc_circle( pos=(0,0,0), rot=(0,0,0), dia=1, axis='z', periodic=True, spokes=20, start=0, end=360)
+
+
+pts = pop3.calc_circle( pos=(0,0,0), rot=(0,0,0), dia=1, axis='y', periodic=True, spokes=20, start=0, end=360)
 run_pulser( pts )
 
 

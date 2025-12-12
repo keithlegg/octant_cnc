@@ -356,13 +356,14 @@ void obj_model::load(char *filepath)
 
     // ---------------------------------------------
     //DEBUG INFO - PHASE THIS OUT 
-    /*
+    
     std::cout << "vertices loaded   "<< num_pts    << "\n";
     std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
+    std::cout << "normals loaded    "<< num_fnrmls << "\n"; 
     std::cout << "lines loaded      "<< num_lines  << "\n";
     std::cout << "triangles loaded  "<< num_tris   << "\n";
     std::cout << "quads loaded      "<< num_quads  << "\n";  
-    */ 
+     
 
 }
 

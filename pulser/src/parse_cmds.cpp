@@ -113,9 +113,11 @@ void parse_cmd_text(std::string *buffer)
     //toggle grid
     if (a1=="help")
     {   
-        std::string helpstr = "no one will save you.\n";
-        buffer = &helpstr;
-        std::cout << "no one will save you.\n"; 
+        std::cout << "dm = display mode                         \n";
+        std::cout << "    solid, wire, persp, otop, oside, etc  \n";
+        std::cout << "show                                      \n";
+        std::cout << "paths, geom, obj                          \n";
+
     }    
 
     //--------------
@@ -131,6 +133,15 @@ void parse_cmd_text(std::string *buffer)
         cg.show_params();
  
     }
+    //peek at internals 
+    if (a1=="display")
+    { 
+        if(a2=="paths")
+        {
+         
+        }    
+    }
+
 
     //peek at internals 
     if (a1=="show")
@@ -143,22 +154,27 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="geom")
         { 
             pt_model_buffer->show();
-            pt_model_buffer->show_geom();
+            //pt_model_buffer->show_geom();
         }
+        
+        if(a2=="obj")
+        { 
+            //pt_model_buffer->     
+        }
+
     }
 
     //--------------
     //toggle grid
     if (a1=="tog")
     {
-        key_cb(103); 
+        if(a2=="grid"){key_cb(103);};
+        if(a2=="gnomon"){key_cb(71);};
+        if(a2=="normals"){key_cb(110);};
+        
     }
 
-    //toggle gnomon at origin
-    if (a1=="togg")
-    {
-        key_cb(71); 
-    }
+
 
     //--------------
     //relative transform (from current xyz)
@@ -256,7 +272,10 @@ void parse_cmd_text(std::string *buffer)
         
         if(a2=="pts")     {key_cb(36);} 
         if(a2=="wire")    {key_cb(52);} 
-        if(a2=="solid")   {key_cb(53);}                 
+        if(a2=="s1")      {key_cb(53);}  
+        if(a2=="s2")      {key_cb(5);}
+        if(a2=="s3")      {key_cb(6);}
+        if(a2=="s4")      {key_cb(7);}          
 
     }
 
