@@ -49,6 +49,11 @@ class cnc_plot
         //index to the current vector processed while running 
         int pidx;
         double timediv;
+        
+        //calculated values - length of travel for vectors
+        float rapid_dist   = 0;
+        float program_dist = 0;     
+
 
         //-----
         Vector3 quill_pos;
@@ -68,8 +73,15 @@ class cnc_plot
         float work_height;
 
         //-----
+        //data for the actual pulsing out the parport 
+        vector<Vector3> pulsetrain;
+        vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+        //cache of toolpath component vectors 
         vector<Vector3> rapidmove_vecs;    
         vector<Vector3> program_vecs; 
+
+        //the final "baked" path that gets run
         vector<Vector3> toolpath_vecs;
 
 

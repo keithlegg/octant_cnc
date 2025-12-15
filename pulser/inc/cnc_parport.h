@@ -40,7 +40,7 @@ class cnc_parport
     void aux_off(cncglobals*, unsigned int);
 
     // /void send_pulses(cncglobals*, vector<Vector3>*);
-    void send_pulses(float* pt_progress, cncglobals* cg, vector<Vector3>* pt_pulsetrain);
+    void send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot);
 
     void read_limits(cncglobals*, Vector3*);
 

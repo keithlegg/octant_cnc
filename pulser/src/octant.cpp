@@ -459,7 +459,7 @@ static void parser_cb(unsigned char key, int x, int y)
 //send_pulses
 
 
-
+/*
 void run_send_pulses(cncglobals* cg,
                  float f_x,
                  float f_y,
@@ -492,12 +492,15 @@ void run_send_pulses(cncglobals* cg,
     }
 
  }   
-
+*/
 
 
 /******************************************/
 //command line tool to generate XYZ pulses from 2 vectors 
 /*
+
+RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
+
 void run_cncplot(cncglobals* cg,
                  float f_x,
                  float f_y,
@@ -607,6 +610,7 @@ static void render_loop()
             }
         }
         
+        //the main loop where we upodate display and pulse the ports.
         if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1&&mtime.running)
         {
             //DEBUG - get the length of the vector/spatial divs to calc proper speed 
@@ -615,11 +619,21 @@ static void render_loop()
             if(motionplot.pidx==0){
                 //do nothing: A single point, a line does not make. 
             }
-            if(motionplot.pidx>0){
+            if(motionplot.pidx>0)
+            {
+                 
+                Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
+                Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];
+
                 PG.lerp_along(&motionplot.quill_pos, 
-                               motionplot.toolpath_vecs[motionplot.pidx], 
-                               motionplot.toolpath_vecs[motionplot.pidx+1], 
+                               s_p, 
+                               e_p, 
                                (float) localsimtime);
+
+  
+                //plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
+                 
+
             }            
 
             glColor3d(1, .4, 1);

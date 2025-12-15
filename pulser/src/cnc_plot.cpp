@@ -184,14 +184,18 @@ void cnc_plot::rapid_move(void)
 
 void cnc_plot::update_cache(void)
 {
-    toolpath_vecs.clear();
-    
-    rapid_move();
-
     if(finished==true && running==false)
     {
+        toolpath_vecs.clear();
+        
+        //rebuild the rapid move from current position back to start 
+        rapid_move();
+
         if (rapidmove_vecs.size())
         { 
+            //(re)calculate the length of all vectors
+            // rapid_dist   = 0;
+
             //std::cout << "DEBUG - update_cache ADDING rapid vecs \n";            
             for (int v=0;v<rapidmove_vecs.size();v++)
             {
@@ -201,6 +205,8 @@ void cnc_plot::update_cache(void)
 
         if (program_vecs.size())
         { 
+            //(re)calculate the length of all vectors
+            //program_dist = 0;  
 
             //std::cout << "DEBUG - update_cache ADDING prog vecs \n";            
             for (int v=0;v<program_vecs.size();v++)
@@ -209,7 +215,7 @@ void cnc_plot::update_cache(void)
             }
         
         }    
-    }
+    }//if program is NOT running or paused
 
     /*
     std::cout << " ###############################################         \n";
@@ -226,12 +232,12 @@ void cnc_plot::update_cache(void)
     The first thing called when the vectors are loaded from disk
     Esentially loads the vectors from the disk, copies them into 
 
-    program_vecs   = the actual path that will be cut 
-
+    toolpath_vecs   = the actual path that will be cut 
 
     program_vecs = cached vectors loaded from a file represeting a path we want to cut
                      these are seperate from the actual path we will cut so we can build 
                      more complex paths dynamically. 
+
     rapidmove_vecs = a path to move the head up, over, and back down 
 
 */
@@ -263,7 +269,10 @@ void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
 
 
 
+/******************************************/
 
+
+    
 
 /******************************************/
 /*
