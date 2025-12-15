@@ -72,6 +72,8 @@
 
 #include "parse_cmds.h"
 #include "gl_gui.h"
+#include "gl_render.h"
+
 #include "octant.h"
 
 //#include "socket.h"
@@ -121,7 +123,6 @@ bool run_pulses = false;
 
 /***************************************/
 //I think this was from a test of the VBO 
-int num_pts_drw = 0;
 GLfloat vertices[100];
 
 /***************************************/
@@ -221,9 +222,7 @@ int surfce_clr_r; //read from setup.olm
 int surfce_clr_g; 
 int surfce_clr_b; 
 
-int line_clr_r; //read from setup.olm 
-int line_clr_g; 
-int line_clr_b; 
+
 
 
 //debug - consider not using this old data type and use 3 ints in a vector?
@@ -546,11 +545,9 @@ void run_cncplot(cncglobals* cg,
 
 
 
-
 /***************************************/
 /***************************************/
 
-int q_i, p_i, f_i = 0;
 char cs[100];
 char s[100];
 
@@ -809,66 +806,7 @@ static void render_loop()
     /******************************************/
     if (draw_points_vbo)
     {
-      
-        // persistant point buffer   
-        // Not tested well! - I think it needs OpenGL4 amd up
-
-        //http://ogldev.atspace.co.uk/www/tutorial02/tutorial02.html 
-        //https://stackoverflow.com/questions/28849321/how-to-draw-polygon-with-3d-points-in-modern-opengl
-        
-        glMaterialfv(GL_FRONT, GL_EMISSION, emis_points);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
-
-        glPointSize(2);
- 
-        //-------------------------
-        // KEEP THIS CODE - 
-        // dump to GLFloats 
-        num_pts_drw = pt_model_buffer->num_pts;
-
-
-        GLfloat vertices[num_pts_drw*4];
-        GLfloat* pt_vert = vertices;
-        dump_points_GLfloat( pt_vert, pt_model_buffer, num_pts_drw );
-        
-        // add in custom points loaded from scene.olm  
-        //dump_points_GLfloat( pt_vert, pt_scene_drawpoints, num_drawpoints );
-
-
-
-        //-------------------------
-
-
-        GLuint VBO;
-
-        glGenBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        //glEnableVertexAttribArray(0);
-
-
-        // "Enable a port" to the shader pipeline
-        glEnableVertexAttribArray(0);
-        
-        //DEBUG COMMENTED OUT
-        //glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-        // pass information about how vertex array is composed
-        glVertexAttribPointer(0, // same as in glEnableVertexAttribArray(0)
-                              4, // # of coordinates that build a vertex
-                              GL_FLOAT, // data type
-                              GL_FALSE, // normalized?
-                              0,        // stride
-                              (void*)0);// vbo offset
-
- 
-        glDrawArrays(GL_POINTS, 0, num_pts_drw);
-        //glDrawArrays(GL_LINES, 0, num_pts_drw);
-        glDisableVertexAttribArray(0);
-        
-        glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);
-      
+      render_vbo(pt_model_buffer);
     }
 
     /******************************************/
@@ -876,45 +814,7 @@ static void render_loop()
     // draw 3D line geometry 
     if (draw_lines)
     {
-
-        glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
-        
-        // glEnable(GL_COLOR_MATERIAL);  
-        // glColor3f(.5, 0, .5);
-            
-        for (p_i=0;p_i<pt_model_buffer->num_lines;p_i++)
-        {   
-            glBegin(GL_LINES);
-                // fetch the line indices from vertex list 
-                int lin1 = pt_model_buffer->lines[p_i][0];
-                int lin2 = pt_model_buffer->lines[p_i][1];
-                
-                Vector3 pt1 = pt_model_buffer->points[lin1-1];
-                Vector3 pt2 = pt_model_buffer->points[lin2-1];
-
-                //use the same vertex indices to lookup RGB 
-                Vector3 c1 = pt_model_buffer->vtxrgb[lin1-1];
-                Vector3 c2 = pt_model_buffer->vtxrgb[lin2-1];
-
-                if(c1.x==0){c1.x=line_clr_r;c2.x=line_clr_r;}
-                if(c1.y==0){c1.y=line_clr_g;c2.y=line_clr_g;}
-                if(c1.z==0){c1.z=line_clr_b;c2.z=line_clr_b;}
-
-                //std::cout << "line color is set to " << c1.x <<" "<< c1.y<< " " << c1.z << "\n";
-                glMaterialfv(GL_FRONT, GL_EMISSION, clr_linez);
-                glColor3f(c1.x, c1.y, c1.z);   
-                glVertex3f(pt1.x, pt1.y, pt1.z);
-
-                glColor3f(c2.x, c2.y, c2.z);  
-                glVertex3f(pt2.x, pt2.y, pt2.z);
-
-            glEnd();
-        }
-
-        glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);  
+        render_lines(pt_model_buffer);
     }
 
     /******************************************/
@@ -935,7 +835,7 @@ static void render_loop()
 
   
         glBegin(GL_TRIANGLES);  
-            for (p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
+            for (int p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
               
                 // fetch the triangle indices from vertex list
@@ -1005,7 +905,7 @@ static void render_loop()
         {
             glColor3f(.5,.5,0);
 
-            for (p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
+            for (int p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             {             
                 // fetch the pts for a triangle
                 Vector3 p1 = pt_model_buffer->points[pt_model_buffer->tris[p_i][0]-1];
@@ -1057,7 +957,7 @@ static void render_loop()
         
         //intentionally start at 1 - skip the first point 
         //we need at least two points to indicate a line 
-        for (p_i=1;p_i<scene_drawvec3.size();p_i++)
+        for (int p_i=1;p_i<scene_drawvec3.size();p_i++)
         {   
             //ignore the first vector/point - off for now 
             // if(p_i==0)
@@ -1104,7 +1004,7 @@ static void render_loop()
 
         glBegin(GL_QUADS);                      
 
-            for (q_i=0;q_i<pt_model_buffer->num_quads;q_i++)
+            for (int q_i=0;q_i<pt_model_buffer->num_quads;q_i++)
             { 
 
                 int qu1 = pt_model_buffer->quads[q_i][0];
@@ -1161,7 +1061,7 @@ static void render_loop()
         if (draw_normals)
         {
             glColor3f(.5,.5,0);
-            for (p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
+            for (int p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
             {             
                 // fetch the pts for a triangle
                 Vector3 p1 = pt_model_buffer->points[pt_model_buffer->quads[p_i][0]-1];
