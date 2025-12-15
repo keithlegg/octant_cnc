@@ -113,8 +113,6 @@ int TCP_PORT;
 //Timer related 
 timer mtime = timer();
 
-bool run_pulses = false;
-
 /***************************************/
 // data to pulse out to IO hardware
 //vector<Vector3> pulsetrain;
@@ -551,76 +549,76 @@ void run_cncplot(cncglobals* cg,
 char cs[100];
 char s[100];
 
-int pathidx = 1;
+
 double localsimtime;
 
 static void render_loop()
 {
-    run_pulses = mtime.running;
 
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
-
     glutKeyboardFunc(parser_cb);
 
     //------------ 
     //DEBUG - THE MAIN LOGIC OF MOTION SHOULD NOT BE IN THE RENDER LOOP!
     //THIS NEEDS TO BE INDEPENDANT - AND UPDATE OPENGL, NOT THE OTHER WAY AROUND 
     //MOVE AS MUCH AS POSSIBLE INTO CNC_PLOT 
-    if(run_pulses)
+    if(mtime.running)
     {
         
         //std::cout << mtime.getElapsedTime() << "\n";
         //std::cout << localsimtime           << "\n";
 
-        localsimtime = mtime.get_elapsed_simtime();
+        localsimtime = mtime.get_elapsed_simtime() * motionplot.timediv;
+
+        std::cout << "loacl simtime is " << localsimtime << "\n";
+
+        //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
         if (localsimtime>=1.0)
         {
         
-            //std::cout << pathidx           << "\n";
+            std::cout << "running index " << motionplot.pidx           << "\n";
 
             //iterate the stack of vectors to process
-            if (pathidx<motionplot.pathcache_vecs.size())
+            if (motionplot.pidx<motionplot.toolpath_vecs.size())
             {
-                pathidx++;        
-                // start the clock over for the next vector segment 
-                // 0.0 - 1.0 is the range            
+                motionplot.pidx++;        
+                // start the (sim) clock over at the end of each vector segment 
+                // 0.0 - 1.0 is the range - which feeds the 3D `lerp           
                 mtime.reset_sim();
             }
 
             //program finished here
-            if (pathidx>=motionplot.pathcache_vecs.size()-1)
+            if (motionplot.pidx>=motionplot.toolpath_vecs.size()-1)
             {
 
-                run_pulses=false;
+                mtime.running = false;
                 motionplot.stop();
                 motionplot.finished = true;
-                pathidx = 1;
-
+                motionplot.pidx = 1;
+                
+                //update rebuilds the stack of vectors to process
+                //this is for rapid move, etc 
                 motionplot.update_cache();
 
             }
         }
-
-        //std::cout << localsimtime << "\n";
         
-        if (pathidx<=motionplot.pathcache_vecs.size()-1&&run_pulses)
+        if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1&&mtime.running)
         {
             //DEBUG - get the length of the vector/spatial divs to calc proper speed 
-            //vectormag   motionplot.pathcache_vecs[pathidx]
+            //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
             
-            if(pathidx==0){
+            if(motionplot.pidx==0){
                 //do nothing: A single point, a line does not make. 
             }
-            if(pathidx>0){
+            if(motionplot.pidx>0){
                 PG.lerp_along(&motionplot.quill_pos, 
-                               motionplot.pathcache_vecs[pathidx], 
-                               motionplot.pathcache_vecs[pathidx+1], 
+                               motionplot.toolpath_vecs[motionplot.pidx], 
+                               motionplot.toolpath_vecs[motionplot.pidx+1], 
                                (float) localsimtime);
             }            
 
@@ -628,17 +626,17 @@ static void render_loop()
             draw_locator(&motionplot.quill_pos, .5);
         }
 
-    }//end prog running  
+    }//end program cycle running  
 
+    //------------ 
     //draw locator when idle 
-    if(!run_pulses)
+    if(!mtime.running)
     {
         glColor3d(.7, .7, .7);
         draw_locator(&motionplot.quill_pos, .5);        
     }
 
     //------------ 
-
     //I clearly dont get the whole view matrix thing - moved out of text render
     //this is directly related and need to do homework
     setOrthographicProjection();
@@ -654,13 +652,9 @@ static void render_loop()
         }
 
         glBindTexture(GL_TEXTURE_2D, texture[0]); 
-
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_text);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
-
-
-
-        
+    
         //-----------------------------
         // render text in window 
 
@@ -688,7 +682,7 @@ static void render_loop()
 
         //DEBUG USING THE TIMER AS INDICATOR OF MACHINE RUNNING 
         //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
-        if(!run_pulses)
+        if(!mtime.running)
         {
             glColor3d(1.0, 0, 0);
             renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 

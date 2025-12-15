@@ -14,10 +14,12 @@ class cnc_plot
     public:
         cnc_plot()
         {
-            running  = false;
-            finished = true;
-            quill_pos  = Vector3(0,0,0);
+            timediv    = 8.0;
+            pidx       = 1;
+            running    = false;
+            finished   = true;
             
+            quill_pos  = Vector3(0,0,0);
             prg_origin = Vector3(0,0,0);
             prg_end    = Vector3(0,0,0);
 
@@ -43,6 +45,11 @@ class cnc_plot
                             Vector3,
                             int);
         
+
+        //index to the current vector processed while running 
+        int pidx;
+        double timediv;
+
         //-----
         Vector3 quill_pos;
         Vector3 prg_origin;
@@ -63,7 +70,7 @@ class cnc_plot
         //-----
         vector<Vector3> rapidmove_vecs;    
         vector<Vector3> program_vecs; 
-        vector<Vector3> pathcache_vecs;
+        vector<Vector3> toolpath_vecs;
 
 
     private:

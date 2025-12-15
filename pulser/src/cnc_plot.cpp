@@ -74,10 +74,7 @@ point_ops PG;
 
 extern timer mtime;
 
-/******************************************/
 
-// vector<Vector3> disp_pathcache;
-// vector<Vector3>* pt_pathcache = &disp_pathcache;
 
 
 /******************************************/
@@ -98,8 +95,8 @@ void cnc_plot::show(void)
     std::cout << " #" << program_vecs.size() <<" program vecs \n";    
     show_vecs(&program_vecs);
 
-    std::cout << " #" << pathcache_vecs.size() <<" path vecs \n";    
-    show_vecs(&pathcache_vecs);    
+    std::cout << " #" << toolpath_vecs.size() <<" path vecs \n";    
+    show_vecs(&toolpath_vecs);    
 
 }
 
@@ -181,13 +178,13 @@ void cnc_plot::rapid_move(void)
 
     rapidmove_vecs = a path to move the head up, over, and back down 
     
-    pathcache_vecs   = the actual path that will be "cut". This gets rebuilt each time we run.  
+    toolpath_vecs   = the actual path that will be "cut". This gets rebuilt each time we run.  
 
 */
 
 void cnc_plot::update_cache(void)
 {
-    pathcache_vecs.clear();
+    toolpath_vecs.clear();
     
     rapid_move();
 
@@ -198,7 +195,7 @@ void cnc_plot::update_cache(void)
             //std::cout << "DEBUG - update_cache ADDING rapid vecs \n";            
             for (int v=0;v<rapidmove_vecs.size();v++)
             {
-                pathcache_vecs.push_back( rapidmove_vecs.at(v) );
+                toolpath_vecs.push_back( rapidmove_vecs.at(v) );
             }
         }
 
@@ -208,7 +205,7 @@ void cnc_plot::update_cache(void)
             //std::cout << "DEBUG - update_cache ADDING prog vecs \n";            
             for (int v=0;v<program_vecs.size();v++)
             {
-                pathcache_vecs.push_back( program_vecs.at(v) );
+                toolpath_vecs.push_back( program_vecs.at(v) );
             }
         
         }    
@@ -216,7 +213,7 @@ void cnc_plot::update_cache(void)
 
     /*
     std::cout << " ###############################################         \n";
-    std::cout << " DEBUG number of path vecs "<< pathcache_vecs.size() << " (rapid + prog) \n";
+    std::cout << " DEBUG number of path vecs "<< toolpath_vecs.size() << " (rapid + prog) \n";
     std::cout << " DEBUG number of rapid     "<< rapidmove_vecs.size() << "\n";
     std::cout << " DEBUG number of prog vecs "<< program_vecs.size() << "\n";        
     */
