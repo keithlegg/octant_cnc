@@ -3,6 +3,11 @@
 
 THIS IS VERY MUCH A WORK IN PROGRESS. Not ready to run any machines yet. Soon, hopefully.
 
+
+
+![alt text](https://raw.githubusercontent.com/keithlegg/octant_cnc/master/images/examples/screen.jpg) 
+
+
 To Quote the Linuxcnc people:
 <br>
 ## DISCLAIMER
