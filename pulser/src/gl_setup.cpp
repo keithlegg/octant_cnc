@@ -45,8 +45,8 @@ extern float gridsquares;
 extern float gridsize;
 extern float gnomonsize;
 
-extern vector<Vector3> scene_drawvec3; 
-extern vector<Vector3> scene_drawvecclr; 
+extern vector<Vector3> linebuffer1; 
+extern vector<Vector3> linebuffer1_rgb; 
 
 extern GLuint texture[3];
 
@@ -387,12 +387,12 @@ void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int nump
     // vvex.push_back(newvec3(1,2,3));
     // cout << vvex[0].y << "\n";
 
-    // vec3 dv  = scene_drawvec3[p_i];
-    // vec3 rgb = scene_drawvecclr[p_i];            
+    // vec3 dv  = linebuffer1[p_i];
+    // vec3 rgb = linebuffer1_rgb[p_i];            
     // glVertex3f(dv.x, dv.y, dv.z);
     
-    // vector<vec3> * ptDrawvec = &scene_drawvec3;
-    // vector<vec3> * ptDrawClr = &scene_drawvecclr;
+    // vector<vec3> * ptDrawvec = &linebuffer1;
+    // vector<vec3> * ptDrawClr = &linebuffer1_rgb;
 
 
     // output->push_back( out );
@@ -418,24 +418,24 @@ void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int nump
 /******************************************/
 void clear_scn_geom( void)
 {
-    scene_drawvec3.clear();
-    scene_drawvecclr.clear();
+    linebuffer1.clear();
+    linebuffer1_rgb.clear();
 }
 
 /******************************************/
 void add_vec_scndrw( Vector3* insert)
 {   
     Vector3 r = Vector3(1,1,1);
-    scene_drawvec3.push_back(*insert);
-    scene_drawvecclr.push_back(r);
+    linebuffer1.push_back(*insert);
+    linebuffer1_rgb.push_back(r);
 }
  
 
 /******************************************/
 void add_vecrgb_scndrw( Vector3* insert, Vector3* rgb)
 {
-    scene_drawvec3.push_back(*insert);
-    scene_drawvecclr.push_back(*rgb);
+    linebuffer1.push_back(*insert);
+    linebuffer1_rgb.push_back(*rgb);
 
 }
  

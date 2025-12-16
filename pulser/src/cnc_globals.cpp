@@ -66,14 +66,21 @@ using std::vector;
 char strbuffer[100][100];
 
 
-std::vector<Vector3> scene_drawvec3;
-std::vector<Vector3> scene_drawvecclr;
+std::vector<Vector3> linebuffer1;
+std::vector<Vector3> linebuffer1_rgb;
+
 std::vector<Vector3> scene_drawpoints;
 std::vector<Vector3> scene_drawpointsclr;
 
+
+//std::vector<Vector3> linebuffer1;
+//std::vector<Vector3> linebuffer1_rgb;
+
+
+
 //experiments is heap VS stack. idk 
-// std::vector<Vector3>* scene_drawvec3      = new std::vector<Vector3>;
-// std::vector<Vector3>* scene_drawvecclr    = new std::vector<Vector3>;
+// std::vector<Vector3>* linebuffer1         = new std::vector<Vector3>;
+// std::vector<Vector3>* linebuffer1_rgb     = new std::vector<Vector3>;
 // std::vector<Vector3>* scene_drawpoints    = new std::vector<Vector3>;
 // std::vector<Vector3>* scene_drawpointsclr = new std::vector<Vector3>;
 

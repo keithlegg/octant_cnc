@@ -135,6 +135,16 @@ void parse_cmd_text(std::string *buffer)
 
 
     /*
+
+    //export internal vectors to obj file 
+    if (a1=="walk")
+    {
+        if(a2=="extents")
+        {
+        } 
+    }
+
+
     //export internal vectors to obj file 
     if (a1=="export")
     {

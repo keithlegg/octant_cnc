@@ -90,8 +90,8 @@ cncglobals cg;
 
 /***************************************/
 //display 3D lines and color
-extern vector<Vector3> scene_drawvec3;
-extern vector<Vector3> scene_drawvecclr;
+extern vector<Vector3> linebuffer1;
+extern vector<Vector3> linebuffer1_rgb;
 
 
 /***************************************/
@@ -431,8 +431,8 @@ void reset_view(void){
 void test_bezier( Vector3 start, Vector3 ctrl1, Vector3 ctrl2, Vector3 end)
 {
 
-    //vector<Vector3> * ptDrawvec = &scene_drawvec3;
-    //vector<Vector3> * ptDrawClr = &scene_drawvecclr;
+    //vector<Vector3> * ptDrawvec = &linebuffer1;
+    //vector<Vector3> * ptDrawClr = &linebuffer1_rgb;
     //PG.cubic_bezier(ptDrawvec, ptDrawClr,  ptnum_drawvec3, 10, start, ctrl1, ctrl2, end);
 
 }
@@ -913,19 +913,19 @@ static void render_loop()
         
         //intentionally start at 1 - skip the first point 
         //we need at least two points to indicate a line 
-        for (unsigned int p_i=1;p_i<scene_drawvec3.size();p_i++)
+        for (unsigned int p_i=1;p_i<linebuffer1.size();p_i++)
         {   
             //ignore the first vector/point - off for now 
             // if(p_i==0)
             // {
-            //     sv  = scene_drawvec3[p_i];
-            //     ev  = scene_drawvec3[p_i+1];
-            //     //rgb = scene_drawvecclr[p_i+1];  
+            //     sv  = linebuffer1[p_i];
+            //     ev  = linebuffer1[p_i+1];
+            //     //rgb = linebuffer1_rgb[p_i+1];  
             // }
             if(p_i>=1){ 
-                sv  = scene_drawvec3[p_i-1];
-                ev  = scene_drawvec3[p_i];
-                //rgb = scene_drawvecclr[p_i];            
+                sv  = linebuffer1[p_i-1];
+                ev  = linebuffer1[p_i];
+                //rgb = linebuffer1_rgb[p_i];            
             }
 
             glBegin(GL_LINES);
@@ -1095,7 +1095,7 @@ void start_gui(int *argc, char** argv){
 
     // -----------
     // we have vectors in display - calcluate the head path from them   
-    motionplot.loadpath(&scene_drawvec3, 10);
+    motionplot.loadpath(&linebuffer1, 10);
     motionplot.retract_height = cg.retract_height;
     motionplot.work_height    = cg.work_height;
 
