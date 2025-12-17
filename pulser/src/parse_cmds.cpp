@@ -9,8 +9,15 @@
     Some of the odler, single key callbacks are called with the legacy function  
     key_cb()
 
-    
+       
+    ------------------------------------------- 
 
+    // path of text processing 
+    start_gui-> render_loop-> (keypress)parser_cb-> parse_cmds-> parse_cmd_text
+                                                    |---------> key_cb 
+ 
+   
+    ------------------------------------------- 
 
     MIT License
 
@@ -94,8 +101,8 @@ void parse_cmd_text(std::string *buffer)
 {
 
     // Vector of string to save tokens
-    vector <std::string> tokens;
-    vector <std::string> subtokens;
+    std::vector <std::string> tokens;
+    std::vector <std::string> subtokens;
 
 
     //--------------
@@ -133,6 +140,16 @@ void parse_cmd_text(std::string *buffer)
     {
         exe_python();    
     }
+
+    /*
+    if (a1=="readbyte")
+    { 
+    }
+ 
+    if (a1=="sendbyte")
+    { 
+    }
+    */
 
 
     /*

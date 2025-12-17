@@ -2,7 +2,6 @@
 #define CNC_PLOT_H
 
 #include <vector>
-using std::vector;  
 
 
 #include "Vectors.h"
@@ -42,7 +41,7 @@ class cnc_plot
 
         void rapid_move(void);
         void update_cache(void);
-        void loadpath( vector<Vector3>* pt_drawvecs, int numdivs);
+        void loadpath( std::vector<Vector3>* pt_drawvecs, int numdivs);
 
         void gen_pules(std::vector<int>*, int, int);
         void calc_3d_pulses(Vector3, 
@@ -78,25 +77,23 @@ class cnc_plot
 
         //-----
         //data for the actual pulsing out the parport 
-        vector<Vector3> pulsetrain;
+        std::vector<Vector3> pulsetrain;
         //vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
         //cache of toolpath component vectors 
-        vector<Vector3> rapidmove_vecs;    
-        vector<Vector3> program_vecs;  
+        std::vector<Vector3> rapidmove_vecs;    
+        std::vector<Vector3> program_vecs;  
         //the final "baked" path that gets run
-        vector<Vector3> toolpath_vecs;
+        std::vector<Vector3> toolpath_vecs;
 
         //-----
         //original vectors loaded from disk  
         //keep these seeprate from the dynamically built paths 
-        vector<Vector3> loaded_file_vecs;
-
-        //tables of IDs to the disk vectors
-        vector<int> tp_idxs;
+        std::vector<Vector3> loaded_file_vecs;
+        std::vector<int> tp_idxs;
 
     private:
-        void show_vecs(vector<Vector3> * pt_vec);
+        void show_vecs(std::vector<Vector3> * pt_vec);
 
 
 

@@ -72,8 +72,8 @@ point_ops PG;
 
 extern timer mtime;
 
-extern vector<Vector3> linebuffer2; 
-extern vector<Vector3> linebuffer2_rgb; 
+extern std::vector<Vector3> linebuffer2; 
+extern std::vector<Vector3> linebuffer2_rgb; 
 
 /******************************************/
 void cnc_plot::add_prg_vec(Vector3* nv)
@@ -88,7 +88,7 @@ void cnc_plot::add_file_vec(Vector3* nv)
 
 
 /******************************************/
-void cnc_plot::show_vecs(vector<Vector3>* pt_vec)
+void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 {
     for (int vidx=0;vidx<pt_vec->size();vidx++)
     {
@@ -269,7 +269,7 @@ void cnc_plot::update_cache(void)
 
 */
 
-void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
+void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs, int numdivs)
 {
     for (int i=0;i<pt_drawvecs->size();i++)
     {   
@@ -380,9 +380,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     cnc_plot plot;
 
-    vector<int> calcpt_x;
-    vector<int> calcpt_y;
-    vector<int> calcpt_z;
+    std::vector<int> calcpt_x;
+    std::vector<int> calcpt_y;
+    std::vector<int> calcpt_z;
                
     // just calc the pulses using a ratio of length to divs. 
     // I experimented with a true 3D method below but this seems to work fine (?)                       
@@ -406,7 +406,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
    translates two 3d vectors into a pulsetrain , a series of on/off to send to IO 
 */
 
-void cnc_plot::gen_pules(vector<int>* pt_pulsetrain, int size, int num)
+void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
 {
     
     if(num>size)

@@ -1,34 +1,15 @@
+
 #include <iostream>
 #include <cstring>
 #include <functional>
-
 #include <unistd.h>
 
-
-
-//#include "math_op.h"        // general math operations
 #include "point_op.h"         
 #include "cnc_globals.h"
-
 #include "cnc_plot.h" 
 #include "gl_setup.h" 
-
 #include "octant.h" 
 
-
-
-//#include "demo_cube.h" 
-
-
-
-/* 
-extern int PARPORT1_ADDR;
-extern int PARPORT2_ADDR;
-extern int PP1_PULSE_DLY_US;
-extern int PP1_STEPS_PER_UNIT_X;
-extern int PP1_STEPS_PER_UNIT_Y;
-extern int PP1_STEPS_PER_UNIT_Z;
-*/ 
 
 
 // window properties
@@ -38,12 +19,7 @@ int scr_size_y      = 512;
 bool scr_full_toglr = true;
 char* obj_filepath;  
 
-GLuint texture[3]; // storage for one texture  
-
-
-
-
-
+GLuint texture[3]; // storage for textures
 
 
 /******************************************/
@@ -81,10 +57,6 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
  
 int main(int argc, char **argv) 
 {  
-
-    /*------------------*/
-    //spinningCubeDemo(&argc, argv);
-
     /*------------------*/  
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
@@ -108,6 +80,9 @@ int main(int argc, char **argv)
     //vec3 foo;
     //plot.read_limits(&foo);
     
+    /*------------------*/
+    //self contained openGL example to mess with 
+    //spinningCubeDemo(&argc, argv);
 
 
     return 0;

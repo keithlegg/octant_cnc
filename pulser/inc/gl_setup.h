@@ -5,7 +5,6 @@
 //#include <stdint.h>
 
 #include <vector>
-using std::vector; 
 
 //#include "math_op.h"
 #include "obj_model.h"
@@ -70,7 +69,7 @@ void show_bbox(bool *, RGBType *);
 
 void InitGL(int , int );
 void dump_points_GLfloat( GLfloat* , obj_model* , int );
-void dump_points_GLfloat( GLfloat* , vector<Vector3>* , int );
+void dump_points_GLfloat( GLfloat* , std::vector<Vector3>* , int );
 
  
 void clear_scn_geom( void );

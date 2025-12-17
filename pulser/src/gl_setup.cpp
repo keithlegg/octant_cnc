@@ -45,11 +45,10 @@ extern float gridsquares;
 extern float gridsize;
 extern float gnomonsize;
 
-extern vector<Vector3> linebuffer1; 
-extern vector<Vector3> linebuffer1_rgb; 
-
-extern vector<Vector3> linebuffer2; 
-extern vector<Vector3> linebuffer2_rgb; 
+extern std::vector<Vector3> linebuffer1; 
+extern std::vector<Vector3> linebuffer1_rgb; 
+extern std::vector<Vector3> linebuffer2; 
+extern std::vector<Vector3> linebuffer2_rgb; 
 
 extern GLuint texture[3];
 
@@ -381,7 +380,7 @@ void dump_points_GLfloat( GLfloat* verts, obj_model* pt_object, int numpts)
 
 //void dump_points_GLfloat( GLfloat* verts, vector<vec3>* pt_vecarray, int numpts);
 //overloaded dump points to accept array of points instead of object 
-void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int numpts)
+void dump_points_GLfloat( GLfloat* verts, std::vector<Vector3>* pt_vecarray, int numpts)
 {
     
     int y = 0;

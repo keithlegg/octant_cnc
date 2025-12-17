@@ -3,7 +3,6 @@
 
 
 #include <vector>
-using std::vector; //point_op did not make me do this!!?? WHY?
 
 #include "cnc_globals.h"
 #include "cnc_plot.h"

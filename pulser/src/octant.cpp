@@ -90,11 +90,10 @@ cncglobals cg;
 
 /***************************************/
 //display 3D lines and color
-extern vector<Vector3> linebuffer1;
-extern vector<Vector3> linebuffer1_rgb;
-
-extern vector<Vector3> linebuffer2;
-extern vector<Vector3> linebuffer2_rgb;
+extern std::vector<Vector3> linebuffer1;
+extern std::vector<Vector3> linebuffer1_rgb;
+extern std::vector<Vector3> linebuffer2;
+extern std::vector<Vector3> linebuffer2_rgb;
 
 /***************************************/
 //motion control related 
@@ -190,15 +189,15 @@ extern bool scr_full_toglr;
 /***************************************/
 //3d objects to load 
 extern char* obj_filepath;
-extern vector<std::string>  obj_filepaths;
+extern std::vector<std::string>  obj_filepaths;
 
 
 
 /***************************************/
 //display 3D points and color 
-extern vector<Vector3> scene_drawpoints;
-extern vector<Vector3> scene_drawpointsclr;
-extern vector<Vector3>* pt_scene_drawpoints;
+extern std::vector<Vector3> scene_drawpoints;
+extern std::vector<Vector3> scene_drawpointsclr;
+extern std::vector<Vector3>* pt_scene_drawpoints;
 
 extern obj_model* pt_model_buffer;
 extern GLuint texture[3];
@@ -1100,13 +1099,6 @@ void set_view_persp(void)
 /**************************************************/
 /**************************************************/
 /**************************************************/
-/*
-
-   // path of text processing 
-   start_gui-> render_loop-> (keypress)parser_cb-> parse_cmds-> parse_cmd_text
-                                                    |---------> key_cb 
-*/
-
 void start_gui(int *argc, char** argv){
 
     glutInit(argc, argv);  

@@ -207,7 +207,6 @@ void point_ops::locate_pt_along3d(std::vector<Vector3>* output,
 
 
 /***************************************/
-
 void point_ops::cubic_bezier(std::vector<Vector3>* output, 
                             std::vector<Vector3>* colors,
                             int* numvecs,

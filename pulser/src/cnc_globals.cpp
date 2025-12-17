@@ -41,12 +41,9 @@
 #include <iomanip>
 #include <sstream>
 #include <filesystem> 
-
 #include <string>
 #include <cstring>
-
 #include <vector>
-using std::vector;
 
 //#include "math_op.h"
 //#include "point_op.h"
@@ -116,16 +113,13 @@ void exit_program(void)
 
 /*******************************************************/
 
-//the data is loaded into cnc_plot - copy to the display buffer to render
+//the data is loaded into cnc_plot - copy it to display buffer to render
 void cncglobals::copy_file_vecs_display(void)
 {
     
-    std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
-
+    //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
     for (unsigned int p=0;p<pt_motionplot->loaded_file_vecs.size();p++)
     {   
-        std::cout << "moving poly " << p << "\n";
-
         add_vec_lbuf1(&pt_motionplot->loaded_file_vecs.at(p)); 
     }
     
@@ -309,6 +303,7 @@ void cncglobals::load_objects(void)
 /*******************************************************/
 void cncglobals::load_cfg_file( char* filepath )
 {
+
     std::cout << "cncglobals loading file "<< filepath << "\n";
 
     std::ifstream cfg_filein;
@@ -411,7 +406,6 @@ void cncglobals::load_cfg_file( char* filepath )
                                 local_vec_idx=0;
 
                             };
-
                         } 
                         
                         //----- 
@@ -435,9 +429,12 @@ void cncglobals::load_cfg_file( char* filepath )
                                     //add_vec_lbuf1(&v); //old way 
                                     //pt_motionplot->loaded_file_vecs
                                     
-                                    pt_motionplot->add_file_vec(&v);
+                                    // vector<Vector3> loaded_file_vecs;
+                                    // vector<int> tp_idxs;
 
-                                    
+                                    std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
+
+                                    pt_motionplot->add_file_vec(&v);
                                     local_vec_idx++;
 
                                 } catch (const std::invalid_argument& e) {  
@@ -542,7 +539,7 @@ void cncglobals::load_cfg_file( char* filepath )
                         if(tokenized.size()>=2)
                         { 
                             //iterate the tokens on the line to get "inverted" parameter 
-                            for (vector<std::string>::iterator t=tokenized.begin(); t!=tokenized.end(); ++t) 
+                            for (std::vector<std::string>::iterator t=tokenized.begin(); t!=tokenized.end(); ++t) 
                             {
                                 //you can do a direct macth if no substring  
                                 if (*t=="INVERT"){
@@ -551,7 +548,7 @@ void cncglobals::load_cfg_file( char* filepath )
                             }
 
                             //do it one more time and put it all together now
-                            for (vector<std::string>::iterator t=tokenized.begin(); t!=tokenized.end(); ++t) 
+                            for (std::vector<std::string>::iterator t=tokenized.begin(); t!=tokenized.end(); ++t) 
                             {
                                 std::string getdbpins = *t;
         
