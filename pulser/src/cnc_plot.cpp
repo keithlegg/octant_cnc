@@ -89,6 +89,14 @@ void cnc_plot::show_vecs(vector<Vector3>* pt_vec)
 void cnc_plot::show(void)
 {
     std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
+    std::cout << " #" << program_vecs.size() <<" program vecs \n";    
+    std::cout << " #" << toolpath_vecs.size() <<" path vecs \n";    
+}
+
+
+void cnc_plot::showgeom(void)
+{
+    std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
     show_vecs(&rapidmove_vecs);
 
     std::cout << " #" << program_vecs.size() <<" program vecs \n";    

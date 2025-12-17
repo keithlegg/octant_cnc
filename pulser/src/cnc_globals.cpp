@@ -66,21 +66,26 @@ using std::vector;
 char strbuffer[100][100];
 
 
+//toolpath vectors
 std::vector<Vector3> linebuffer1;
 std::vector<Vector3> linebuffer1_rgb;
 //linebuffer1.reserve(10000);
 
+//rapid move vectors
 std::vector<Vector3> linebuffer2;
 std::vector<Vector3> linebuffer2_rgb;
 //linebuffer2.reserve(10000);
 
+//
+std::vector<Vector3> linebuffer3;
+std::vector<Vector3> linebuffer3_rgb;
+//linebuffer3.reserve(10000);
 
+//--------------------------
 std::vector<Vector3> scene_drawpoints;
 std::vector<Vector3> scene_drawpointsclr;
 
-
-//std::vector<Vector3> linebuffer1;
-//std::vector<Vector3> linebuffer1_rgb;
+//--------------------------
 
 //experiments is heap VS stack. idk 
 // std::vector<Vector3>* linebuffer1         = new std::vector<Vector3>;

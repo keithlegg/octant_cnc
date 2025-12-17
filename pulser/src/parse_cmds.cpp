@@ -120,10 +120,11 @@ void parse_cmd_text(std::string *buffer)
     //toggle grid
     if (a1=="help")
     {   
-        std::cout << "dm = display mode                         \n";
+        std::cout << "------------------------------------------\n";
+        std::cout << "dm : display mode                         \n";
         std::cout << "    solid, wire, persp, otop, oside, etc  \n";
         std::cout << "show                                      \n";
-        std::cout << "paths, geom, obj                          \n";
+        std::cout << "    obj, path, pathgeom, objgeom          \n";
 
     }    
 
@@ -173,33 +174,31 @@ void parse_cmd_text(std::string *buffer)
         cg.show_params();
  
     }
-    //peek at internals 
-    if (a1=="display")
-    { 
-        if(a2=="paths")
-        {
-         
-        }    
-    }
-
 
     //peek at internals 
     if (a1=="show")
     { 
-        if(a2=="paths")
+        if(a2=="path")
         { 
-            pt_motionplot->show();
-        }
-
-        if(a2=="geom")
-        { 
-            pt_model_buffer->show();
-            //pt_model_buffer->show_geom();
+            pt_motionplot->show();             
         }
         
         if(a2=="obj")
         { 
-            //pt_model_buffer->     
+            pt_model_buffer->show();
+        }
+
+        //-------------------------
+        //these are probably only needed for debugging 
+        
+        if(a2=="objgeom")
+        { 
+            pt_model_buffer->show_geom();
+        }
+
+        if(a2=="pathgeom")
+        { 
+            pt_motionplot->showgeom();
         }
 
     }

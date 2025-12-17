@@ -31,6 +31,8 @@ class cnc_plot
         ~cnc_plot(){};
 
         void show(void);
+        void showgeom(void);
+
         void pause(void);
         void stop(void);
         void run(void);
