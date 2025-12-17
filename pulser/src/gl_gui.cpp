@@ -85,6 +85,7 @@ extern int scr_size_y;
 
 /********************************************/
 
+//DEBUG unused
 // Use this for initialization
 void olmecnav_start (void ) {
     // Create a transform (which will be the lookAt target and global orbit vector)
@@ -149,6 +150,9 @@ void octant_mouse_button(int button, int state, int x, int y)
                 orbit_dist-=.1; 
             //}
         }
+
+        //std::cout << " zomming " << orbit_dist << "\n";
+
     }else{  // normal button event
         if (state == GLUT_DOWN){
             // printf("olmec middle click\n");  

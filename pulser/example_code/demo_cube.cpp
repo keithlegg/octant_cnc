@@ -358,6 +358,9 @@ static void maya_mouse_button(int button, int state, int x, int y)
            if (button == 4){
                orbit_dist--; 
            }
+        
+           //std::cout << " zooming " << orbit_dist << "\n";
+
       }else{  // normal button event
            if (state == GLUT_DOWN){
                // printf("maya middle click\n");  

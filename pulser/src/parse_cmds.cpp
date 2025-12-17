@@ -322,10 +322,10 @@ void parse_cmd_text(std::string *buffer)
     //display modes
     if (a1=="dm")
     {
-        if(a2=="persp")   {key_cb(49);} 
-        if(a2=="oside")   {key_cb(50);} 
-        if(a2=="otop")    {key_cb(64);} 
-        if(a2=="ofront")  {key_cb(51);} 
+        if(a2=="persp")  {key_cb(49);} 
+        if(a2=="side")   {key_cb(50);} 
+        if(a2=="top")    {key_cb(64);} 
+        if(a2=="front")  {key_cb(51);} 
         
         if(a2=="pts")     {key_cb(36);} 
         if(a2=="wire")    {key_cb(52);} 

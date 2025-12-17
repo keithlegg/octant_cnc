@@ -1033,24 +1033,15 @@ void set_view_ortho(void)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();                   
-    
+
     //gluOrtho2D(scr_size_x, scr_size_y, -1, 1 ); //(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top);
-    float orthzoom = 200; // orbit_dist*200;
-    glOrtho( -scr_size_x/orthzoom, scr_size_x/orthzoom, -scr_size_y/orthzoom, scr_size_y/orthzoom, -1, 1 );
-
+    float orthzoom = 200;
+    //glOrtho( -scr_size_x/orthzoom, scr_size_x/orthzoom, -scr_size_y/orthzoom, scr_size_y/orthzoom, -1, 1 );
+    
+    glOrtho( -scr_size_x/orthzoom, scr_size_x/orthzoom, -scr_size_y/orthzoom, scr_size_y/orthzoom, -10, 10 );
     glMatrixMode(GL_MODELVIEW);
-
-
-    // // set viewport to be the entire window
-    // glViewport(0, 0, (GLsizei)scr_size_x, (GLsizei)scr_size_y);
-    // // set orthographic viewing frustum
-    // glMatrixMode(GL_PROJECTION);
-    // glLoadIdentity();
-    // glOrtho(0, scr_size_x, 0, scr_size_y, -1, 1);
-    // glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
-
 }
+
 
 //text demo 
 void setOrthographicProjection() {
