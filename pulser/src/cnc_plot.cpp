@@ -72,6 +72,9 @@ point_ops PG;
 
 extern timer mtime;
 
+extern std::vector<Vector3> linebuffer1; 
+extern std::vector<Vector3> linebuffer1_rgb; 
+
 extern std::vector<Vector3> linebuffer2; 
 extern std::vector<Vector3> linebuffer2_rgb; 
 
@@ -110,17 +113,17 @@ void cnc_plot::showpthids(void)
 {
     for(unsigned int x=0;x<num_plys;x++)
     {
-        std::cout << " ply " << x <<" "<< tp_idxs[x].size() << " \n";        
+        std::cout << " ply id:" << x <<" size:"<< tp_idxs[x].size() << " \n";        
     }
 
 }
 
-
+/******************************************/
 void cnc_plot::showply(unsigned int pidx)
 {
     std::cout << "------------------------\n";
-      
-    if(pidx>num_plys || pidx<=0)
+
+    if(pidx>num_plys || pidx<0)
     {
         std::cout << " # error polygon index out of range \n";
     }
@@ -239,12 +242,27 @@ void cnc_plot::rapid_move(void)
 void cnc_plot::add_new_polygon(int numply, int numids)
 {
     std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
+         
+    int reindex = 0;
+    
+    if(numply==0)
+    {
+        reindex = numply; 
+    }else{
+        reindex = linebuffer1.size(); 
+    }
+    std::cout << "add ply reindex "<< reindex << "\n";
+
+
+
+
 
     //dynamically add more indices 
     //we just iterate a sequence of ids up to N verteces
     for (unsigned int i=0;i<numids;i++)
     {   
-        tp_idxs[numply].push_back(i);
+        std::cout << "  reindex "<< (reindex+i) << "\n";        
+        tp_idxs[numply].push_back( (reindex+i) );
     }
 
     //the data is loaded in file buffer - copy it to program buffer with index 
@@ -257,6 +275,7 @@ void cnc_plot::add_new_polygon(int numply, int numids)
         //ADD to program_vecs also!! DEBUG 
     }
 
+    //clear file buffer so we can load more 
     loaded_file_vecs.clear();
 
     num_plys++;

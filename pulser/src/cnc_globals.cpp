@@ -414,6 +414,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                     // build an idx lup for each loaded polygon 
                                     pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
                                     
+                                    //reset so we can load mulitple polygons, if any
                                     ply_count++;
                                     local_vec_idx=0;
 
@@ -438,7 +439,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                     c3 = std::stof(tokenized.at(3));
                                     
                                     Vector3 v = Vector3(c1,c2,c3); 
-                                    std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
+                                    //std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
 
                                     pt_motionplot->add_file_vec(&v);
                                     local_vec_idx++;

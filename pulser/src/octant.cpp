@@ -947,7 +947,7 @@ static void render_loop()
         //Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON. 
 
         //NEW CODE - USED INDEXED LOOKUP 
-        /*
+       
         for (unsigned int p_i=0;p_i<pt_motionplot->num_plys;p_i++)
         {   
 
@@ -970,16 +970,16 @@ static void render_loop()
                 glEnd();
             }
            
-        } */
+        } 
      
 
         //std::cout << "foo " << pt_motionplot->tp_idxs[0].size() << "\n";
 
         //////////////////////////////////////////////////////////
-       
+        /*
         int test = 1;
 
-        if (pt_motionplot->tp_idxs[0].size()>1)
+        if (pt_motionplot->tp_idxs[test].size()>1)
         {
             for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[test].size();ii++)
             {
@@ -1000,7 +1000,7 @@ static void render_loop()
                 glEnd();
             }
         }  
-         
+        */ 
         //////////////////////////////////////////////////////////
 
 
