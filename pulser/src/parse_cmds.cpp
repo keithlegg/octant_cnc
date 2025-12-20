@@ -68,6 +68,8 @@
 //idx of text that invisible "cursor" sits on
 int cursor = 0;
 
+extern bool tog_testport; 
+
 //position of extruder/quill/etc
 extern cncglobals cg;
 
@@ -162,9 +164,14 @@ void parse_cmd_text(std::string *buffer)
     } 
     */
     //run external tools 
-    if (a1=="port_test")
+    if (a1=="testport")
     {
-        std::cout << "PARPORT TESTER\n";
+        if(tog_testport){
+            std::cout << "PARPORT TESTER\n";
+            tog_testport = false;
+        }else{
+            tog_testport = true;
+        }
     }
 
 

@@ -12,6 +12,24 @@
 #define HEX(x) std::setw(2) << std::setfill('0') << std::hex << (int)( x )
 
 
+//https://stackoverflow.com/questions/111928/is-there-a-printf-converter-to-print-in-binary-format
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  ((byte) & 0x80 ? '1' : '0'), \
+  ((byte) & 0x40 ? '1' : '0'), \
+  ((byte) & 0x20 ? '1' : '0'), \
+  ((byte) & 0x10 ? '1' : '0'), \
+  ((byte) & 0x08 ? '1' : '0'), \
+  ((byte) & 0x04 ? '1' : '0'), \
+  ((byte) & 0x02 ? '1' : '0'), \
+  ((byte) & 0x01 ? '1' : '0') 
+
+
+//https://stackoverflow.com/questions/11070183/how-do-i-print-a-hexadecimal-number-with-leading-0-to-have-width-2-using-sprintf
+// sprintf("%02X",1)    # ->  "01"
+// sprintf("%02X",10)   # ->  "0A"
+// sprintf("%02X",16)   # ->  "10"
+// sprintf("%02X",255)  # ->  "FF"
 
 /***************************************/
 //define the way that pins get assigned in the parports 

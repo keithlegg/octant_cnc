@@ -73,6 +73,7 @@
 #include "parse_cmds.h"
 #include "gl_gui.h"
 #include "gl_render.h"
+#include "cnc_parport.h"
 
 #include "octant.h"
 
@@ -154,6 +155,7 @@ bool DRAW_GEOM        = true; // state for toggle command
 bool draw_cntrgrid    = true;
 bool tog_grid         = true; 
 bool tog_vtxrgb       = true; 
+bool tog_testport     = false; 
 
 bool toglr_flatshaded = true; //DEBUG 
 
@@ -598,11 +600,19 @@ static void render_loop()
       
         //--
         //X Y Z - QUILL/HEAD POSITION  
-
+        
+        
         glColor3d(0, 1.0, 1.0);        
         sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", motionplot.quill_pos.x, motionplot.quill_pos.y, motionplot.quill_pos.z );
-        //glColor3f(1.0f, 1.0f, 1.0f);  //text color 
         renderBitmapString( ((int)(scr_size_x/2)-100), 50  ,(void *)font, cs );
+         
+        if (tog_testport)
+        {
+            glColor3d(0, 1.0, 0);        
+            sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(10)  );
+            renderBitmapString( ((int)(scr_size_x/2)-50), 75  ,(void *)GLUT_BITMAP_HELVETICA_18, cs );
+        }
+
 
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
