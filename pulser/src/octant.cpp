@@ -618,9 +618,15 @@ static void render_loop()
             //get the byte from IO
             parport.test_inputs(&cg, &portdata);
 
-            //unsigned char am = 0xff;
-            //unsigned char bm = 0xff;
-            //parport.decode_quadrature(&cg, &portdata, &am, &bm);
+            //unsigned char   // pin10 - 0b10000000 - 0x80
+            //unsigned char   // pin11 - 0b01000000 - 0x40
+            //unsigned char   // pin12 - 0b00100000 - 0x20
+            //unsigned char   // pin13 - 0b00010000 - 0x10
+            //unsigned char   // pin15 - 0b00001000 - 0x08
+
+            unsigned char am = 0b10000000;
+            unsigned char bm = 0b01000000;
+            parport.decode_quadrature(&cg, &portdata, &am, &bm);
            
 
             // parport.decode_quadrature(cncglobals* cg, 

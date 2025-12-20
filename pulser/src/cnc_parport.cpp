@@ -53,7 +53,10 @@
 #include "cnc_plot.h"
 
 
-/***************************************/
+
+
+
+
 
 extern bool tog_testport; 
 
@@ -61,15 +64,64 @@ extern bool tog_testport;
 // gecko docs say minimun pulse with is 2.5µs per pulse - seems way too fast for me 
 //int pulse_del = 1000;
 
+/***************************************/
+/***************************************/
+
+
+
+
+
+/***************************************/
+//DEBUG - devise a way to dynamically asign pins with config file 
+
+/*
+
+       Data State: 
+
+       All pins pulled down  == 0x80 - 10000000
+       ACK       - pin 10 - 0xc0     - 11000000
+       BUSY      - pin 11 - 0x0      - 00000000 (active high)
+       PAPER OUT - pin 12 - 0xa0     - 10100000
+       SELECT    - pin 13 - 0x08     - 00001000
+       LINE FEED - pin 14 - 0x88     - 10001000 (active high)
+       ERROR     - pin 15 - 0x90     - 10010000
+
+
+ void map_pin_to_mask(void)
+ { 
+ 
+     unsigned char pin_10_mask = 0b11000000;
+     unsigned char pin_12_mask = 0b10100000;
+     unsigned char pin_13_mask = 0b00010000;
+ }
+*/
 
  
-
+/***************************************/
 void cnc_parport::decode_quadrature(cncglobals* cg, 
                                     unsigned char* data,
                                     unsigned char* a_sigmask,
                                     unsigned char* b_sigmask)
 {
-    //portdata
+
+    if(ioperm(cg->parport1_addr+1,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    }    
+    
+    unsigned char data_read;
+    data_read = inb(cg->parport1_addr+1); 
+    
+    if ((data_read & *a_sigmask) == *a_sigmask)
+    {
+        std::cout << "A positive \n";  
+    };
+    
+    if ((data_read & *b_sigmask) == *b_sigmask)
+    {
+        std::cout << "B positive \n";  
+    };
+
 
 } 
 
