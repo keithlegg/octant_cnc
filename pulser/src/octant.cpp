@@ -152,7 +152,8 @@ float mouse_orbit_speed      = 2.1f;
 bool DRAW_POLYS       = true; // state for toggle command
 bool DRAW_GEOM        = true; // state for toggle command
 bool draw_cntrgrid    = true;
-bool draw_grid        = true; 
+bool tog_grid         = true; 
+bool tog_vtxrgb       = true; 
 
 bool toglr_flatshaded = true; //DEBUG 
 
@@ -543,7 +544,6 @@ static void render_loop()
             // std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
             // std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
 
-
             PG.lerp_along(&motionplot.quill_pos, 
                            s_p, 
                            e_p, 
@@ -720,7 +720,7 @@ static void render_loop()
    
 
     /******************************************/
-    graticulate(&draw_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
+    graticulate(&tog_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
 
     //show_bbox(&draw_bbox, pt_gridcolor);
 
@@ -773,7 +773,8 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_SPECULAR, ks);
         glMaterialfv(GL_FRONT, GL_SHININESS, ns);
 
-        if (toglr_flatshaded){
+        if (toglr_flatshaded)
+        {
             glColor3f(1.,1.,1.);
         }
         
@@ -805,7 +806,13 @@ static void render_loop()
                 //std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
 
                 //------------------------------//
-                glColor3f(rgb1.x,rgb1.y,rgb1.z); 
+                if (tog_vtxrgb)
+                {
+                    glColor3f(rgb1.x,rgb1.y,rgb1.z); 
+                }else{
+                    glColor3f(.3,.3,.6);
+                };
+
                 //Vector2 uv = pt_model_buffer->uvs[tri1];
                 // glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.5, 1.0);                
@@ -818,7 +825,13 @@ static void render_loop()
                 glVertex3f(pt1.x, pt1.y, pt1.z);
 
                 //------------------------------//
-                glColor3f(rgb2.x,rgb2.y,rgb2.z); 
+                if (tog_vtxrgb)
+                {                
+                    glColor3f(rgb2.x,rgb2.y,rgb2.z); 
+                }else{
+                    glColor3f(.3,.3,.6);
+                };
+
                 //Vector2 uv = pt_model_buffer->uvs[tri2];
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.0, 1.0); 
@@ -832,7 +845,13 @@ static void render_loop()
                 glVertex3f(pt2.x, pt2.y, pt2.z);
 
                 //------------------------------//
-                glColor3f(rgb3.x,rgb3.y,rgb3.z); 
+
+                if (tog_vtxrgb)
+                {
+                    glColor3f(rgb3.x,rgb3.y,rgb3.z); 
+                }else{
+                    glColor3f(.3,.3,.6);
+                };                
                 //Vector2 uv = pt_model_buffer->uvs[tri3];
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(1.0, 0.0);       
@@ -1257,8 +1276,35 @@ void start_gui(int *argc, char** argv){
 void key_cb(unsigned int key) 
 {
 
+    //9 - toggle vertex color
+    if (key == 56) 
+    { 
+        if (tog_vtxrgb == true){
+            tog_vtxrgb = false;
+        }else{
+            tog_vtxrgb = true;
+        }
 
-    if (key == 52) //4 - display as wire 
+    }
+    
+    //----
+    if (key == 37) //shift 5 , ignore lights  
+    { 
+        //trying to get the flat, no shaded ambient look 
+        if (toglr_flatshaded == true){
+            glDisable(GL_TEXTURE_2D);        
+            glDisable(GL_LIGHTING);
+            toglr_flatshaded = false;
+        }else{
+            glEnable(GL_TEXTURE_2D);
+            glEnable(GL_LIGHTING);
+            toglr_flatshaded = true;
+        }
+
+    } 
+
+    //4 - display as wire 
+    if (key == 52) 
     { 
         glDisable(GL_TEXTURE_2D);        
         glDisable(GL_LIGHTING);
@@ -1266,7 +1312,8 @@ void key_cb(unsigned int key)
 
     }
 
-    if (key == 53) //5 - display as solid, no texture  
+    //5 - display as solid, no texture 
+    if (key == 53)  
     { 
 
         //glDisable(GL_TEXTURE_2D);        
@@ -1492,10 +1539,10 @@ void key_cb(unsigned int key)
     //----
     if (key == 103) //g
     { 
-        if (draw_grid == true){
-            draw_grid = false;
+        if (tog_grid == true){
+            tog_grid = false;
         }else{
-            draw_grid = true;
+            tog_grid = true;
         }
     }
 
@@ -1518,21 +1565,7 @@ void key_cb(unsigned int key)
         }
     }
 
-    //----
-    if (key == 37) //shift 5 , ignore lights  
-    { 
-        //trying to get the flat, no shaded ambient look 
-        if (toglr_flatshaded == true){
-            glDisable(GL_TEXTURE_2D);        
-            glDisable(GL_LIGHTING);
-            toglr_flatshaded = false;
-        }else{
-            glEnable(GL_TEXTURE_2D);
-            glEnable(GL_LIGHTING);
-            toglr_flatshaded = true;
-        }
 
-    } 
 
 }
 

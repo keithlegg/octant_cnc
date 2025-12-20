@@ -150,9 +150,15 @@ void point_ops::lerp_along( Vector3* output,
         npos.z =  spos.z+(((fpos.z-spos.z))*(dist+1));                     
     }
 
-    //cout << n << " "<< npos.x <<" "<<npos.y<<" "<< npos.z<<"\n";
+    //I really have no idea what im doing. 
+    //This is a hack to stop the weird math bug when it shoots to zero
+    if(npos.x==0 && npos.y == 0 && npos.x==0)
+    {
+        //std:cout << "ALL ZEROS!!!!! \n";
+    }else{
+        *output = npos;        
+    }
 
-     *output = npos;
 
 };
 

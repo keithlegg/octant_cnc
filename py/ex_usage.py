@@ -39,7 +39,7 @@ def run_pulser(ptlist):
 
 
 
-pts = pop3.calc_circle( pos=(-1,0,-2), rot=(0,0,0), dia=1, axis='y', periodic=True, spokes=5, start=0, end=360)
+pts = pop3.calc_circle( pos=(3,1,.1), rot=(45,0,0), dia=1, axis='y', periodic=True, spokes=5, start=0, end=360)
 run_pulser( pts )
 
 

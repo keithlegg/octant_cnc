@@ -14,7 +14,7 @@ class cnc_plot
     public:
         cnc_plot()
         {
-            timediv    = 8.0; //speed == simtime divisions == 1 second/divs
+            timediv    = 1; //speed == simtime divisions == 1 second/divs
             pidx       = 0;
             num_plys   = 0;
 
@@ -46,8 +46,9 @@ class cnc_plot
 
         void add_new_polygon(int numply, int numids);
         
-
+        //void old_rapid_move(void);
         void rapid_move(void);
+        
         void update_cache(void);
         void loadpath( std::vector<Vector3>* pt_drawvecs);
 

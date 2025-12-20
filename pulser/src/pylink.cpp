@@ -64,7 +64,7 @@
 
 
 extern int TCP_PORT; 
-extern bool draw_grid;
+extern bool tog_grid;
 
 extern cncglobals cg;
 
@@ -374,12 +374,12 @@ void sockettest3(void)
 
              if (strncmp(subbuff, "1", 1) == 0)
              {
-                draw_grid = true;
+                tog_grid = true;
                 printf("vpfgrd_ 1 command received!! %s\n ", buffer);            
              }
              if (strncmp(subbuff, "0", 1) == 0)
              {
-                draw_grid = false;
+                tog_grid = false;
                 printf("vpfgrd_ 0 command received!! %s\n ", buffer);            
              }
              stayopen = false; 

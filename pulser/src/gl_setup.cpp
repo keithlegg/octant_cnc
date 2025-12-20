@@ -147,7 +147,7 @@ void draw_locator( Vector3* pos, float locsize)
 
 /******************************************/
 //draw a 3D grid on the "floor" and an indicator to show XYZ axis  
-void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, RGBType *pt_gridcolor2 )
+void graticulate( bool *tog_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, RGBType *pt_gridcolor2 )
 {
  
     //int grd_num       = 10;
@@ -198,7 +198,7 @@ void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, R
 
 
                 }
-                if (*draw_grid == 1)
+                if (*tog_grid == 1)
                 {
                     glMaterialfv(GL_FRONT, GL_EMISSION, emis_half);
                     glColor3f(.4,.4,.4);
@@ -210,7 +210,7 @@ void graticulate( bool *draw_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, R
                 }   
 
 
-            }else if (*draw_grid == 1) 
+            }else if (*tog_grid == 1) 
             {
                 glMaterialfv(GL_FRONT, GL_EMISSION, emis_half);
                 glColor3f(.4,.4,.4);

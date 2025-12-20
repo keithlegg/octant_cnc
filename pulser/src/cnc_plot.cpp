@@ -102,7 +102,7 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 /******************************************/
 void cnc_plot::show(void)
 {
-    std::cout << "\n #"<< rapidmove_vecs.size()  <<" rapid vecs \n";
+    std::cout << "\n #"<< rapidmove_vecs.size()   <<" rapid vecs \n";
     std::cout << " #"  << program_vecs.size()     <<" program vecs \n";    
     std::cout << " #"  << toolpath_vecs.size()    <<" path vecs \n";    
     std::cout << " #"  << loaded_file_vecs.size() <<" file vecs \n";   
@@ -209,6 +209,95 @@ void cnc_plot::run(void)
 */
 void cnc_plot::rapid_move(void)
 {
+     
+    //tp_idxs[numply].push_back( (reindex+i) );
+
+
+     
+}
+
+/******************************************/
+/*
+
+    This rebuilds the path that moves the head. 
+    It is run prior to the machine moving. 
+
+    program_vecs    = cached vectors loaded from a file 
+    rapidmove_vecs  = a path to move the head up, over, and back down 
+    toolpath_vecs   = the actual path that will be "cut". This gets rebuilt each time we run.  
+
+*/
+
+void cnc_plot::update_cache(void)
+{
+    if(finished==true && running==false)
+    {
+        //clear the old data out 
+        toolpath_vecs.clear();
+        rapidmove_vecs.clear();
+        linebuffer2.clear();
+
+        //---- 
+
+        //std::cout << tp_idxs.size() << "\n";
+        if(program_vecs.size()>0)
+        {
+
+            //move head up at current quill pos
+            //Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
+            
+            add_vec_lbuf2(&quill_pos);
+            toolpath_vecs.push_back(quill_pos);
+
+            //add_vec_lbuf2(&up_vec);
+            //toolpath_vecs.push_back(up_vec);
+
+            //iterate all polygons     
+            for (unsigned int pl=0;pl<num_plys;pl++)
+            {
+                Vector3 this_st = program_vecs[tp_idxs[pl][0]];
+                Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
+
+                add_vec_lbuf2(&hover);
+                toolpath_vecs.push_back(hover);
+                
+                add_vec_lbuf2(&this_st);
+                toolpath_vecs.push_back(this_st);
+
+                //---
+                // Vector3 this_end = program_vecs[tp_idxs[pl].size()];
+                // Vector3 hov_end = Vector3(this_end.x, retract_height, this_end.z);
+                // add_vec_lbuf2(&this_end);
+                // toolpath_vecs.push_back(this_end);
+                // add_vec_lbuf2(&hov_end);
+                // toolpath_vecs.push_back(hov_end);
+
+            }//iterate polygons 
+
+            //----------------------
+            // //now we have them, add to the buffer to draw them 
+
+        }//if data exists
+
+        //-------------------------------------------//
+        /*     
+        //(re)calculate the length of all vectors
+        //program_dist = 0;  
+        //std::cout << "DEBUG - update_cache ADDING prog vecs \n";            
+        for (int v=0;v<program_vecs.size();v++)
+        {
+            toolpath_vecs.push_back( program_vecs.at(v) );
+        }*/
+        
+          
+    }//if program is NOT running or paused
+    
+}
+
+/*
+
+void cnc_plot::old_rapid_move(void)
+{
     
     if(program_vecs.size()>0)
     {
@@ -230,8 +319,8 @@ void cnc_plot::rapid_move(void)
         add_vec_lbuf2(&prg_origin);
     }
 }
+*/
 
- 
 /******************************************/
 /*
     add a new polygon to program and display buffer 
@@ -254,14 +343,10 @@ void cnc_plot::add_new_polygon(int numply, int numids)
     std::cout << "add ply reindex "<< reindex << "\n";
 
 
-
-
-
     //dynamically add more indices 
     //we just iterate a sequence of ids up to N verteces
     for (unsigned int i=0;i<numids;i++)
     {   
-        std::cout << "  reindex "<< (reindex+i) << "\n";        
         tp_idxs[numply].push_back( (reindex+i) );
     }
 
@@ -283,65 +368,6 @@ void cnc_plot::add_new_polygon(int numply, int numids)
 }
 
 
-/******************************************/
-/*
-
-    This rebuilds the path that moves the head. 
-    It is run prior to the machine moving. 
-
-    program_vecs  = cached vectors loaded from a file represeting a path we want to cut
-                    these are seperate from the actual path we will cut so we can build 
-                    more complex paths dynamically. 
-
-    rapidmove_vecs = a path to move the head up, over, and back down 
-    
-    toolpath_vecs   = the actual path that will be "cut". This gets rebuilt each time we run.  
-
-*/
-
-void cnc_plot::update_cache(void)
-{
-    if(finished==true && running==false)
-    {
-        toolpath_vecs.clear();
-        
-        //rebuild the rapid move from current position back to start 
-        rapid_move();
-
-        if (rapidmove_vecs.size())
-        { 
-            //(re)calculate the length of all vectors
-            // rapid_dist   = 0;
-
-            //std::cout << "DEBUG - update_cache ADDING rapid vecs \n";            
-            for (int v=0;v<rapidmove_vecs.size();v++)
-            {
-                toolpath_vecs.push_back( rapidmove_vecs.at(v) );
-            }
-        }
-
-        if (program_vecs.size())
-        { 
-            //(re)calculate the length of all vectors
-            //program_dist = 0;  
-
-            //std::cout << "DEBUG - update_cache ADDING prog vecs \n";            
-            for (int v=0;v<program_vecs.size();v++)
-            {
-                toolpath_vecs.push_back( program_vecs.at(v) );
-            }
-        
-        }    
-    }//if program is NOT running or paused
-
-    /*
-    std::cout << " ###############################################         \n";
-    std::cout << " DEBUG number of path vecs "<< toolpath_vecs.size() << " (rapid + prog) \n";
-    std::cout << " DEBUG number of rapid     "<< rapidmove_vecs.size() << "\n";
-    std::cout << " DEBUG number of prog vecs "<< program_vecs.size() << "\n";        
-    */
-    
-}
 
 
 /******************************************/

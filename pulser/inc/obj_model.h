@@ -26,8 +26,8 @@
 #include "point_op.h"
 
 
-#define MAX_NUM_VERTICES 100000
-#define MAX_NUM_FACES 100000
+#define MAX_NUM_VERTICES 200000
+#define MAX_NUM_FACES 200000
 
 /*
 // index/indices for a line object 

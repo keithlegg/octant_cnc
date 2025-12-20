@@ -138,6 +138,35 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "    pathid (int),                                  \n";
 
     }    
+    
+    /**********************************************************************/
+  
+    /*
+    //export internal vectors to obj file 
+    if (a1=="walk")
+    {
+        if(a2=="extents")
+        {
+        } 
+    }
+    //export internal vectors to obj file 
+    if (a1=="export")
+    {
+        if(a2=="rapid")
+        {
+        }   
+      
+        if(a2=="paths")
+        {
+        }             
+    } 
+    */
+    //run external tools 
+    if (a1=="port_test")
+    {
+        std::cout << "PARPORT TESTER\n";
+    }
+
 
     //run external tools 
     if (a1=="python")
@@ -154,33 +183,6 @@ void parse_cmd_text(std::string *buffer)
     { 
     }
     */
-
-
-    /*
-
-    //export internal vectors to obj file 
-    if (a1=="walk")
-    {
-        if(a2=="extents")
-        {
-        } 
-    }
-
-
-    //export internal vectors to obj file 
-    if (a1=="export")
-    {
-        if(a2=="rapid")
-        {
-        }   
-      
-        if(a2=="paths")
-        {
-        }             
-
-    }*/
-
-
 
     //--------------
     //toggle grid
@@ -258,7 +260,8 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="grid"){key_cb(103);};
         if(a2=="gnomon"){key_cb(71);};
         if(a2=="normals"){key_cb(110);};
-    
+        if(a2=="vtxrgb"){key_cb(56);};
+
     }
 
 
@@ -344,7 +347,7 @@ void parse_cmd_text(std::string *buffer)
         //store the difference between them
         //add_vecrgb_scndrw(&newvec, &rgb);
         
-        add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
+        //add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
 
     }
 
