@@ -96,8 +96,15 @@ extern bool tog_testport;
  }
 */
 
- 
+
+
 /***************************************/
+unsigned char last_byte;
+unsigned char data_read;
+int step = 0;
+int dir = 0;
+
+
 void cnc_parport::decode_quadrature(cncglobals* cg, 
                                     unsigned char* data,
                                     unsigned char* a_sigmask,
@@ -109,20 +116,30 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
         fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
     }    
     
-    unsigned char data_read;
-    data_read = inb(cg->parport1_addr+1); 
+
+    last_byte = inb(cg->parport1_addr+1); 
     
-    if ((data_read & *a_sigmask) == *a_sigmask)
+    if(last_byte!=last_byte)
     {
-        std::cout << "A positive \n";  
-    };
-    
-    if ((data_read & *b_sigmask) == *b_sigmask)
-    {
-        std::cout << "B positive \n";  
-    };
+        if ((data_read & *a_sigmask) == *a_sigmask)
+        {
+            //std::cout << "A positive \n";  
+            dir++;
+        };
+        
+        if ((data_read & *b_sigmask) == *b_sigmask)
+        {
+            //std::cout << "B positive \n";  
+            dir--;
+        };
+
+        step++;
+    }
 
 
+    std::cout << " step "<< step << " dir " << dir << "\n";  
+
+    last_byte = data_read;
 } 
 
 
