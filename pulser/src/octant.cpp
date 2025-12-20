@@ -88,6 +88,7 @@ cncglobals cg;
 //cncglobals new cg;
 
 
+cnc_parport parport;
 
 /***************************************/
 //display 3D lines and color
@@ -468,6 +469,8 @@ static void parser_cb(unsigned char key, int x, int y)
 char cs[100];
 char s[100];
 
+unsigned char portdata;
+
 
 double localsimtime;
 
@@ -608,8 +611,12 @@ static void render_loop()
          
         if (tog_testport)
         {
+             
+            
+            parport.test_inputs(&cg, &portdata);
+            
             glColor3d(0, 1.0, 0);        
-            sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(10)  );
+            sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(portdata)  );
             renderBitmapString( ((int)(scr_size_x/2)-50), 75  ,(void *)GLUT_BITMAP_HELVETICA_18, cs );
         }
 

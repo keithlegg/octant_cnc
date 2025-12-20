@@ -57,6 +57,8 @@ class cnc_parport
     void aux_on(cncglobals*, unsigned int);
     void aux_off(cncglobals*, unsigned int);
 
+    void test_inputs(cncglobals* cg, unsigned char* data);
+
     // /void send_pulses(cncglobals*, vector<Vector3>*);
     void send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot);
 

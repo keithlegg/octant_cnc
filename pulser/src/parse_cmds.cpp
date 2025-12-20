@@ -55,6 +55,7 @@
 #include <unistd.h>  
 
 
+#include "cnc_parport.h"
 
 #include "parse_cmds.h"
 #include "gl_setup.h"

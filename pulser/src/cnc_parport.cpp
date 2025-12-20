@@ -55,6 +55,7 @@
 
 /***************************************/
 
+extern bool tog_testport; 
 
 // µs (microsecond) duration between pulses 
 // gecko docs say minimun pulse with is 2.5µs per pulse - seems way too fast for me 
@@ -105,6 +106,52 @@ void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 
 
 /***************************************/
+void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
+{
+
+    if(ioperm(cg->parport1_addr+1,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+        //std::cout << "# Couldn't open parallel port \n";
+
+    }
+
+    unsigned char pin_10_mask = 0b11000000;
+    unsigned char pin_12_mask = 0b10100000;
+    unsigned char pin_13_mask = 0b00010000;
+
+    unsigned char data_read;
+    data_read = inb(cg->parport1_addr+1); 
+    
+    //printf("Data read from parallel port: 0x%x\n", data_read);
+    /*
+    //X
+    if ((data_read & pin_10_mask)==pin_10_mask)
+    {
+        std::cout << "X limit triggered (p10) \n";  
+    };
+
+    //Z
+    if ((data_read & pin_12_mask)==pin_12_mask)
+    {
+        std::cout << "Z limit triggered (p12) \n";  
+    };
+
+    //Y 
+    if ((data_read & pin_13_mask)==pin_13_mask)
+    {
+        std::cout << "Y limit triggered (p13) \n";  
+    };*/
+
+
+}
+
+
+/***************************************/
+
+//extern bool tog_testport - is a bool to read inputs
+//test_port here is a function to flash the pins 
+//yes its confusing 
 
 void cnc_parport::test_port(cncglobals* cg)
 {
