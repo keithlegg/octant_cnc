@@ -87,8 +87,8 @@
 cncglobals cg;
 //cncglobals new cg;
 
-
 cnc_parport parport;
+
 
 /***************************************/
 //display 3D lines and color
@@ -105,6 +105,8 @@ extern point_ops PG;
 cnc_plot motionplot;
 cnc_plot* pt_motionplot = &motionplot;
 
+
+Vector3 animate_locator = Vector3(0,0,0);
 
 
 /***************************************/
@@ -479,6 +481,8 @@ int step = 0;
 int dir = 0;
 bool stale = true;
 
+
+
 static void render_loop()
 {
     // Clear The Screen And The Depth Buffer
@@ -626,9 +630,18 @@ static void render_loop()
             //unsigned char   // pin13 - 0b00010000 - 0x10
             //unsigned char   // pin15 - 0b00001000 - 0x08
 
+            //animate_locator
+
             parport.decode_quadrature(&cg, &step, &dir, &am, &bm, &stale);
             if(!stale){
-                std::cout <<  " step  " << step << " dir " << dir << "\n"; 
+                std::cout <<  " step  " << step << " dir " << dir << "\n";
+                if(dir)
+                {
+                    animate_locator.x += step;
+                }else{
+                    animate_locator.x -= step;                    
+                }
+
             }           
 
             glColor3d(0, 1.0, 0);        
