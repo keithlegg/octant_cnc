@@ -185,13 +185,17 @@ bool draw_points_vbo = false;
 /***************************************/
 // Window related 
 
+int scr_size_x      = 512;
+int scr_size_y      = 512;
+bool scr_full_toglr = true;
+int window_id;      
+
+
 extern int VIEW_MODE; 
-extern int window_id;
-extern int scr_size_x;
-extern int scr_size_y;
-extern bool scr_full_toglr;
 
 
+
+GLuint texture[3]; // storage for textures
 
 /***************************************/
 //3d objects to load 

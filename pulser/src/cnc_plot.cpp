@@ -260,14 +260,38 @@ void cnc_plot::run(void)
     dynamically generate a tool path that lifts the head, 
     traverses and drops back down
 */
-void cnc_plot::rapid_move(void)
+// void cnc_plot::rapid_move(void)
+// {
+//     //tp_idxs[numply].push_back( (reindex+i) );
+// }
+
+/*
+
+void cnc_plot::old_rapid_move(void)
 {
-     
-    //tp_idxs[numply].push_back( (reindex+i) );
+    
+    if(program_vecs.size()>0)
+    {
+        rapidmove_vecs.clear();
+        linebuffer2.clear();
 
-
-     
+        Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
+        Vector3 hover_e  = Vector3(prg_origin.x, retract_height, prg_origin.z);
+         
+        rapidmove_vecs.push_back(quill_pos );
+        rapidmove_vecs.push_back(up_vec );
+        rapidmove_vecs.push_back(hover_e);
+        rapidmove_vecs.push_back(prg_origin);
+        
+        //now we have them, add to the buffer to draw them 
+        add_vec_lbuf2(&quill_pos);
+        add_vec_lbuf2(&up_vec);
+        add_vec_lbuf2(&hover_e);
+        add_vec_lbuf2(&prg_origin);
+    }
 }
+*/
+
 
 /******************************************/
 /*
@@ -347,32 +371,6 @@ void cnc_plot::update_cache(void)
     
 }
 
-/*
-
-void cnc_plot::old_rapid_move(void)
-{
-    
-    if(program_vecs.size()>0)
-    {
-        rapidmove_vecs.clear();
-        linebuffer2.clear();
-
-        Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
-        Vector3 hover_e  = Vector3(prg_origin.x, retract_height, prg_origin.z);
-         
-        rapidmove_vecs.push_back(quill_pos );
-        rapidmove_vecs.push_back(up_vec );
-        rapidmove_vecs.push_back(hover_e);
-        rapidmove_vecs.push_back(prg_origin);
-        
-        //now we have them, add to the buffer to draw them 
-        add_vec_lbuf2(&quill_pos);
-        add_vec_lbuf2(&up_vec);
-        add_vec_lbuf2(&hover_e);
-        add_vec_lbuf2(&prg_origin);
-    }
-}
-*/
 
 /******************************************/
 /*
