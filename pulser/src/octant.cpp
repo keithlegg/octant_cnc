@@ -555,8 +555,16 @@ static void render_loop()
 
             Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
             Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
-            // std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
-            // std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
+            
+
+            std::cout << "running vector \n";
+            std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+            std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
+            
+            // //number of divisions in X,Y,Z space
+            //run_cncplot( cg, a1, a2, a3, a4, a5, a6, a7 );
+
+
 
             PG.lerp_along(&motionplot.quill_pos, 
                            s_p, 
@@ -630,8 +638,7 @@ static void render_loop()
             //unsigned char   // pin13 - 0b00010000 - 0x10
             //unsigned char   // pin15 - 0b00001000 - 0x08
 
-            //animate_locator
-
+            /*                
             parport.decode_quadrature(&cg, &step, &dir, &am, &bm, &stale);
             if(!stale){
                 std::cout <<  " step  " << step << " dir " << dir << "\n";
@@ -641,9 +648,9 @@ static void render_loop()
                 }else{
                     animate_locator.x -= step;                    
                 }
-
             }           
-
+            */
+             
             glColor3d(0, 1.0, 0);        
             sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(portdata)  );
             renderBitmapString( ((int)(scr_size_x/2)-50), 75  ,(void *)GLUT_BITMAP_HELVETICA_18, cs );
@@ -1691,101 +1698,5 @@ void init_pycore(void){
         //glDrawArrays(GL_LINES, 0, 2);
         glDisableVertexAttribArray(0);
 */
-
-
-/////////////////////////////
-
-/*
-
-
-//send_pulses
-
-
-/*
-void run_send_pulses(cncglobals* cg,
-                 float f_x,
-                 float f_y,
-                 float f_z,
-                 float s_x,
-                 float s_y,
-                 float s_z,
-                 int divs)  
-{
-
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
-    vector<Vector3> pulsetrain;
-    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
-    motionplot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
-
-    if(cg->GLOBAL_DEBUG==true)
-    {
-        for(int x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
-        } 
-    }
-
-    if(cg->GLOBAL_DEBUG==false)
-    {
-       // motionplot.send_pulses(pt_pulsetrain);
-    }
-
- }   
-*/
-
-
-/******************************************/
-//command line tool to generate XYZ pulses from 2 vectors 
-/*
-
-RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
-
-void run_cncplot(cncglobals* cg,
-                 float f_x,
-                 float f_y,
-                 float f_z,
-                 float s_x,
-                 float s_y,
-                 float s_z,
-                 int divs)  
-{
-
-
-    cnc_plot plot;
-    
-    vector<Vector3> pulsetrain;
-    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
-    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
-
-    if(cg->GLOBAL_DEBUG==true)
-    {
-        int x=0;
-        for(x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
-        } 
-    }
-
-    if(cg->GLOBAL_DEBUG==false)
-    {
-       //moved to IO DEBUG   
-       // plot.send_pulses(pt_pulsetrain);
-    }
-
-    delete pt_pulsetrain;
-    
-
-}
-
-*/
-
-
 
 

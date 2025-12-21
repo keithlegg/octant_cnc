@@ -58,6 +58,7 @@
 #include <vector>
 
 #include "Vectors.h"
+#include "cnc_globals.h"
 #include "timer.h"
 #include "gl_setup.h"
 #include "point_op.h"
@@ -68,6 +69,11 @@
 
 point_ops PG;
 
+extern cnc_plot* pt_motionplot;
+
+//extern cncglobals cg;
+// extern cnc_parport parport;
+
 
 
 extern timer mtime;
@@ -77,6 +83,103 @@ extern std::vector<Vector3> linebuffer1_rgb;
 
 extern std::vector<Vector3> linebuffer2; 
 extern std::vector<Vector3> linebuffer2_rgb; 
+
+
+
+ 
+
+ 
+
+//send_pulses
+
+
+ 
+void cnc_plot::run_send_pulses(cncglobals* pt_cg,
+                     float f_x, float f_y, float f_z,
+                     float s_x, float s_y, float s_z,
+                     int divs)  
+{
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
+
+    //if(pt_cg->GLOBAL_DEBUG==true)
+    for(int x=0;x<pt_motionplot->pulsetrain.size();x++)
+    {
+        std::cout<<pt_motionplot->pulsetrain[x].x  <<" "
+                 <<pt_motionplot->pulsetrain[x].y  <<" "
+                 <<pt_motionplot->pulsetrain[x].z  <<"\n";        
+    } 
+    
+
+    //if(pt_cg->GLOBAL_DEBUG==false)
+    //{
+    
+    // motionplot.send_pulses(pt_pulsetrain);
+    //void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+
+    //}
+
+ }   
+ 
+
+
+/******************************************/
+//command line tool to generate XYZ pulses from 2 vectors 
+/*
+
+RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
+
+void run_cncplot(cncglobals* cg,
+                 float f_x,
+                 float f_y,
+                 float f_z,
+                 float s_x,
+                 float s_y,
+                 float s_z,
+                 int divs)  
+{
+
+
+    cnc_plot plot;
+    
+    vector<Vector3> pulsetrain;
+    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
+
+    if(cg->GLOBAL_DEBUG==true)
+    {
+        int x=0;
+        for(x=0;x<pulsetrain.size();x++)
+        {
+            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
+        } 
+    }
+
+    if(cg->GLOBAL_DEBUG==false)
+    {
+       //moved to IO DEBUG   
+       // plot.send_pulses(pt_pulsetrain);
+    }
+
+    delete pt_pulsetrain;
+    
+
+}
+
+*/
+
+
+
+
+
+
 
 /******************************************/
 void cnc_plot::add_prg_vec(Vector3* nv)

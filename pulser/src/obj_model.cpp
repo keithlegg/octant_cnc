@@ -13,10 +13,6 @@
         obj_geom  - the core of geometry processing 
         obj_fio   - file in/out operations like load, save etc 
 
-
-
-
-
          
 
     MIT License

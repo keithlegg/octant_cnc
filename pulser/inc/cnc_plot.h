@@ -3,7 +3,7 @@
 
 #include <vector>
 
-
+#include "cnc_globals.h"
 #include "Vectors.h"
 
 #define MAX_NUM_PLY 100000
@@ -53,10 +53,16 @@ class cnc_plot
         void loadpath( std::vector<Vector3>* pt_drawvecs);
 
         void gen_pules(std::vector<int>*, int, int);
+        
         void calc_3d_pulses(Vector3, 
                             Vector3,
                             int);
-        
+
+        void run_send_pulses(cncglobals* pt_cg,
+                             float f_x, float f_y, float f_z,
+                             float s_x, float s_y, float s_z,
+                             int divs);          
+
         //keep track of number of polygons 
         //a ploygon is an indexed array of path vectors 
         //similar to an .OBJ file face, etc

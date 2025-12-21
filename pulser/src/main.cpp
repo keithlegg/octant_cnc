@@ -22,38 +22,10 @@ char* obj_filepath;
 GLuint texture[3]; // storage for textures
 
 
-/******************************************/
-
-/*
-void parse_args(cncglobals* cg,  int argc, char **argv)
-{
-    if (argc < 8){
-        std::cout << "Usage: pulser X1 Y1 Z1 X2 Y2 Z2 divs \n";
-        abort();
-
-    }
-
-    //start point (vector)
-    float a1 = atof(argv[1]);
-    float a2 = atof(argv[2]);
-    float a3 = atof(argv[3]);
-
-    //end point (vector)
-    float a4 = atof(argv[4]);
-    float a5 = atof(argv[5]);
-    float a6 = atof(argv[6]);
-
-    //number of divisions in X,Y,Z space
-    int a7    = atoi(argv[7]);
-              
-    run_cncplot( cg, a1, a2, a3, a4, a5, a6, a7 );
-
-}
-*/
 
 
-/******************************************/
-/******************************************/
+
+
  
 int main(int argc, char **argv) 
 {  

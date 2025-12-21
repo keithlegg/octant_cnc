@@ -1,6 +1,6 @@
 /*************************************************************/
 /*
-   gl_gui.c 
+   gl_gui.cpp 
        - experimental tools to click in window and hopefully make simple "buttons" or regions 
        of screen attached tro a callback 
 

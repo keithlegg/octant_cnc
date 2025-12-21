@@ -1,6 +1,7 @@
 /*************************************************************/
 /*
-   gl_setup.c 
+   gl_setup.cpp
+    
        - common home for an openGL application 
        - OpenGL utilities for drawing geometry and managing a display window
 
