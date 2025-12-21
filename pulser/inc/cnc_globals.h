@@ -21,7 +21,7 @@ class cncglobals
         cncglobals()
         {
             active_filepath="";
-            GLOBAL_DEBUG           = false;
+            GLOBAL_DEBUG           = true;
             //DEBUG_PARAMS           = false;
             ENABLE_LIMIT_SWITCHES  = false;
             ENABLE_MOTOR_DRIVE     = false;

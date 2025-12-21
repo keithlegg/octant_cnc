@@ -89,6 +89,7 @@ extern std::vector<Vector3> linebuffer2_rgb;
 
 
 
+
 /******************************************/
 void cnc_plot::run_send_pulses(cncglobals* pt_cg,
                      float f_x, float f_y, float f_z,
@@ -101,9 +102,11 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
 
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
+    
+    
     pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
-
+    
+    /*
     if(pt_cg->GLOBAL_DEBUG==true)
     {
         for(int x=0;x<pt_motionplot->pulsetrain.size();x++)
@@ -122,63 +125,9 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
         //void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
 
     }//no debug, run it!
+    */
 
  }   
- 
-
-
-/******************************************/
-//command line tool to generate XYZ pulses from 2 vectors 
-/*
-
-RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
-
-void run_cncplot(cncglobals* cg,
-                 float f_x,
-                 float f_y,
-                 float f_z,
-                 float s_x,
-                 float s_y,
-                 float s_z,
-                 int divs)  
-{
-
-
-    cnc_plot plot;
-    
-    vector<Vector3> pulsetrain;
-    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
-    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
-
-    if(cg->GLOBAL_DEBUG==true)
-    {
-        int x=0;
-        for(x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
-        } 
-    }
-
-    if(cg->GLOBAL_DEBUG==false)
-    {
-       //moved to IO DEBUG   
-       // plot.send_pulses(pt_pulsetrain);
-    }
-
-    delete pt_pulsetrain;
-    
-
-}
-
-*/
-
-
-
-
 
 
 
@@ -593,19 +542,18 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_x;
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
-               
+                   
     // just calc the pulses using a ratio of length to divs. 
     // I experimented with a true 3D method below but this seems to work fine (?)                       
     plot.gen_pules(&calcpt_x, most, num_pul_x);  
     plot.gen_pules(&calcpt_y, most, num_pul_y);  
     plot.gen_pules(&calcpt_z, most, num_pul_z);  
 
-    int a=0;
-    for(a=0;a<most;a++)
+    for(unsigned int a=0;a<most;a++)
     {
         pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
         pulsetrain.push_back(Vector3(0,0,0));
-    }
+    } 
     
 
 } 
@@ -625,7 +573,15 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
         exit(1);
     }
 
-    float div = size/num;
+    float div;    
+    
+    //DEBUG - just put this here to solve floating point crash 
+    if(size!=0 && num !=0){ 
+        div = size/num;
+    }else{
+        div =1;
+    }
+
 
     int a;  
 

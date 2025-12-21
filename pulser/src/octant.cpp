@@ -563,7 +563,10 @@ static void render_loop()
             std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
             
             // //number of divisions in X,Y,Z space
-            //run_cncplot( cg, a1, a2, a3, a4, a5, a6, a7 );
+            pt_motionplot->run_send_pulses( &cg, 
+                                            s_p.x, s_p.y, s_p.z, 
+                                            e_p.x, e_p.y, e_p.z,
+                                            10 );
 
 
 
