@@ -106,7 +106,7 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
     
     pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
     
-    /*
+     
     if(pt_cg->GLOBAL_DEBUG==true)
     {
         for(int x=0;x<pt_motionplot->pulsetrain.size();x++)
@@ -120,12 +120,13 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
 
     if(pt_cg->GLOBAL_DEBUG==false)
     {
-        pt_parport->send_pulses(&prog, pt_cg, pt_motionplot);
+        std::cout << "PULSING DISABLED FOR NOW \n";
+        // pt_parport->send_pulses(&prog, pt_cg, pt_motionplot);
 
-        //void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+        // void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
 
     }//no debug, run it!
-    */
+     
 
  }   
 

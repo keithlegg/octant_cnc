@@ -554,24 +554,24 @@ static void render_loop()
         //the main loop where we update display and pulse the ports.
         if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1 && mtime.running)
         {
-
-            //DEBUG - get the length of the vector/spatial divs to calc proper speed 
-            //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
-
             Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
             Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
-            
 
             std::cout << "running vector \n";
             std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
             std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
-            
-            // //number of divisions in X,Y,Z space
-            pt_motionplot->run_send_pulses( &cg, 
-                                            s_p.x, s_p.y, s_p.z, 
-                                            e_p.x, e_p.y, e_p.z,
-                                            10 );
+        
 
+            //DEBUG - get the length of the vector/spatial divs to calc proper speed 
+            //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
+
+            //pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
+
+            // // //number of divisions in X,Y,Z space
+            // pt_motionplot->run_send_pulses( &cg, 
+            //                                 s_p.x, s_p.y, s_p.z, 
+            //                                 e_p.x, e_p.y, e_p.z,
+            //                                 10 );
 
 
             PG.lerp_along(&motionplot.quill_pos, 
