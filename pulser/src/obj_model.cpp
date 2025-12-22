@@ -130,7 +130,8 @@ void obj_model::show_geom(void)
     for (i=0;i<num_pts;i++)
     {
         std::cout << " pt idx "<< i  << " is :";
-        //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z ;\
+        //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z ; 
+        
         std::cout << "\n";
     }
 

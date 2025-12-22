@@ -476,10 +476,6 @@ void obj_model::save( char *filepath)
     }
 
     // std::cout << " triangle count is  " << num_tris << endl;
-
-    int ff = 0; 
-    int xx = 0;
-
     //----------------------
 
     /*
@@ -502,10 +498,10 @@ void obj_model::save( char *filepath)
     // export array of lines
     if(num_lines>0)
     {
-        for (xx=0; xx<num_lines; xx++)
+        for (unsigned int xx=0; xx<num_lines; xx++)
         {
             myfile << "f ";
-            for (ff=0; ff < lines[xx].size();ff++)
+            for (unsigned int ff=0; ff < lines[xx].size();ff++)
             {
                 if (ff<lines[xx].size()-1){ 
                     myfile << lines[xx][ff] << " ";
@@ -522,10 +518,10 @@ void obj_model::save( char *filepath)
     // export array of triangles
     if(num_tris>0)
     {
-        for (xx=0; xx<num_tris; xx++)
+        for (unsigned int xx=0; xx<num_tris; xx++)
         {
             myfile << "f ";
-            for (ff=0; ff < tris[xx].size();ff++)
+            for (unsigned int ff=0; ff < tris[xx].size();ff++)
             {
                 myfile << tris[xx][ff] << " "; 
             }
@@ -537,10 +533,10 @@ void obj_model::save( char *filepath)
     // export array of quads
     if(num_quads>0)
     {
-        for (xx=0; xx<num_quads; xx++)
+        for (unsigned int xx=0; xx<num_quads; xx++)
         {
             myfile << "f ";
-            for (ff=0; ff < quads[xx].size();ff++)
+            for (unsigned int ff=0; ff < quads[xx].size();ff++)
             {
                 myfile << quads[xx][ff] << " "; 
             }
@@ -579,8 +575,7 @@ void obj_model::load_m44(char* filename)
     {
         char buf[MAX_CHARS_PER_LINE];
         fin.getline(buf, MAX_CHARS_PER_LINE);
-        
-        int i = 0;
+
         int n = 0; 
 
         const char* token[MAX_TOKENS_PER_LINE] = {};

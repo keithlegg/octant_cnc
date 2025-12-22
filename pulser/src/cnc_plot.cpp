@@ -575,14 +575,26 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
 void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
 {
-    
+
+    if(num==0||size==0)
+    {
+        std::cout << "# ERROR gen_pules: size and num must be non zero \n";
+        exit(1);        
+    }    
+
     if(num>size)
     {
-        std::cout << "# gen_pules: size arg may not exceed number \n";
+        std::cout << "# ERROR gen_pules: size arg may not exceed number \n";
         exit(1);
     }
 
-    float div;    
+    ////////////////////////////////////
+
+    std::cout << "DEBUG num  " << num << "\n";
+    std::cout << "DEBUG size "<< size << "\n";    
+
+
+    float div = size/num;    
     
     /*
     //DEBUG - just put this here to solve floating point crash 
@@ -592,7 +604,7 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
         div =1;
     }*/
 
-
+    ////////////////////////////////////
   
 
     //if num==zero, pad data with all zeros instead of doing nothing 
@@ -628,7 +640,7 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
     {
         for(unsigned int a=0;a<size;a++)
         {
-            float chunk = fmod(a,div);
+            float chunk = fmod(a, div);
             if( chunk < 1)
             {
                 pt_pulsetrain->push_back(1);

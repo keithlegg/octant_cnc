@@ -341,7 +341,7 @@ void parse_cmd_text(std::string *buffer)
     //relative transform (from current xyz)
     if (a1=="rt")
     {
-        Vector3 rgb = Vector3(0,1.0,1.0);
+        //Vector3 rgb = Vector3(0,1.0,1.0);
        
         v11 = std::stof(a2);
         v12 = std::stof(a3);
@@ -392,7 +392,7 @@ void parse_cmd_text(std::string *buffer)
 
     //--------------
     //clear for next transaction
-    a1,a2,a3,a4,a5,a6,a7 = "";
+    //a1,a2,a3,a4,a5,a6,a7 = "";
     //--------------
 
 }//end 

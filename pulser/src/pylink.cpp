@@ -78,17 +78,17 @@ void exe_python(void)
 {
     std::cout << "ACTIVE OBJ FILE IS " << cg.active_filepath << "\n";
 
-    char* pycore_cmd = "scanline";    
+    
     char buffer[256];
 
     if (cg.active_filepath.size() )
     {
-        snprintf(buffer, sizeof(buffer), "python3 ../py/pycore.py %s %s", cg.active_filepath.c_str(), pycore_cmd);
+        snprintf(buffer, sizeof(buffer), "python3 ../py/pycore.py %s", cg.active_filepath.c_str());
     }
 
     //std::cout << "COMMAND SENT FROM C "<< buffer << "\n";
 
-    int ret = system(buffer);
+    system(buffer);
 
 }
  
@@ -456,6 +456,7 @@ void sockettest(void)
     //printf("Hello message sent\n");
 
 } 
+*/
 
 /*********************************************************/
 /*********************************************************/

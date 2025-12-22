@@ -106,7 +106,7 @@ const int MAX_TOKENS_PER_LINE = 20;
 //trying to do memory housekeeping 
 void exit_program(void)
 {
-    delete pt_model_buffer;
+    //delete pt_model_buffer;
     //delete pt_scene_drawpoints;
 
 }

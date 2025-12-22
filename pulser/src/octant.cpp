@@ -660,7 +660,7 @@ static void render_loop()
             */
              
             glColor3d(0, 1.0, 0);        
-            sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(portdata)  );
+            sprintf(cs, BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(portdata)  );
             renderBitmapString( ((int)(scr_size_x/2)-50), 75  ,(void *)GLUT_BITMAP_HELVETICA_18, cs );
         }
 

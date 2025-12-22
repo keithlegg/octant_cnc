@@ -33,8 +33,8 @@ void run_cncplot(char * cfgfile,
 
     bool DEBUG = false; 
 
-    cnc_plot plot;
-    cnc_parport pport;
+    cnc_plot* plot = new cnc_plot;
+    cnc_parport* pport = new cnc_parport;
     cncglobals cg;
     
     cg.load_cfg_file(cfgfile); 
@@ -48,25 +48,27 @@ void run_cncplot(char * cfgfile,
     // std::cout << "## e vec " <<e_p.x <<" "<< e_p.y <<" "<< e_p.z <<  " \n";
     // std::cout << "## divs " << divs <<  " \n";
 
-    plot.calc_3d_pulses(s_p, e_p, divs);
+    plot->calc_3d_pulses(s_p, e_p, divs);
 
     if(DEBUG==true)
     {
         std::cout << "## run_cncplot debug mode \n";
  
-        for(unsigned int x=0;x<plot.pulsetrain.size();x++)
+        for(unsigned int x=0;x<plot->pulsetrain.size();x++)
         {
-            std::cout<<plot.pulsetrain[x].x  <<" "
-                     <<plot.pulsetrain[x].y  <<" "
-                     <<plot.pulsetrain[x].z  <<"\n";        
+            std::cout<<plot->pulsetrain[x].x  <<" "
+                     <<plot->pulsetrain[x].y  <<" "
+                     <<plot->pulsetrain[x].z  <<"\n";        
         } 
     }
 
     if(DEBUG==false)
     {
-        pport.send_pulses(&dummy, &cg, &plot);
+        pport->send_pulses(&dummy, &cg, plot);
     }
 
+    delete pport; 
+    delete plot;
 }
 
 
