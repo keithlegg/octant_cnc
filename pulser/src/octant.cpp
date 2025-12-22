@@ -628,8 +628,7 @@ static void render_loop()
       
         //--
         //X Y Z - QUILL/HEAD POSITION  
-        
-        
+                
         glColor3d(0, 1.0, 1.0);        
         sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", motionplot.quill_pos.x, motionplot.quill_pos.y, motionplot.quill_pos.z );
         renderBitmapString( ((int)(scr_size_x/2)-100), 50  ,(void *)font, cs );
