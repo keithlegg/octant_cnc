@@ -11,9 +11,9 @@
  
 
 
-    calc_3d_pulses -  takes two points and runs gen_pules for each axis 
+    calc_3d_pulses -  takes two points and runs gen_pulses for each axis 
  
-    gen_pules
+    gen_pulses
         translates a scalar and divs into a valid pulsetrain to send to IO 
         run for each axis-  X,Y,Z
         Args  *pt_pulsetrain, int size, int num
@@ -546,17 +546,19 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
         std::cout << "#####\n";
     }
 
-    cnc_plot plot;
-
     std::vector<int> calcpt_x;
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
                    
+    /////
     // just calc the pulses using a ratio of length to divs. 
     // I experimented with a true 3D method below but this seems to work fine (?)                       
-    plot.gen_pules(&calcpt_x, most, num_pul_x);  
-    plot.gen_pules(&calcpt_y, most, num_pul_y);  
-    plot.gen_pules(&calcpt_z, most, num_pul_z);  
+ 
+    gen_pulses(&calcpt_x, most, num_pul_x);  
+    gen_pulses(&calcpt_y, most, num_pul_y);  
+    gen_pulses(&calcpt_z, most, num_pul_z);  
+
+    ////
 
     for(unsigned int a=0;a<most;a++)
     {
@@ -569,58 +571,40 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
 
 /******************************************/
-/*
-   translates two 3d vectors into a pulsetrain , a series of on/off to send to IO 
-*/
 
-void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
+
+/******************************************/
+
+// this OPERATES ON AN ORPHANED  PULSETRAIN so keep it out of the class
+// that way it avoids the confusion of the pulsetrain inside the class 
+
+void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
 {
-
-    if(num==0||size==0)
-    {
-        std::cout << "# ERROR gen_pules: size and num must be non zero \n";
-        exit(1);        
-    }    
-
+    
     if(num>size)
     {
-        std::cout << "# ERROR gen_pules: size arg may not exceed number \n";
+        std::cout << "# gen_pulses: size arg may not exceed number \n";
         exit(1);
     }
 
-    ////////////////////////////////////
+    double div = (double)size/(double)num;
+    double gran = div/num;
 
-    std::cout << "DEBUG num  " << num << "\n";
-    std::cout << "DEBUG size "<< size << "\n";    
+    int a;  
 
-
-    float div = size/num;    
-    
-    /*
-    //DEBUG - just put this here to solve floating point crash 
-    if(size!=0 && num !=0){ 
-        div = size/num;
-    }else{
-        div =1;
-    }*/
-
-    ////////////////////////////////////
-  
-
-    //if num==zero, pad data with all zeros instead of doing nothing 
-    //we want the output to be the same size
+    //if zero make all zeros, we want the output to be the same size
     if(num==0)
     {
-        for(unsigned int a=0;a<size;a++)
+        for(a=0;a<size;a++)
         {
             pt_pulsetrain->push_back(0);            
         }
     }
 
-    //if only 1 pulse, do something special, put the pulse right in the middle of output 
+    //exception for integer 1, put the pulse right in the middle of output 
     if(num==1)
     {
-        for(unsigned int a=0;a<size;a++)
+        for(a=0;a<size;a++)
         {
 
             if( a == size/2)
@@ -638,9 +622,9 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
     // I did a true 3D solution (commented out at bottom) but this is way faster and works as far as I can tell
     if(num>1) 
     {
-        for(unsigned int a=0;a<size;a++)
+        for(a=0;a<size;a++)
         {
-            float chunk = fmod(a, div);
+            double chunk = fmod(a,div);
             if( chunk < 1)
             {
                 pt_pulsetrain->push_back(1);
@@ -657,6 +641,7 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
 
 }
       
+
 
 
 

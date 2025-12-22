@@ -9,6 +9,10 @@
 #define MAX_NUM_PLY 100000
 
 
+
+void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
+
+
 class cnc_plot
 {
     public:
@@ -52,7 +56,7 @@ class cnc_plot
         void update_cache(void);
         void loadpath( std::vector<Vector3>* pt_drawvecs);
 
-        void gen_pules(std::vector<int>*, int, int);
+        //void gen_pules(int size, int num);
         
         void calc_3d_pulses(Vector3, 
                             Vector3,
