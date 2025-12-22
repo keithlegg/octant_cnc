@@ -394,11 +394,14 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
-    bool enable_send   = false; 
+    bool enable_send   = true; 
     bool enable_limits = false; 
 
     std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
     std::cout << "# parport address is :   " << cg->parport1_addr << "\n";
+    std::cout << "# delay us           :   " << cg->pp1_pulse_dly_us << "\n";
+
+
 
     if(enable_send==1)
     {
