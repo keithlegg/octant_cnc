@@ -141,6 +141,7 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "  wire, persp, otop, oside, etc                   \n";
         std::cout << "                                                  \n";
         std::cout << "show                                              \n";
+        std::cout << "  cfg                                             \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
         std::cout << "  path     - stats about toolpath                 \n";
         std::cout << "  pathids  -                                      \n";
@@ -232,6 +233,11 @@ void parse_cmd_text(std::string *buffer)
     //peek at internals 
     if (a1=="show")
     { 
+        if(a2=="cfg")
+        { 
+            cg.show_params();         
+        }
+
         if(a2=="path")
         { 
             pt_motionplot->show();             

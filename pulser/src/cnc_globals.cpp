@@ -141,6 +141,10 @@ void cncglobals::show_params( void )
 
     //set it back when we are done 
     std::cout.flags( f );
+
+    std::cout << " parport1_addr : " << parport1_addr << "\n";
+    std::cout << " parport2_addr : " << parport2_addr << "\n";
+
     std::cout <<"\n";
     
     std::cout << " ## machine params " << "\n";  
@@ -411,6 +415,7 @@ void cncglobals::load_cfg_file( char* filepath )
 
                                     pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
                                     local_vec_idx = 0;
+                                    ply_count++;
                                 }//if data to load 
                             };
                         } 
