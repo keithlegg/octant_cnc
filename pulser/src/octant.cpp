@@ -109,12 +109,6 @@ int TCP_PORT;
 
 
 /***************************************/
-//Timer related 
-timer mtime = timer();
-
-double localsimtime;
-
-/***************************************/
 
 /*
 //Mouse related
@@ -142,23 +136,6 @@ extern char* obj_filepath;
 extern std::vector<std::string>  obj_filepaths;
 
 
-
-/***************************************/
-void timer_init(void)
-{
-    mtime.stop();
-
-}
-
-
-/***************************************/
-void update_clk(void)
-{
-    //symtime
-
-    mtime.stop();
-
-}
 
 
 

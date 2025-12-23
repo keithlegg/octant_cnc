@@ -51,6 +51,9 @@ class cnc_plot
         void stop(void);
         void run(void);
         
+        void timer_init(void);
+        //void timer_reset(void)
+
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
 

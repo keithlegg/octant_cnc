@@ -930,7 +930,7 @@ void render_loop(void)
     //DEBUG - THE MAIN LOGIC OF MOTION SHOULD NOT BE IN THE RENDER LOOP!
     //THIS NEEDS TO BE INDEPENDANT - AND UPDATE OPENGL, NOT THE OTHER WAY AROUND 
     //MOVE AS MUCH AS POSSIBLE INTO CNC_PLOT 
-  
+    /* 
     if(mtime.running)
     {
         
@@ -1001,10 +1001,6 @@ void render_loop(void)
             Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
             Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
 
-        
-            //-----------------------
-
-
             PG.lerp_along(&motionplot.quill_pos, 
                            s_p, 
                            e_p, 
@@ -1015,6 +1011,8 @@ void render_loop(void)
         }
 
     }//end program cycle running  
+    
+    */
 
     //------------ 
     //draw locator when idle 

@@ -73,10 +73,20 @@
 
 point_ops PG;
 
-extern cnc_plot* pt_motionplot;
-extern cnc_parport* pt_parport;
 
-extern timer mtime;
+//Timer related 
+timer mtime = timer();
+
+double localsimtime;
+
+
+/***************************************/
+void cnc_plot::timer_init(void)
+{
+    mtime.stop();
+
+}
+
 
 
 
@@ -120,16 +130,16 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
     
     
-    pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
+    calc_3d_pulses(s_p, e_p, divs);
     
      
     if(pt_cg->GLOBAL_DEBUG==true)
     {
-        for(int x=0;x<pt_motionplot->pulsetrain.size();x++)
+        for(int x=0;x<pulsetrain.size();x++)
         {
-            std::cout<<pt_motionplot->pulsetrain[x].x  <<" "
-                     <<pt_motionplot->pulsetrain[x].y  <<" "
-                     <<pt_motionplot->pulsetrain[x].z  <<"\n";        
+            std::cout<<pulsetrain[x].x  <<" "
+                     <<pulsetrain[x].y  <<" "
+                     <<pulsetrain[x].z  <<"\n";        
         } 
     }//if debug
 
@@ -137,9 +147,9 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
     if(pt_cg->GLOBAL_DEBUG==false)
     {
         std::cout << "PULSING DISABLED FOR NOW \n";
-        // pt_parport->send_pulses(&prog, pt_cg, pt_motionplot);
 
-        // void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+
+        // void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* (*this) )
 
     }//no debug, run it!
      
@@ -259,6 +269,58 @@ void cnc_plot::run(void)
         running = true;
         finished = false;
     }
+    ///////////////////////////////////
+    if(mtime.running)
+    {
+        localsimtime = mtime.get_elapsed_simtime() * timediv;
+
+        //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
+        if (localsimtime>=1.0)
+        {
+
+            //std::cout << "-----------------------------------\n";        
+            //std::cout << "running index " << pidx        << "\n";
+
+            //iterate the stack of vectors to process
+            if (pidx<toolpath_vecs.size())
+            {
+                pidx++;        
+                // start the (sim) clock over at the end of each vector segment 
+                // 0.0 - 1.0 is the range - which feeds the 3D `lerp           
+                mtime.step_sim();
+            }
+
+            //program finished here
+            if (pidx>=toolpath_vecs.size()-1)
+            {
+                mtime.running = false;
+                stop();
+                finished = true;
+
+                //update rebuilds the stack of vectors to process
+                //this is for rapid move, etc 
+                pidx = 0;
+                update_cache();
+
+            }
+        }
+        
+        //----------------- 
+        //the main loop where we update display and pulse the ports.
+        if (pidx<=toolpath_vecs.size()-1 && mtime.running)
+        {
+            Vector3 s_p = toolpath_vecs[pidx];
+            Vector3 e_p = toolpath_vecs[pidx+1];  
+
+            PG.lerp_along(&quill_pos, 
+                           s_p, 
+                           e_p, 
+                           (float) localsimtime);
+        }
+
+    }//end program cycle running  
+
+
 
 }
 

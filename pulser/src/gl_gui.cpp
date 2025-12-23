@@ -43,7 +43,7 @@
 #include "gl_setup.h"
 #include "gl_render.h"
 
-#include "octant.h"
+//#include "octant.h"
 
 
 extern int scr_size_x;
@@ -74,7 +74,8 @@ void start_gui(int *argc, char** argv){
     //shader_test();
     set_colors();
 
-    timer_init();
+ 
+    pt_motionplot->timer_init();
     //mtime.start();
 
     //------------
