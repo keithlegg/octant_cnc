@@ -9,8 +9,14 @@
 #define MAX_NUM_PLY 100000
 
 
-
+//gen_pulses() intentionally left out of class
+//historicaly it processed pulsetrain data not stored in object itself 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
+
+//old experimental version that used true 3D data to build pulsetrain 
+//void gen_3d_pules(std::vector<Vector3>*, int, int);
+
+/********************/
 
 
 class cnc_plot
@@ -55,8 +61,6 @@ class cnc_plot
         
         void update_cache(void);
         void loadpath( std::vector<Vector3>* pt_drawvecs);
-
-        //void gen_pules(int size, int num);
         
         void calc_3d_pulses(Vector3, 
                             Vector3,
@@ -67,16 +71,16 @@ class cnc_plot
                              float s_x, float s_y, float s_z,
                              int divs);          
 
-        //keep track of number of polygons 
-        //a ploygon is an indexed array of path vectors 
-        //similar to an .OBJ file face, etc
+        // keep track of number of polygons 
+        // a ploygon is an indexed array of path vectors 
+        // similar to an .OBJ file face, etc
         unsigned int num_plys;
 
-        //index to the current vector processed while running 
+        // index to the current vector processed while running 
         unsigned int pidx;
         double timediv;
         
-        //calculated values - length of travel for vectors
+        // calculated values - length of travel for vectors
         float rapid_dist;
         float program_dist;     
 
@@ -99,19 +103,19 @@ class cnc_plot
         float work_height;
 
         //-----
-        //data for the actual pulsing out the parport 
+        // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
         //vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
-        //cache of toolpath component vectors 
+        // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<Vector3> program_vecs;  
-        //the final "baked" path that gets run
+        // the final "baked" path that gets run
         std::vector<Vector3> toolpath_vecs;
 
         //-----
-        //original vectors loaded from disk  
-        //keep these seeprate from the dynamically built paths 
+        // original vectors loaded from disk  
+        // these get copied to program_vecs and linebuffer1 vecs (for display)
         std::vector<Vector3> loaded_file_vecs;
         std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
 
@@ -120,7 +124,7 @@ class cnc_plot
 
 
 
-    //void gen_3d_pules(std::vector<Vector3>*, int, int);
+
  
 
 };

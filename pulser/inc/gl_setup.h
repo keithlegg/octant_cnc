@@ -79,7 +79,7 @@ void clear_scn_geom( void );
 void add_vec_lbuf1( Vector3* insert);
 void add_vec_lbuf2( Vector3* insert);
 
-void add_vecrgb_scndrw( Vector3* insert, Vector3* rgb);
+void add_vec_lbuf1( Vector3* insert, Vector3* rgb);
 
 void set_screen_square(int* sx, int* sy);
 

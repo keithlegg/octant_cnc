@@ -487,7 +487,15 @@ void add_vec_lbuf1( Vector3* insert)
     linebuffer1.push_back(*insert);
     linebuffer1_rgb.push_back(r);
 }
- 
+
+void add_vec_lbuf1( Vector3* insert, Vector3* rgb)
+{
+    linebuffer1.push_back(*insert);
+    linebuffer1_rgb.push_back(*rgb);
+
+}
+
+/******************************************/
 
 void add_vec_lbuf2( Vector3* insert)
 {   
@@ -497,13 +505,7 @@ void add_vec_lbuf2( Vector3* insert)
 }
  
 
-/******************************************/
-void add_vecrgb_scndrw( Vector3* insert, Vector3* rgb)
-{
-    linebuffer1.push_back(*insert);
-    linebuffer1_rgb.push_back(*rgb);
 
-}
  
 
 

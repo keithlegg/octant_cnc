@@ -65,7 +65,7 @@
 #include "cnc_plot.h"
 
 //GUI RELATED 
-//#include "gl_setup.h"
+#include "gl_setup.h"
 //GUI RELATED 
 
 
@@ -82,6 +82,28 @@ extern timer mtime;
 
 
 
+/******************************************/
+/*
+
+    program_vecs     = main part of toolpath construction 
+    tp_idxs          = index to progvectors , per polygon basis - (like faces in .OBJ file)
+
+    //std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
+
+    loaded_file_vecs = buffer for file loading only 
+
+*/
+
+void cnc_plot::add_prg_vec(Vector3* nv)
+{
+    program_vecs.push_back(*nv);
+}
+
+/******************************************/
+void cnc_plot::add_file_vec(Vector3* nv)
+{
+   loaded_file_vecs.push_back(*nv);
+}
 
 
 /******************************************/
@@ -126,16 +148,7 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
 
 
 
-/******************************************/
-void cnc_plot::add_prg_vec(Vector3* nv)
-{
-    program_vecs.push_back(*nv);
-}
 
-void cnc_plot::add_file_vec(Vector3* nv)
-{
-   loaded_file_vecs.push_back(*nv);
-}
 
 
 /******************************************/
@@ -333,7 +346,16 @@ void cnc_plot::update_cache(void)
 
 /******************************************/
 /*
-    add a new polygon to program and display buffer 
+    add a new polygon to program and display buffer.
+
+    This dumps the filebuffer into a new polygon, or set of line vectors.
+
+    Polygons (line polygons, not to be confused with 3D object faces ) are stored in 
+    
+    Polyugon verticies/vectors are:
+        stored  -  this.program_vecs  
+        indexed -  this.tp_idxs
+
     move from temp file buffer and clear file buffer for next incoming polygon 
     because the polygon is CCW/CW contigous, all we need is to know how many ids to add
 */
@@ -344,13 +366,13 @@ void cnc_plot::add_new_polygon(int numply, int numids)
          
     int reindex = 0;
     
+    //if data already loaded - increase index to new incoming data 
     if(numply==0)
     {
         reindex = numply; 
     }else{
         reindex = program_vecs.size(); 
     }
-
     std::cout << "add ply reindex "<< reindex << "\n";
 
 
@@ -361,15 +383,17 @@ void cnc_plot::add_new_polygon(int numply, int numids)
         tp_idxs[numply].push_back( (reindex+i) );
     }
 
-    //the data is loaded in file buffer - copy it to program buffer with index 
- 
-    // //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
+    // incoming data is in file buffer - copy it to program buffer with index 
     for (unsigned int p=0;p<loaded_file_vecs.size();p++)
     {   
-        //DEBUG DISABLED GUI RELATED 
-        //add_vec_lbuf1(&loaded_file_vecs.at(p)); 
 
-        //ADD to program_vecs also!! DEBUG 
+        //add to program_vecs (toolpath) 
+        add_prg_vec(&loaded_file_vecs.at(p));
+
+        //add to display buffer 
+        add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+
+
     }
 
     //clear file buffer so we can load more 

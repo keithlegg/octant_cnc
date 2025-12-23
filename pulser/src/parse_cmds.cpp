@@ -309,7 +309,7 @@ void parse_cmd_text(std::string *buffer)
         pt_motionplot->quill_pos.z = v13;   
 
         Vector3 rgb = Vector3(0,1.0,1.0);
-        add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
+        add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
     }
 
     //--------------
@@ -334,7 +334,7 @@ void parse_cmd_text(std::string *buffer)
                 pt_motionplot->quill_pos.z = v12;
 
             //store the difference between them
-            add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
+            add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
 
         } catch (const std::invalid_argument& e) {  
             //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
@@ -364,9 +364,9 @@ void parse_cmd_text(std::string *buffer)
         
         //Vector3 newvec = qpos.operator-(old);
         //store the difference between them
-        //add_vecrgb_scndrw(&newvec, &rgb);
+        //add_vec_lbuf1(&newvec, &rgb);
         
-        //add_vecrgb_scndrw(&pt_motionplot->quill_pos, &rgb);
+        //add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
 
     }
 

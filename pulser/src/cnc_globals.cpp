@@ -408,13 +408,9 @@ void cncglobals::load_cfg_file( char* filepath )
                                     std::cout << "load_cfg_file - NO DATA TO LOAD - SKIPPING " <<"\n"; 
                                 }else{                          
                                     std::cout << "load_cfg_file - adding new polygon  " << ply_count <<"\n"; 
-                                    // build an idx lup for each loaded polygon 
-                                    pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
-                                    
-                                    //reset so we can load mulitple polygons, if any
-                                    ply_count++;
-                                    local_vec_idx=0;
 
+                                    pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
+                                    local_vec_idx = 0;
                                 }//if data to load 
                             };
                         } 
