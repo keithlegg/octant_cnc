@@ -1,11 +1,11 @@
 # Octant - Multi axis motion control   
-![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/screen.jpg) 
-![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/head_normals.jpg) 
-![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/droid.jpg) 
 
 THIS IS VERY MUCH A WORK IN PROGRESS!! 
    
 "If you're thinking of writing your own controller software and hoping it's more reliable than open source or commercially available products, you're truly out to lunch."
+
+![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/screen.jpg) 
+![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/head_normals.jpg) 
  
 
 <br>
