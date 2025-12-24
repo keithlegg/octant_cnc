@@ -6,8 +6,6 @@
 
 
 
-void run_send_pulses(cncglobals*, float, float, float,
-                                  float, float, float, int);  
 
 
 

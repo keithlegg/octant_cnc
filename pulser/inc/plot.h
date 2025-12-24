@@ -113,7 +113,6 @@ class cnc_plot
         //-----
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
-        //vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    

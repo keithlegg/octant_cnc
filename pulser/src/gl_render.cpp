@@ -935,36 +935,11 @@ void render_loop(void)
     {
 
         //I tried to make this sepereate from the GUI but then we need threads. Sigh. 
-        //this seems like a goof compromise
+        //this seems like a good compromise
         pt_motionplot->update();
-
-        //std::cout << "-----------------------------------\n";        
-        //std::cout << " renderloop tm_running "  << "\n";
-        //std::cout << pt_mtime->getElapsedTimeInSec();
-
-        //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
-        //if (motionplot.localsimtime>=1.0)
- 
-        //----------------- 
-         
-        //the main loop where we update display and pulse the ports.
-        //if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1 && pt_mtime->tm_running)
-
-            Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
-            Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
             
-            // std::cout<<"#######------#######\n";
-            // std::cout<<" "<< s_p.x << " " << s_p.y<< " " << " "<< s_p.z << "\n";
-            // std::cout<<" "<< e_p.x << " " << e_p.y<< " " << " "<< e_p.z << "\n"; 
-
-
-            PG.lerp_along(&motionplot.quill_pos, 
-                           s_p, 
-                           e_p, 
-                           (float) motionplot.localsimtime);
-            glColor3d(1, .4, 1);
-            draw_locator(&motionplot.quill_pos, .5);
-
+        glColor3d(1, .4, 1);
+        draw_locator(&motionplot.quill_pos, .5);
 
     }//end program cycle running  
     

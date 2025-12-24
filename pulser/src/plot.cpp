@@ -282,9 +282,48 @@ void cnc_plot::update(void)
 {
     if (mtime.tm_running)
     {
+        //----------------- 
+        //DEBUG - need to add speed setting  
         //localsimtime = mtime.get_elapsed_simtime() * timediv;
         localsimtime = mtime.get_elapsed_simtime();        
 
+        //----------------- 
+        //the main loop where we update display and pulse the ports.
+        if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
+        {
+            //set up the vector to process 
+            Vector3 s_p = toolpath_vecs[pidx];
+            Vector3 e_p = toolpath_vecs[pidx+1];  
+ 
+            //send the pulses out 
+            //DEBUG - need to precompute the pulsetrain 
+            //THEN add a function that creeps along 0-1 index 
+            if (localsimtime>0.0 && localsimtime<1.0 )
+            {
+               
+                //just calc it on the fly for now 
+                calc_3d_pulses(s_p,e_p, 10);
+                double scale = (double)pulsetrain.size()/1;
+                double dstep = scale * localsimtime;
+                int istep =(int)dstep; 
+                 
+                Vector3 now = pulsetrain[istep];
+
+                //std::cout << "run pulses       " << localsimtime      << "\n";
+                std::cout << "pulsing " << now.x <<" "<<now.y<<" "<<now.z << "\n";
+ 
+            }
+
+            //interpolate xyz posiiton over time 
+            PG.lerp_along(&quill_pos, 
+                           s_p, 
+                           e_p, 
+                           (float) localsimtime);
+        }//update locator position 
+
+
+
+        //----------------- 
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
         if (localsimtime>=1.0)
         {
@@ -302,26 +341,12 @@ void cnc_plot::update(void)
             {
                 stop();
                 pidx = 0;
-            }
+            }//stop when we processed all the data
            
-        }
-        //-----------------
-        // std::cout<< localsimtime << "\n";
+        }//step or stop the program  
 
-        //----------------- 
-        //the main loop where we update display and pulse the ports.
-        if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
-        {
-            Vector3 s_p = toolpath_vecs[pidx];
-            Vector3 e_p = toolpath_vecs[pidx+1];  
 
-            PG.lerp_along(&quill_pos, 
-                           s_p, 
-                           e_p, 
-                           (float) localsimtime);
-        }
-
-    }//end program cycle running  
+    }//if program is running  
 }
 
 
@@ -637,7 +662,8 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
 
 /******************************************/
-// this OPERATES ON AN ORPHANED  PULSETRAIN so keep it out of the class
+//DEBUG - LEGACY CODE TO REWRITE?
+// this OPERATES ON AN ORPHANED PULSETRAIN so keep it out of the class
 // that way it avoids the confusion of the pulsetrain inside the class 
 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
